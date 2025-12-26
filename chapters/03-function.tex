@@ -1,110 +1,46 @@
-\chapter{試作するツールの機能}\label{cha:Function}
+\chapter{VITT}\label{cha:Function}
 
-本章では、図、表、数式の挿入方法について説明する。
+本章では、本研究で試作するツールVITTについて説明する。\\
+以降、VITTの入出力、初期設定、および、VITT使用時の流れについて説明する。
 
-\section{図の挿入}
+% 入出力
+\section{入出力}
 
-図を挿入するには、\verb|figure| 環境と \verb|\includegraphics| コマンドを使用する。
 
-\subsection{基本的な図の挿入}
-
-図\ref{fig:example}に例を示す。
-
-\begin{figure}[tp]
-  \centering
-  \includegraphics[width=0.5\linewidth]{./images/syokuji_computer.png}
-  \caption{図の挿入例}
-  \label{fig:example}
-\end{figure}
-
-上記の図は以下のコードで挿入できる：
-
-\begin{verbatim}
-\begin{figure}[tp]
-  \centering
-  \includegraphics[width=0.5\linewidth]{./images/syokuji_computer.png}
-  \caption{図の挿入例}
-  \label{fig:example}
-\end{figure}
-\end{verbatim}
-
-\subsection{画像ファイルの配置}
-
-画像ファイルは \verb|images/| ディレクトリに配置する。
-サポートされている画像形式：PNG、JPG、PDF など。
-
-\section{表の挿入}
-
-表を挿入するには、\verb|table| 環境と \verb|tabular| 環境を使用する。
-
-\subsection{基本的な表の挿入}
-
-表\ref{tb:example}に例を示す。
-
-\begin{table}[tp]
-  \caption{表の挿入例}
-  \label{tb:example}
-  \centering
-  \begin{tabular}{|l|c|r|}
-    \hline
-    左寄せ & 中央寄せ & 右寄せ \\
-    \hline
-    データ1 & データ2 & データ3 \\
-    データ4 & データ5 & データ6 \\
-    \hline
-  \end{tabular}
-\end{table}
-
-上記の表は以下のコードで挿入できる：
-
-\begin{verbatim}
-\begin{table}[tp]
-  \caption{表の挿入例}
-  \label{tb:example}
-  \centering
-  \begin{tabular}{|l|c|r|}
-    \hline
-    左寄せ & 中央寄せ & 右寄せ \\
-    \hline
-    データ1 & データ2 & データ3 \\
-    データ4 & データ5 & データ6 \\
-    \hline
-  \end{tabular}
-\end{table}
-\end{verbatim}
-
-\section{数式の挿入}
-
-\subsection{インライン数式}
-
-文中に数式を挿入する場合は、\verb|$...$| または \verb|\(...\)| を使用する。
-例：$E = mc^2$ は有名な公式である。
-
-\subsection{ディスプレイ数式}
-
-独立した行に数式を表示する場合は、\verb|equation| 環境を使用する。
-
-\begin{equation}\label{eq:example}
-  \int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
-\end{equation}
-
-式(\ref{eq:example})のように、数式にも番号とラベルを付けて参照できる。
-
-\subsection{複数行の数式}
-
-複数行の数式を表示する場合は、\verb|align| 環境を使用する：
-
-\begin{align}
-  a + b &= c \\
-  x + y &= z
-\end{align}
-
-\section{図表の参照}
-
-図や表を参照するには、\verb|\ref{}| コマンドを使用する：
+% 初期設定
+\section{初期設定}
+ツール使用者は\tool{}を実行するために、プロジェクトの情報を、\tool{}の設定ファイルvitt.yamlに事前に記述する必要がある。
+ツール使用者が設定ファイルvitt.yamlに記述する必要がある情報を、以下に示す。
 
 \begin{itemize}
-  \item 図\ref{fig:example}のように図を参照
-  \item 表\ref{tb:example}のように表を参照
-  \item 式(\ref{eq:example})のように数式を参照
+    \item システム名(system\_name) \\
+        説明入れる
+    \item 要求仕様書のディレクトリパス(requirement\_dir) \\
+        説明入れる
+    \item テストケースのディレクトリパス(testcase\_dir) \\
+        説明入れる
+    \item 類似度の閾値(similality\_threshold) \\
+        説明入れる
+    \item 事前条件と前提条件の重み(precondition) \\
+        説明入れる
+    \item トリガーと入力・操作の重み(trigger\_operation) \\
+        説明入れる
+    \item システム応答と期待出力の重み(response\_output) \\
+        説明入れる
 \end{itemize}
+
+\begin{figure}[t]
+    \setbox0\vbox{
+        \vbox{target\_project:}
+        \vbox{\ \ source\_path: target\_project/sample\_project/src}
+        \vbox{\ \ test\_exec\_path: target\_project/sample\_project}
+        \vbox{\ \ test\_exec\_cmd: bash gtest\_all.sh}
+	}
+	\centerline{\fbox{\box0}}
+    \caption{vitt.yamlの記述例}
+    \label{fig:setting_sample}
+\end{figure}
+設定ファイルvitt.yamlの記述例を、図\ref{fig:setting_sample}に示す。
+
+% ツール使用時の流れ
+\section{ツール使用時の流れ}
