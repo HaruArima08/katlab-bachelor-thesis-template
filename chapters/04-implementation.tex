@@ -1,10 +1,27 @@
 \chapter{\tool{}の実装}\label{cha:Implementation}
 
-本章では、LaTeX でソースコードを挿入する方法について説明する。
-本テンプレートの実装方法については、文献\cite{kimura-automation}で詳しく述べられている。
+本章では、試作した \tool の実装について説明する。
+\tool の構造を、図\ref{fig:system}に示す。
+
+\begin{figure}[tp]
+    \begin{center}
+            \includegraphics[width=18cm]{images/system.png}
+            \caption{\tool の構造}
+            \label{fig:system}
+    \end{center}
+\end{figure}
+
+\tool は、以下の$3$つの処理部から構成する。
+\begin{itemize}
+    \item 入力情報取得部
+    \item 対応関係分析部
+    \item 出力図生成部部
+\end{itemize}
+以降、$3$つの処理部についてそれぞれ説明する。
 
 % 入力情報取得部
-\section{入力情報取得部}
+\section{入力情報取得部}\label{sec:input-data-get-section}
+入力情報取得部
 
 \subsection{処理}
 
