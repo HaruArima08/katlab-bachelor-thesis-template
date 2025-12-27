@@ -1,73 +1,18 @@
 \chapter{研究の準備}\label{cha:Preparation}
 
-本章では、LaTeX での論文執筆に必要な基本的な書き方について説明する。
-LaTeX の詳細な文法については、文献\cite{kimura-latex}に詳しい解説がある。
+本章では、\tool{}を試作する際に必要となる前提知識を説明する。
 
-\section{セクションとサブセクション}
+\section{EARS}
 
-\verb|\section{}| でセクション、\verb|\subsection{}| でサブセクションを作成できる。
+\section{Python}
 
-\subsection{サブセクションの例}
+\section{MeCab}\label{sec:Mecab}
+MeCab は、日本語の形態素解析を目的として、C++ 言語で開発されたオープンソースソフトウェアである \cite{mecab}。
+MeCab を用いることによって、日本語で記述された文書の分かち書きや、単語の品詞を取得できる。
 
-このようにサブセクションを作成できる。
-さらに細かく分けたい場合は \verb|\subsubsection{}| も使用できる。
+本研究では、何とか処理(\ref{}節参照)において、要求仕様、及びテストケースの各対応付け要素の文字列に対し、形態素解析を行うために用いる。
+なお、本研究ではMeCabの形態素解析に用いる辞書として、IPA辞書\cite{mecab}を利用する。
 
-\section{箇条書き}
+\section{PlantUML}
 
-\subsection{番号なし箇条書き}
-
-\verb|itemize| 環境を使用する：
-
-\begin{itemize}
-  \item 項目1
-  \item 項目2
-  \item 項目3
-\end{itemize}
-
-\subsection{番号付き箇条書き}
-
-\verb|enumerate| 環境を使用する：
-
-\begin{enumerate}
-  \item 最初の項目
-  \item 2番目の項目
-  \item 3番目の項目
-\end{enumerate}
-
-\section{強調表示}
-
-以下のようなフォントスタイルが使用できる：
-
-\begin{itemize}
-  \item \textbf{太字}: \verb|\textbf{太字}|
-  \item \textit{Italic}: \verb|\textit{Italic}|
-  \item \underline{下線}: \verb|\underline{下線}|
-\end{itemize}
-
-一部のフォントスタイルは、日本語に対応していないもの (\verb|\textit{斜体}| など) があるので注意。
-
-\section{verbatim 環境}
-
-コマンドやコードをそのまま表示したい場合は、\verb|verbatim| 環境またはインライン \verb|\verb| コマンドを使用する。
-
-\begin{verbatim}
-これは verbatim 環境の例です。
-LaTeX のコマンドも \command{そのまま} 表示されます。
-\end{verbatim}
-
-インラインで表示する場合は、\verb|\verb|コマンド| のように書く。
-
-\section{ラベルと参照}
-
-\subsection{ラベルの付け方}
-
-章、節、図、表などにラベルを付けることで、後から参照できる：
-
-\begin{verbatim}
-\section{セクション名}\label{sec:label_name}
-\end{verbatim}
-
-\subsection{参照の仕方}
-
-ラベルを付けた箇所を参照するには、\verb|\ref{}| コマンドを使用する。
-例えば、この章は第\ref{cha:Preparation}章であり、第\ref{cha:Introduction}章で本テンプレートの概要を説明した。
+\section{Jaccard係数}
