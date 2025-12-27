@@ -13,22 +13,31 @@
 
 \tool は、以下の$3$つの処理部から構成する。
 \begin{itemize}
-    \item 入力情報取得部
+    \item 入力解析部
     \item 対応関係分析部
-    \item 出力図生成部部
+    \item 出力図生成部
 \end{itemize}
 以降、$3$つの処理部についてそれぞれ説明する。
 
-% 入力情報取得部
-\section{入力情報取得部}\label{sec:input-data-get-section}
-入力情報取得部
+% 入力解析部
+\section{入力解析部}\label{sec:input-data-analysis}
+入力解析部は、入力として要求仕様書とテストケースのcsvファイルを受け取り、
+要求仕様情報リストとテストケース情報リストを出力とする。出力は、対応関係分析部(\ref{sec:correspondence-analysis}節で後述)と出力図生成部(\ref{sec:diagram-generation}節で後述)に渡す。
 
-\subsection{処理}
+入力解析部では、以下の$2$つの処理を行う。
+\begin{itemize}
+    \item 要求仕様情報抽出処理
+    \item テストケース情報抽出処理
+\end{itemize}
+以降、それぞれの処理について説明する。
 
-\subsection{処理}
+\subsection{要求仕様情報抽出処理}\label{sec:req-spec-data-extraction}
+要求仕様情報抽出は、要求仕様書のcsvファイルを読み込み、要求仕様情報リストを生成する処理である。
+
+\subsection{テストケース情報抽出処理}\label{sec:testcase-data-extraction}
 
 % 対応関係分析部
-\section{対応関係分析部}
+\section{対応関係分析部}\label{sec:correspondence-analysis}
 
 \subsection{処理}
 
@@ -37,7 +46,7 @@
 \subsection{処理}
 
 % 出力図生成部
-\section{出力図生成部}
+\section{出力図生成部}\label{sec:diagram-generation}
 
 \subsection{処理}
 
