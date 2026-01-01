@@ -1,46 +1,140 @@
 \chapter{\tool{}の機能}\label{cha:Function}
 
-本章では、本研究で試作するツール\tool{}について説明する。\\
-以降、\tool{}の入出力、初期設定、および、\tool{}使用時の流れについて説明する。
-
-% 入出力
-\section{入出力}
-
-
-% 初期設定
-\section{初期設定}
-ツール使用者は\tool{}を実行するために、プロジェクトの情報を、\tool{}の設定ファイルvitt.yamlに事前に記述する必要がある。
-ツール使用者が設定ファイルvitt.yamlに記述する必要がある情報を、以下に示す。
+本章では、本研究で試作するツール\tool の機能について説明する。
+\tool は、以下の$2$つの機能を持つ。
 
 \begin{itemize}
+    \item 対応関係抽出機能
+    \item 出力図生成機能
+\end{itemize}
+
+\tool は \ref{sec:reqspec}節、\ref{sec:testcase}節で述べた要求仕様書およびテストケースを入力とする。
+対応関係抽出機能では、要求仕様書とテストケースの対応関係を記録した対応関係情報リスト (\ref{sec:traceability_extraction_func}節で詳細を後述)を出力する。
+出力図生成機能では、テストケースの抜けや不備、過剰箇所を視覚的に確認できる出力図(\ref{sec:diagram_generation_func}節で詳細を後述)を出力する。
+
+\tool を使用するために必要な初期設定を\ref{sec:config}節に、\tool 使用時の流れを\ref{sec:how_to_tool}節に、対応関係抽出機能の詳細を\ref{sec:traceability_extraction_func}節に、出力図生成機能の詳細を\ref{sec:diagram_generation_func}節に、それぞれ示す。
+
+% 初期設定
+\section{初期設定}\label{sec:config}
+
+\tool の機能を使用するために、プロジェクトの情報や対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)で用いるパラメータを\tool{}の設定ファイルvitt.yamlに事前に記述する必要がある。
+設定ファイルvitt.yamlは、プロジェクト設定（project）、処理設定（processing）の2つの設定項目から構成される。
+
+図\ref{fig:setting_sample}に、設定ファイルvitt.yamlの記述例を示す。
+設定ファイルvitt.yamlに記述する必要がある情報を、以下に示す。
+
+\paragraph{プロジェクト設定(project)}
+システム名と、入力対象の要求仕様書およびテストケースのディレクトリパスを記述する設定項目である。
+\begin{itemize}
     \item システム名(system\_name) \\
-        説明入れる
-    \item 要求仕様書のディレクトリパス(requirement\_dir) \\
-        説明入れる
-    \item テストケースのディレクトリパス(testcase\_dir) \\
-        説明入れる
+    システム名は、対象システムの名称を記述する。要求仕様記述項目(\ref{tb:reqspec_item}参照)の1つである。
+    \item 要求仕様書のディレクトリパス(requirement\_path) \\
+    要求仕様書のディレクトリパスは、入力対象の要求仕様書が格納されているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルを要求仕様書として読み込む。
+    \item テストケースのディレクトリパス(testcase\_path) \\
+    テストケースのディレクトリパスは、入力対象のテストケースが格納されているディレクトのパスである。\tool は、このディレクトリ下にあるCSVファイルをテストケースとして読み込む。
+\end{itemize}
+\paragraph{処理設定(processing)}
+対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)で用いるパラメータを記述する設定項目である。
+\begin{itemize}
     \item 類似度の閾値(similality\_threshold) \\
-        説明入れる
-    \item 事前条件と前提条件の重み(precondition) \\
-        説明入れる
+    類似度の閾値は、要求仕様とテストケースの対応関係を判定するための値であり、0.0から1.0の範囲で指定する。
+    \item 対応付け要素の重み(processing) \\
+    対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)における各対応付け要素の重要度を重みとして指定する。以下、3つの重みの合計が1.0になるように指定する。
+    \begin{itemize}
+    \item 前提条件と事前条件の重み(precondition) \\
+    前提条件と事前条件の重みは、要求仕様の前提条件とテストケースの事前条件の類似度に対する重みである。
     \item トリガーと入力・操作の重み(trigger\_operation) \\
-        説明入れる
+    トリガーと入力・操作の重みは、要求仕様のトリガーとテストケースの入力・操作の類似度に対する重み。
     \item システム応答と期待出力の重み(response\_output) \\
-        説明入れる
+    システム応答と期待出力の重みは、要求仕様のシステム応答とテストケースの期待出力の類似度に対する重み。
+\end{itemize}
 \end{itemize}
 
 \begin{figure}[t]
     \setbox0\vbox{
-        \vbox{target\_project:}
-        \vbox{\ \ source\_path: target\_project/sample\_project/src}
-        \vbox{\ \ test\_exec\_path: target\_project/sample\_project}
-        \vbox{\ \ test\_exec\_cmd: bash gtest\_all.sh}
+        \vbox{project:}
+        \vbox{\ \ system\_name: "サンプルシステム"}             
+        \vbox{\ \ requirement\_path: data/sample/req}
+        \vbox{\ \ testcase\_path: data/sample/testcase}
+        \vbox{processing:}
+        \vbox{\ \ similarity\_threshold: 0.7}
+        \vbox{\ \ weights:}
+        \vbox{\ \ \ \ precondition: 0.2}
+        \vbox{\ \ \ \ trigger\_operation: 0.4}
+        \vbox{\ \ \ \ response\_output: 0.4}
 	}
 	\centerline{\fbox{\box0}}
     \caption{vitt.yamlの記述例}
     \label{fig:setting_sample}
 \end{figure}
-設定ファイルvitt.yamlの記述例を、図\ref{fig:setting_sample}に示す。
 
-% ツール使用時の流れ
-\section{ツール使用時の流れ}
+% \tool 使用時の流れ
+\section{\tool{} 使用時の流れ}\label{sec:how_to_tool}
+本節では、ツール使用者が\tool を使用する際の流れを、以下に示す。
+
+\begin{enumerate}
+    \item 要求仕様書とテストケースを作成する。
+\end{enumerate}
+
+
+
+% 対応関係抽出機能
+\section{対応関係抽出機能}\label{sec:traceability_extraction_func}
+対応関係抽出機能は、要求仕様とテストケースの間に存在する「対応関係」を自動的に抽出する機能である。対応関係を抽出することによって、どの要求仕様がどのテストケースで検証されているかを明らかにし、テスト網羅性を把握することができる。
+本機能は、要求仕様書およびテストケースを入力とし、対応関係情報リストを出力とする。
+本研究における「対応関係」とは、要求仕様とテストケースの間に存在する意味的な関連性を指す。
+
+本機能は、入力の要求仕様とテストケースが1対1で対応していることを前提とする。
+これは、各テストケースが最大1つの要求仕様と対応関係を持つことを意味する。
+本研究では、要求仕様とテストケースが1対1で対応しているとは以下の条件を満している状態を指す。
+
+\begin{itemize}
+    \item 各要求仕様は1つの振る舞いのみを記述している
+    \item 各テストケースは1つの要求仕様の振る舞いを検証している
+\end{itemize}
+
+\tool では、要求仕様とテストケースの対応関係を抽出する際に、表\ref{tb:traceability}に示す3つの対付け要素のテキスト間の類似度を計算する。
+
+\begin{table}[tp]
+        \caption{要求仕様とテストケースの対応付け要素}\label{tb:traceability}
+        \centering
+        \begin{tabular}{l|l|l}
+            \multicolumn{1}{c|}{要求仕様の要素} & \multicolumn{1}{c|}{テストケースの要素} & \multicolumn{1}{c}{対応付けにおける役割} \\
+            \hline
+            \hline
+            前提条件 & 事前条件 & システムの初期状態の一致を判定 \\
+            \hline
+            トリガー & 入力・操作 & システムへのイベントの一致を判定 \\
+            \hline
+            システム応答 & 期待出力 & システムの振る舞いの一致を判定 \\
+            \hline
+        \end{tabular}
+\end{table}
+
+これらの対応付け要素のテキスト間の類似度を総合的に評価することで、テストケースが要求仕様を検証しているかを判定する。
+
+\tool{}は、以下の3つの条件を全て満たす場合に、
+要求仕様とテストケースの間に対応関係が成立すると判定する。
+
+\paragraph{条件1：トレーサビリティ適格性}
+要求仕様とテストケースの両方が、対応付けに必要な3要素（前提条件・トリガー・システム応答、または事前条件・入力/操作・期待出力）を全て含んでいること。
+3要素のうち1つでも欠けている場合、その要求仕様またはテストケースは対応付け処理の対象外となる。
+
+\paragraph{条件2：類似度閾値条件}
+要求仕様とテストケースの合計類似度が、設定された閾値以上であること。
+
+合計類似度は、3つの対応付け要素それぞれの類似度を重み付き平均して算出される。
+各要素の類似度は、形態素解析により抽出された重要語の集合に対して
+Jaccard係数を用いて計算される。
+
+設定された閾値（0.0から1.0の範囲）以上の合計類似度を持つ組み合わせのみが対応関係の候補となる。
+
+\paragraph{条件3：Best-Match条件}
+各テストケースに対して、最も類似度が高い要求仕様1つのみと対応関係を持つこと。
+
+本機能は、各テストケースについて、条件2を満たす要求仕様の中から最も合計類似度が高いものを1つ選択する（Best-Matchアルゴリズム）。
+これにより、要求仕様とテストケースの1対1対応が実現される。
+ただし、あるテストケースについて、全ての要求仕様との類似度が閾値未満の場合、そのテストケースはどの要求仕様とも対応関係を持たない。
+
+% 出力図生成機能
+\section{出力図生成機能}\label{sec:diagram_generation_func}

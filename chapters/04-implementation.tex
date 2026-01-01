@@ -1,12 +1,12 @@
 \chapter{\tool{}の実装}\label{cha:Implementation}
 
 本章では、試作した \tool の実装について説明する。
-\tool の構造を、図\ref{fig:system}に示す。
+\tool のシステム構成を、図\ref{fig:system}に示す。
 
 \begin{figure}[tp]
     \begin{center}
             \includegraphics[width=18cm]{images/system.png}
-            \caption{\tool の構造}
+            \caption{\tool のシステム構成}
             \label{fig:system}
     \end{center}
 \end{figure}
@@ -21,36 +21,192 @@
 
 % 入力解析部
 \section{入力解析部}\label{sec:input-data-analysis}
-入力解析部は、入力として要求仕様書とテストケースのcsvファイルを受け取り、
-要求仕様情報リストとテストケース情報リストを出力とする。出力は、対応関係分析部(\ref{sec:correspondence-analysis}節で後述)と出力図生成部(\ref{sec:diagram-generation}節で後述)に渡す。
+入力解析部は、要求仕様書およびテストケースを解析し、要求仕様情報およびテストケース情報を持つオブジェクトのリストを生成する処理部である。
+
+本処理部は、入力として要求仕様書およびテストケースを受け取り、要求仕様情報リストとテストケース情報リストを出力とする。
+出力は、対応関係分析部(\ref{sec:correspondence-analysis}節で後述)および出力図生成部(\ref{sec:diagram-generation}節で後述)に渡す。
 
 入力解析部では、以下の$2$つの処理を行う。
 \begin{itemize}
-    \item 要求仕様情報抽出処理
-    \item テストケース情報抽出処理
+    \item 要求仕様情報リスト生成処理
+    \item テストケース情報リスト生成処理
 \end{itemize}
 以降、それぞれの処理について説明する。
 
-\subsection{要求仕様情報抽出処理}\label{sec:req-spec-data-extraction}
-要求仕様情報抽出は、要求仕様書のcsvファイルを読み込み、要求仕様情報リストを生成する処理である。
+\subsection{要求仕様情報リスト生成処理}\label{subsec:req_extraction}
+要求仕様情報リスト生成処理は、要求仕様書を読み込み、処理部間のやり取りに用いる要求仕様情報オブジェクトのリストを生成する処理である。
+本処理は、要求仕様書のディレクトリパスを入力とし、要求仕様情報リストを出力とする。
 
-\subsection{テストケース情報抽出処理}\label{sec:testcase-data-extraction}
+要求仕様情報オブジェクトとは、要求仕様書の各要求仕様に関する情報を格納したオブジェクトであり、以下に示す$10$個の情報を持つ。
+
+\begin{itemize}
+    \item 要求仕様情報オブジェクト\\
+    \begin{itemize}
+        \item id: 要求仕様IDを表す文字列
+        \item name: 要求仕様の名称を表す文字列
+        \item description: 要求仕様テンプレートの内容を表す文字列
+        \item precondition: 前提条件の内容を表す文字列
+        \item trigger: トリガーの内容を表す文字列
+        \item system: システム名を表す文字列
+        \item response: システム応答の内容を表す文字列
+        \item parent\_id: 親要求仕様IDを表す文字列
+        \item children\_ids: 子要求仕様IDを表す文字列を格納するリスト
+        \item is\_traceable: 対応付け可能かどうかを示す真偽値
+    \end{itemize}
+\end{itemize}
+
+本処理が入力として受け取る要求仕様書の例を、図\ref{fig:sample_text}に示す。
+
+\begin{figure}[tp]
+    \centering
+    \fbox{
+        \includegraphics[width=0.96\textwidth]{images/sample_text.png}
+        }
+        \caption{入力とする要求仕様書の例}
+        \label{fig:sample_text}
+    \end{figure}
+
+本処理は、以下の4つの処理を順に実行し、要求仕様情報リストを生成する。
+\begin{itemize}
+    \item 要求仕様記述項目抽出処理
+    \item 要求仕様テンプレート生成処理
+    \item 対応付け要素判定処理
+    \item 階層関係抽出処理
+\end{itemize}
+
+以降、それぞれの処理について説明する。
+
+\subsubsection{要求仕様記述項目抽出処理}\label{subsubsec:req_item_extraction}
+要求仕様記述項目抽出処理は、入力の要求仕様書から、要求仕様記述項目の情報を抽出する処理である。
+本処理は、要求仕様書のディレクトリパスを入力とし、各レコードに対応する情報が設定された要求仕様情報リストを出力とする。
+
+要求仕様記述項目抽出処理の流れを以下に示す。
+\begin{enumerate}
+    \item 入力の要求仕様書のディレクトリパスからcsv形式で記述した要求仕様書を取得する。
+    \item DictReader関数 (\ref{sec:Python}節を参照)を用いて、ヘッダー情報である「要求仕様ID」、「要求仕様名」、「前提条件」、「トリガー」、「システム名」、「システム応答」をキーとした辞書形式で各行を1行ずつ読み込む。
+    \item 各行から「要求仕様ID」、「要求仕様名」、「前提条件」、「トリガー」、「システム応答」の各項目の値を取得する。
+    \item 取得した各項目の値に対して、Pythonの文字列関数であるstrip関数を用いて前後の空白文字や改行文字を削除する。
+    \item 「システム名」の項目の値を確認し、値が空文字列であった場合、設定ファイルから読み込んだデフォルトのシステム名を代入する。
+    \item 取得した各項目の情報を持つ要求仕様オブジェクトを生成し、リストに追加する。
+\end{enumerate}
+
+\subsubsection{要求仕様テンプレート生成処理}\label{subsubsec:req_text_gen}
+要求仕様テンプレート生成処理は、要求仕様記述項目抽出処理によって抽出した「前提条件」、「トリガー」、「システム名」、「システム応答」の各文字列を入力とし、要求仕様テンプレートを出力する処理である。
+本処理は、出力図において要求仕様テンプレートで各要求仕様の理解を向上させるために必要な処理である。
+
+要求仕様テンプレート生成処理の流れを以下に示す。
+\begin{enumerate}
+    \item 空の要求仕様テンプレートリストを用意する。
+    \item 「前提条件」の項目が空文字列でない場合、「{前提条件}場合」という形式の文字列を要求仕様テンプレートリストに追加する。
+    \item 「トリガー」の項目が空文字列でない場合、「{トリガー}時」という形式の文字列を要求仕様テンプレートリストに追加する。
+    \item システム名とシステム応答の両方が存在する場合、「{システム名}は{システム応答}べきである」という形式の文字列をリストに追加する。
+    \item リスト内の各部品を読点(「、」)で結合する。
+    \item 要求仕様オブジェクトのdescriptionプロパティに生成した要求仕様テンプレートを代入する
+\end{enumerate}
+
+\subsubsection{対応付け要素判定処理}\label{subsubsec:req_traceability}
+対応付け要素判定処理は、各要求仕様の対応付け要素(表\ref{tb:traceability}参照)の項目に値が入っているかを判定する処理である。
+本処理は、要求仕様オブジェクトを入力とし、要求仕様オブジェクトのis\_traceableプロパティに対応付け可能かの真偽値を代入する。
+
+対応付け要素判定処理の流れを以下に示す。
+\begin{enumerate}
+    \item is\_traceableプロパティをfalseで初期化する
+    \item 要求仕様記述項目抽出処理によって抽出した、preconditionプロパティ、triggerプロパティ、responseプロパティの3つの対応付け要素に格納している値によって処理を分岐する。
+        \begin{itemize}
+            \item 3つの対応付け要素が空文字列でない場合\\
+            テストケースとの対応付け可能な要求仕様と判定し、is\_traceableプロパティにtrueを代入する。
+        \end{itemize}
+        \begin{itemize}
+            \item 3つの対応付け要素のうち、いずれか一つの項目が空文字列であった場合\\
+            テストケースとの対応付け可能ではない要求仕様と判定し、is\_traceableプロパティにfalseを代入する。
+        \end{itemize}
+\end{enumerate}
+
+\subsubsection{階層関係抽出処理}\label{subsubsec:req_hierarchy}
+階層関係抽出処理は、要求仕様IDの命名規則 (\ref{sec:reqspec}節参照) に基づき、要求仕様間の親子関係の情報を抽出する処理である。
+本処理は、要求仕様オブジェクトを入力とし、parent\_idおよびchildren\_idsプロパティに値を代入する。
+
+処理の流れを以下に示す。
+\begin{enumerate}
+    \item 全オブジェクトのIDの一意性を検証する。重複がある場合はDuplicat送出する。
+    \item リストをIDの辞書順でソートする。これにより、親要求仕様が子よりも先に処理される状態にする。
+    \item 各オブジェクトのIDをハイフン(``-'')で分割し、要素数が2より大きい(「REQ-1」などのトップレベルより深い)場合に親IDの特定を試みる。
+    \item IDの末尾の要素を除いた部分を再結合して親IDの候補(例：REQ-1-1であればREQ-1)を生成する。
+    \item リスト内から候補と一致するIDを持つオブジェクトを親として特定し、現在のオブジェクトのparent\_idに設定するとともに、親のchildren\_idsリストに現在のIDを追加する。
+    \item 親候補が存在しないにもかかわらず階層構造を持つIDについては、OrphanRequirementErrorを送出する。
+    \item 最後に、HierarchyValidatorを用いて親子関係に循環がないかを検証する。
+\end{enumerate}
+
+\subsection{テストケース情報リスト生成処理}\label{sec:testcase-data-extraction}
+テストケース情報リスト生成処理は、テストケースを読み込み、処理部間のやり取りに用いるテストケース情報オブジェクトのリストを生成する処理である。
+本処理は、テストケースのディレクトリパスを入力とし、テストケース情報リストを出力とする。
+
+テストケース情報オブジェクトとは、各テストケースに関する情報を格納したオブジェクトであり、以下に示す$7$個の情報を持つ。
+
+\begin{itemize}
+    \item テストケース情報オブジェクト\\
+    \begin{itemize}
+        \item id: テストケースIDを表す文字列
+        \item name: テストケースの名称を表す文字列
+        \item precondition: 事前条件の内容を表す文字列
+        \item operation: 入力・操作の内容を表す文字列
+        \item expected\_output: 期待出力の内容を表す文字列
+        \item is\_traceable: 対応付け可能かどうかを示す真偽値
+        \item test\_suite: ファイル名から抽出したテストスイートの名称を表す文字列
+    \end{itemize}
+\end{itemize}
+
+本処理が入力として受け取るテストケースの例を、図\ref{fig:testcase_sample}に示す。
+
+本処理は、以下の2つの処理を順に実行し、テストケース情報リストを生成する。
+\begin{itemize}
+    \item テストケース記述項目抽出処理
+    \item 対応付け要素判定処理
+\end{itemize}
+
+以降、それぞれの処理について説明する。
+
+\subsubsection{テストケース記述項目抽出処理}\label{subsubsec:tc_item_extraction}
+テストケース記述項目抽出処理は、指定されたディレクトリからテストケースを特定し、TestCaseオブジェクトの属性およびメタデータを抽出する処理である。
+本処理は、テストケースディレクトリパスを入力とし、一部の属性が設定されたTestCaseオブジェクトのリストを出力とする。
+
+処理の流れを以下に示す。
+\begin{enumerate}
+    \item pythonのファイル名のパターンマッチングを行う関数であるglob関数を用いて「**/*.csv」パターンによりテストケースCSVファイルのパスを特定する。
+    \item 各ファイルに対し、os.path.relpathを用いてベースディレクトリからの相対パスを取得し、ファイル名から拡張子を除去した文字列であるテストスイート名をtest\_suiteプロパティに代入する。
+    \item DictReader関数を用いて「テストケースID」、「テストケース名」、「事前条件」、「入力・操作」、「期待出力」の各フィールドを取得し、空白除去(strip)を行う。
+\end{enumerate}
+
+\subsubsection{対応付け要素判定処理}\label{subsubsec:tc_traceability}
+対応付け要素判定処理は、各テストケースの対応付け要素(表\ref{tb:traceability}参照)の項目に値が入っているかを判定する処理である。
+本処理は、テストケースオブジェクトを入力とし、テストケースオブジェクトのis\_traceableプロパティに対応付け可能かの真偽値を代入する。
+
+処理の流れを以下に示す。
+\begin{enumerate}
+    \item is\_traceableプロパティをfalseで初期化する
+    \item テストケース記述項目抽出処理によって抽出した、preconditionプロパティ、operationプロパティ、expected\_outputプロパティの3つの対応付け要素に格納している値によって処理を分岐する。
+        \begin{itemize}
+            \item 3つの対応付け要素が空文字列でない場合\\
+            要求仕様との対応付け可能なテストケースと判定し、is\_traceableプロパティにtrueを代入する。
+        \end{itemize}
+        \begin{itemize}
+            \item 3つの対応付け要素のうち、いずれか一つの項目が空文字列であった場合\\
+            要求仕様との対応付け可能ではないテストケースと判定し、is\_traceableプロパティにfalseを代入する。
+        \end{itemize}
+\end{enumerate}
 
 % 対応関係分析部
 \section{対応関係分析部}\label{sec:correspondence-analysis}
 
-\subsection{処理}
+\subsection{重要単語リスト処理}
 
-\subsection{処理}
+\subsection{類似度算出処理}
 
-\subsection{処理}
+\subsection{対応関係抽出処理}\label{sec:traceability_extraction_processing}
 
 % 出力図生成部
 \section{出力図生成部}\label{sec:diagram-generation}
 
-\subsection{処理}
+\subsection{PlantUMLコード生成処理}
 
-\subsection{処理}
-
-\subsection{処理}
-
+\subsection{出力図出力処理}

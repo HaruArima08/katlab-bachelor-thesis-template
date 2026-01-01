@@ -2,17 +2,200 @@
 
 本章では、\tool{}を試作する際に必要となる前提知識を説明する。
 
-\section{EARS}
+\section{Python}\label{sec:Python}
+Python \cite{python} は、Guido van Rossum によって 1989 年から 1991 年にかけて開発された、インタプリタ型のプログラミング言語である。
+現在では、機械学習やデータサイエンス、Web 開発など幅広い分野で用いられている。
+本研究で試作する \tool は、Python を用いて実装する。
+\tool を実装する際に使用するPython の標準ライブラリのモジュールを、以下に示す。
 
-\section{Python}
+\begin{itemize}
+    \item os \\
+    os モジュールは、オペレーティングシステム (OS: Operating System) に依存する機能を提供する。
+    ファイルやディレクトリの生成、削除、パスの操作、環境変数の取得など、OS 関連のタスクを実行できる。
+    本研究では、ディレクトリ内のファイルパスを取得する際や、ファイルを保存するディレクトリが存在するかどうかを確認する際に、使用する。
+    \item re \\
+    re モジュールは、正規表現を扱うための機能を提供する。文字列の検索、置換など、文字列操作の機能を提供する。
+    本研究では、要求仕様書内の要求仕様ID やテストケース内のテストケースID を取得する際に使用する。
+    Pythonの正規表現の例を、表\ref{tab:python_re}に示す。
+    \begin{table}[tp]
+        \centering
+        \caption{Pythonの正規表現の例}
+        \label{tab:python_re}
+        \begin{tabular}{c|c}
+            正規表現         & 説明              \\ \hline\hline
+            [0-9]            & 任意の数字        \\ \hline
+            [a-z]            & 任意の小文字英字  \\ \hline
+            [A-Z]            & 任意の大文字英字  \\ \hline
+            [A-Za-z0-9]      & 任意の英数字      \\ \hline
+            \textasciicircum & 行の先頭          \\ \hline
+            *                & 0回以上の繰り返し \\ \hline
+            +                & 1回以上の繰り返し \\ \hline
+        \end{tabular}
+    \end{table}
+    \item csv \\
+    csv モジュールは、CSV(Comma Separated Values) ファイルの読み込みと書き込みを行うための機能を提供する。
+    csv モジュールを利用することで、CSV ファイルの内容を 1 行ずつリスト形式で読み込むことや、
+    リスト形式のデータを CSV ファイルに書き込むことができる。
+    本研究では、リスト形式のデータを CSV ファイルとして出力する際や、CSV ファイルをリスト形式のデータとして読み込む際に、使用する。
+\end{itemize}
+
 
 \section{MeCab}\label{sec:Mecab}
-MeCab は、日本語の形態素解析を目的として、C++ 言語で開発されたオープンソースソフトウェアである \cite{mecab}。
-MeCab を用いることによって、日本語で記述された文書の分かち書きや、単語の品詞を取得できる。
+MeCabは、京都大学情報学研究科 -- 日本電信電話株式会社コミュニケーション科学基礎研究所 共同研究ユニットプロジェクトを通じて開発された、
+オープンソース形態素解析エンジンである\cite{mecab}。
+MeCab を用いることによって、日本語で記述された文書を分かち書きしたり、単語の品詞を取得したりすることができる。
+MeCab は C++ で記述されており、Python で利用するためのオープンソースソフトウェアに、mecab-python3 がある \cite{mecab_python3}。
 
-本研究では、何とか処理(\ref{}節参照)において、要求仕様、及びテストケースの各対応付け要素の文字列に対し、形態素解析を行うために用いる。
+本研究では、処理(\ref{}節参照)において、mecab-python3 から呼び出した MeCab を用いて形態素解析を行うために用いる。
 なお、本研究ではMeCabの形態素解析に用いる辞書として、IPA辞書\cite{mecab}を利用する。
 
-\section{PlantUML}
+\section{PlantUML}\label{sec:PlantUML}
+PlantUML \cite{plantuml} は、テキストデータから UML の図や UML 以外の様々なタイプの図を生成することができるツールである。
+テキストデータは、PlantUML 独自の構文を使用する。以降、PlantUML の構文で書かれたテキストデータを、PlantUML コードと呼ぶ。
+
+本研究では、テストケースを視覚的に把握できる図を生成するために、PlantUML を使用する。
 
 \section{Jaccard係数}
+Jaccard係数は、2つの集合の類似度を測る指標の1つである。テキストに含まれる単語を集合の要素と見なすことで、テキスト間の類似度を算出することができる。
+集合$A$と$B$のJaccard係数$J(A,B)$を算出する式(\ref{eq:jaccard})を以下に示す。
+Jaccard係数は$1$に近いほど2つのテキストは類似し、$0$に近いほど2つのテキストは類似していないとみなすことができる。
+
+\begin{equation}\label{eq:jaccard}
+    J(A,B) = \frac{|A \cap B|}{|A \cup B|} \quad (0 \le J(A,B) \le 1)
+\end{equation}
+
+例として、テキスト$A$と$B$から得られた単語の集合を、それぞれ$A = \{"リンゴ", "ブドウ", "イチゴ", "バナナ"\}$、$B = \{"リンゴ", "ブドウ", "キウイ"\}$とする。この場合、Jaccard係数によって類似度は以下のように算出できる。
+\[J(A,B) = \frac{2}{5} = 0.4\]
+
+本研究では、類似度算出処理(\ref{sec:similarity-calculation}節参照)において、要求仕様とテストケースのテキスト間の類似度を、Jaccard係数を用いて算出する。
+
+\section{EARS}\label{sec:EARS}
+EARS (Easy Approach to Requirements Syntax) は、ロールスロイス社のMavinらによって提案された、自然言語で要求仕様を記述するための簡易構文テンプレートである\cite{ears}。
+制約のない自然言語で記述される要求仕様には、曖昧性や複雑性、検証不能性などの問題点が存在する。
+EARSは、特定のテンプレートに沿って要求仕様を記述することによって、これらの問題を回避するアプローチである。
+本研究ではEARSを参考に、以下の要求仕様テンプレートを定義し、入力対象の要求仕様書における各要求仕様は本テンプレートに従って記述する。
+
+\begin{center}
+「\{前提条件\}場合、\{トリガー\}時、\{システム名\} は \{システム応答\}べきである」
+\end{center}
+
+\section{入力対象の要求仕様書}\label{sec:reqspec}
+\tool は以下の条件をすべて満たす要求仕様書を入力対象とする。
+
+\begin{itemize}
+    \item 日本語で記述している。
+    \item csvファイル(.csv)で記述している。
+    \item 各要求仕様は要求仕様記述項目(表\ref{tb:reqspec_item}参照)の定義に従って、記述している。
+    \item 機能要件を対象としている。
+\end{itemize}
+
+\tool の入力対象である要求仕様書の例を、図\ref{fig:reqspec_sample}に示す。
+
+\begin{description}
+    \item[要求仕様記述項目]\mbox{}\\
+    本研究では、要求仕様とテストケースを対応付ける際に、比較する箇所を明確にするために要求仕様の記述項目を表\ref{tb:reqspec_item}のように定義する。
+    要求仕様記述項目のうち、前提条件、トリガー、システム名、システム応答は \ref{sec:EARS}節で述べた要求仕様テンプレートに対応している。
+    要求仕様記述項目は6つの項目と記述ルールで定義する。
+    なお、システム名は要求仕様記述項目の1つとして定義しているが、省略可能な項目である。システム名の項目に記述がなかった場合、初期設定(\ref{sec:config}節で後述)で設定ファイルに記述しているシステム名を用いる。
+
+    \begin{figure}[tp]
+        \centering
+        \fbox{
+            \includegraphics[width=0.96\textwidth]{images/reqspec_sample.png}
+            }
+            \caption{\tool の入力対象である要求仕様書の例}
+            \label{fig:reqspec_sample}
+        \end{figure}
+
+    \begin{table}[tp]
+        \caption{要求仕様記述項目}\label{tb:reqspec_item}
+        \centering
+        \begin{tabular}{c|l|l}
+            項目名 & \multicolumn{1}{c|}{定義} & \multicolumn{1}{c}{記述ルール} \\
+            \hline
+            \hline
+            要求仕様ID & 要求仕様を一意に識別するためのID & 必須 \\
+            \hline
+            要求仕様名 & 要求仕様の概要を表す名称 & 必須 \\
+            \hline
+            前提条件 & システムが応答するために必要な状態や条件 & 0個以上 \\
+            \hline
+            トリガー & システムの動作を開始させる具体的なイベントや事象 & 0または1個 \\
+            \hline
+            システム名 & 動作の主体となるシステムの名称 & 0または1個 \\
+            \hline
+            システム応答 & システムが実行すべき動作や出力結果 & 1個以上 \\
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    \item[要求仕様IDの命名規則]\mbox{}\\
+    要求仕様IDの命名規則はPythonの正規表現(\ref{sec:Python}節参照)を用いて以下の形式で定義する。
+
+    \begin{center}
+        \textasciicircum{}REQ-[1-9][0-9]*(-[1-9][0-9]*)*\$
+    \end{center}
+
+    要求仕様IDは、ハイフン (\texttt{-}) で区切られた階層番号により、要求仕様の親子関係を階層的に表現できる。
+    例えば、REQ-1-2-3の場合、REQ-1が第1階層（親）、REQ-1-2が第2階層（子）、REQ-1-2-3が第3階層（孫）となる。
+    この階層構造により、抽象的な要求を具体的な要求に分解して記述できる。
+
+\end{description}
+
+\section{入力対象のテストケース}\label{sec:testcase}
+\tool は以下の条件をすべて満たすテストケースを入力対象とする。
+なお、本研究では、テストスイートとは複数のテストケースの集合とする。
+
+\begin{itemize}
+    \item 日本語で記述している。
+    \item csvファイル(.csv)で記述している。
+    \item ファイル名が、「テストスイート名.csv」である。
+    \item 各テストケースはテストケース記述項目(表\ref{tb:testcase_item}参照)の定義に従って、記述している。
+    \item 各テストケースは1つの要求仕様の1つの振る舞いのみを検証するための高位レベルテストケースである。
+\end{itemize}
+
+\tool の入力対象であるテストケースの例を、図\ref{fig:testcase_sample}に示す。
+
+\begin{figure}[tp]
+        \centering
+        \fbox{
+        \includegraphics[width=0.96\textwidth]{images/testcase_sample.png}
+        }
+        \caption{\tool の入力対象であるテストケースの例}
+        \label{fig:testcase_sample}
+    \end{figure}
+
+\begin{table}[tp]
+    \caption{テストケース記述項目}\label{tb:testcase_item}
+    \centering
+    \begin{tabular}{c|l}
+        項目名 & \multicolumn{1}{c}{定義} \\
+        \hline
+        \hline
+        テストケースID & テストケースを一意に識別するためのID \\
+        \hline
+        テストケース名 & テストケースの概要を表す名称 \\
+        \hline
+        事前条件 & テストを実行する前に、システムが満たしているべき状態や環境 \\
+        \hline
+        入力・操作 & テスト実行時に行う具体的な入力や操作 \\
+        \hline
+        期待出力 & 入力や操作の結果として想定されるシステムの出力 \\
+        \hline
+    \end{tabular}
+\end{table}
+\begin{description}
+    \item[テストケース記述項目]\mbox{}\\
+    本研究では、テストケースを要求仕様と対応付ける際に、比較する箇所を明確にするためにテストケースの記述項目を表\ref{tb:reqspec_item}のように定義する。
+    テストケース記述項目は5つの項目で定義し、各項目の記述を必須とする。
+
+    \item[テストケースIDの命名規則]\mbox{}\\
+    テストケースIDの命名規則はPythonの正規表現(\ref{sec:Python}節参照)を用いて以下の形式で定義する。
+
+    \begin{center}
+        \textasciicircum{}TC-[1-9][0-9]*\$
+    \end{center}
+
+    テストケースは独立した検証単位であるため、テストケースIDには、要求仕様IDのような階層構造は存在しない。
+    テストケースIDはTC\texttt{-}から始まり、その後に一意の数字を許容する。
+\end{description}
