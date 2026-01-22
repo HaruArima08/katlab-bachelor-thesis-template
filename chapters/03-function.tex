@@ -1,8 +1,8 @@
 \chapter{\tool{}の機能}\label{cha:Function}
 
-本章では、本研究で試作するツール\tool (VIsualization of Testcase Tool)の機能について説明する。
+本章では、本研究で試作するツール\tool{} (VIsualization of Testcase Tool) の機能について説明する。
 
-\tool は、 \ref{sec:reqspec}節および\ref{sec:testcase}節で述べた要求仕様書とテストケースを入力とし、
+\tool は、\ref{sec:reqspec}節および\ref{sec:testcase}節で述べた要求仕様書とテストスイートを入力とし、
 以下の3つを可視化したTCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)を出力する。
 
 \begin{itemize}
@@ -11,8 +11,8 @@
     \item テストケースの過剰：テストケースは存在するが、対応する要求仕様が存在しない状態
 \end{itemize}
 
-\tool の入力対象である要求仕様書の例を図\ref{fig:reqspec_3}に、テストケースの例を図\ref{fig:tc_3_1}および図\ref{fig:tc_3_2}に、それぞれ示す。
-また、これらの要求仕様書とテストケースに対して出力するTCVダイアグラムを、図\ref{fig:tcv_diagram}に示す。
+\tool の入力対象である要求仕様書の例を図\ref{fig:reqspec_3}に、テストスイートの例を図\ref{fig:tc_3_1}および図\ref{fig:tc_3_2}に、それぞれ示す。
+また、これらの要求仕様書とテストスイートに対して出力するTCVダイアグラムを、図\ref{fig:tcv_diagram}に示す。
 
 \begin{figure}[tp]
     \begin{center}
@@ -29,7 +29,7 @@
         \fbox{
         \includegraphics[width=17cm]{images/tc_3_1.png}
         }
-        \caption{テストケースの例（入力形式検証テスト.csv）}
+        \caption{テストスイートの例(入力形式検証テスト.csv)}
         \label{fig:tc_3_1}
     \end{center}
 \end{figure}
@@ -39,7 +39,7 @@
         \fbox{
         \includegraphics[width=17cm]{images/tc_3_2.png}
         }
-        \caption{テストケースの例（三角形種類判定テスト.csv）}
+        \caption{テストスイートの例(三角形種類判定テスト.csv)}
         \label{fig:tc_3_2}
     \end{center}
 \end{figure}
@@ -47,7 +47,7 @@
 \begin{figure}[tp]
     \begin{center}
         \includegraphics[width=17cm]{images/tcv_diagram.png}
-        \caption{TCVダイアグラムの例}
+        \caption{図3.1〜3.3に対するTCVダイアグラム}
         \label{fig:tcv_diagram}
     \end{center}
 \end{figure}
@@ -65,9 +65,9 @@
 \begin{figure}[t]
     \setbox0\vbox{
         \vbox{project:}
-        \vbox{\ \ \ \ system\_name:``サンプルシステム''}             
+        \vbox{\ \ \ \ system\_name: ``サンプルシステム''}             
         \vbox{\ \ \ \ requirement\_path: data/sample/req}
-        \vbox{\ \ \ \ testcase\_path: data/sample/testcase}
+        \vbox{\ \ \ \ testsuite\_path: data/sample/testsuite}
         \vbox{processing:}
         \vbox{\ \ \ \ similarity\_threshold: 0.7}
         \vbox{\ \ \ \ weights:}
@@ -83,23 +83,23 @@
 設定ファイルvitt.yamlに記述する必要がある2つの項目を、以下に示す。
 
 \subsubsection{プロジェクト設定(project)}\label{subsubsec:project_setting}
-プロジェクトに関する情報を記述する項目である。この項目で設定する3つの項目を、以下に示す。
+プロジェクト設定(project)は、プロジェクトに関する情報を記述する項目である。この項目で設定する3つの項目を、以下に示す。
 
 \begin{itemize}
     \item システム名(system\_name) \\
     システム名は、要求仕様記述項目(表\ref{tb:reqspec_item}参照)の1つであり、対象システムの名称を記述する。
     \item 要求仕様書のディレクトリパス(requirement\_path) \\
     要求仕様書のディレクトリパスは、入力対象の要求仕様書を格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルを要求仕様書として読み込む。
-    \item テストケースのディレクトリパス(testcase\_path) \\
-    テストケースのディレクトリパスは、入力対象のテストケースを格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルをテストケースとして読み込む。
+    \item テストスイートのディレクトリパス(testsuite\_path) \\
+    テストスイートのディレクトリパスは、入力対象のテストスイートを格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルをテストスイートとして読み込む。
 \end{itemize}
 
 \subsubsection{処理設定(processing)}\label{subsubsec:processing_setting}
-要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを記述する項目である。この項目で設定する2つの項目を、以下に示す。
+処理設定(processing)は、要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを記述する項目である。この項目で設定する2つの項目を、以下に示す。
 
 \begin{itemize}
-    \item 類似度の閾値(similality\_threshold) \\
-    類似度の閾値は、要求仕様とテストケースの対応関係を判定するための実数値で、$0以上$1以下の範囲で指定する。
+    \item 類似度の閾値(similarity\_threshold) \\
+    類似度の閾値は、要求仕様とテストケースの対応関係を判定するための実数値で、$0$以上$1$以下の範囲で指定する。
     \item 対応付け要素の重み(weights) \\
     要求仕様とテストケースの対応関係を判定する際、各対応付け要素間の重要度を重みとして、以下の3つを指定する。以下、3つの重みの合計が1.0になるように指定する。
     \begin{itemize}
@@ -114,7 +114,7 @@
 
 % TCVダイアグラム
 \section{TCVダイアグラム}\label{sec:testcase_visualization_diagram}
-TCVダイアグラム (Test-Case Visualization Diagram) とは、本研究で提案するテストケースの可視化を目的としたダイアグラムである。
+TCVダイアグラム (Test-Case Visualization Diagram) とは、本研究で提案する、テストケースの可視化を目的としたダイアグラムである。
 
 TCVダイアグラムの構成を \cref{subsec:tcv_structure} 節で、TCVダイアグラムによるテストケースの抜けや不備または過剰箇所の可視化について\cref{subsec:tcv_visualization}節で、それぞれ説明する。
 
@@ -156,8 +156,9 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
     \end{center}
 \end{figure}
 
-図\ref{fig:tracability_link}に、対応関係がある要求仕様の矩形要素とテストケースの矩形要素を点線で接続した例を示す。
-この点線には、類似度算出処理（\ref{subsec:similarity_calculation}節で後述）で算出した合計スコアをラベルとして付与する。
+図\ref{fig:tracability_link}に、対応関係がある要求仕様の矩形要素とテストケースの矩形要素の例を示す。
+対応関係がある要求仕様の矩形要素とテストケースの矩形要素は、点線で接続する。
+この点線には、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)で算出した合計スコアをラベルとして付与する。
 
 \begin{figure}[tp]
     \begin{center}
@@ -174,7 +175,7 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 \begin{figure}[tp]
     \begin{center}
         \includegraphics[width=17cm]{images/tcv_diagram_with_area.png}
-        \caption{図\ref{fig:tcv_diagram}を領域分割したTCVダイアグラム}
+        \caption{図\ref{fig:tcv_diagram}を3つの領域に分割したTCVダイアグラム}
         \label{fig:tcv_diagram_with_area}
     \end{center}
 \end{figure}
@@ -185,22 +186,22 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 要求仕様エリアでは、要求仕様IDの命名規則(\ref{sec:reqspec}節参照)に基づき、子要求仕様の矩形要素から親要求仕様の矩形要素へ向かう矢印を描画することで、要求仕様の親子関係を視覚的に表現する。
 
 \subsubsection{テストケースエリア}\label{subsec:testcases_area}
-テストケースエリアは、入力のテストケースが含む各テストケースの矩形要素を表示する領域である。
+テストケースエリアは、入力のテストスイートが含む各テストケースの矩形要素を表示する領域である。
 図\ref{fig:tcv_diagram_with_area}において、②の領域が該当する。
 テストケースエリアでは、要求仕様エリアとは異なり、テストケース間の階層関係は持たない。
 
 \subsubsection{テストスイートエリア}\label{subsec:testsuite_area}
 テストスイートエリアは、テストケースエリア内において、同一のテストスイートに属するテストケースをグループ化して表示する領域である。
 図\ref{fig:tcv_diagram_with_area}において、③の領域が該当する。
-テストスイートエリアでは、テストケースのCSVファイル名から抽出したテストスイート名をエリアのタイトルとして表示し、
+テストスイートエリアでは、テストスイートのCSVファイル名から抽出したテストスイート名を、各テストスイートエリアの上部に中央揃えで表示し、
 同一のテストスイートに属するテストケースの矩形要素は、同じテストスイートエリア内にまとめて配置する。
 
 \subsection{テストケースの抜けや不備または過剰箇所の可視化}\label{subsec:tcv_visualization}
 TCVダイアグラムは、要求仕様とテストケース間の対応関係の状態を「品質種別」として定義し、品質種別に応じた背景色を各矩形要素に設定する。
-品質種別の定義と対応色を、表\ref{tab:quality_type}に示す。
+品質種別の定義と対応する背景色を、表\ref{tab:quality_type}に示す。
 
 \begin{table}[tp]
-    \caption{品質種別の定義と対応色}\label{tab:quality_type}
+    \caption{品質種別の定義と対応する背景色}\label{tab:quality_type}
     \centering
     \begin{tabular}{l|l|l}
         \multicolumn{1}{c|}{品質種別} & \multicolumn{1}{c|}{定義} & \multicolumn{1}{c}{色} \\
@@ -218,9 +219,9 @@ TCVダイアグラムは、要求仕様とテストケース間の対応関係�
 \end{table}
 
 \subsubsection{テストケースの抜け}\label{subsubsec:missing_testcase}
-TCVダイアグラムは、対応するテストケースが存在しない要求仕様の矩形要素を、品質種別に対応する赤色で表示することで、テストケースの抜け箇所を強調する。
+TCVダイアグラムは、対応するテストケースが存在しない要求仕様の矩形要素を、品質種別に対応する赤色(NONE)で表示することで、テストケースの抜け箇所を強調する。
 図\ref{fig:missing_testcase}は、図\ref{fig:tcv_diagram_with_area}における要求仕様REQ-1-1-2を示しており、この要求仕様を検証するテストケースが存在しないことを表している。
-ユーザは、赤色で表示した要求仕様を確認することで、テストケースの抜け箇所を把握し、新たなテストケースの作成を検討できる。
+ユーザーは、赤色で表示した要求仕様を確認することで、テストケースの抜け箇所を把握し、新たなテストケースの作成を検討できる。
 
 \begin{figure}[tp]
     \begin{center}
@@ -231,10 +232,10 @@ TCVダイアグラムは、対応するテストケースが存在しない要�
 \end{figure}
 
 \subsubsection{テストケースの不備}\label{subsubsec:insufficient_testcase}
-TCVダイアグラムは、対応関係は存在するが、一部の対応付け要素間の類似度が閾値未満である場合、要求仕様の矩形要素およびテストケースの矩形要素の2つを、品質種別に対応する黄色で表示することで、テストケースの不備箇所を強調する。
+TCVダイアグラムは、対応関係は存在するが、一部の対応付け要素間の類似度が閾値未満である場合、要求仕様の矩形要素およびテストケースの矩形要素の2つを、品質種別に対応する黄色(PARTIAL)で表示することで、テストケースの不備箇所を強調する。
 図\ref{fig:insufficient_testcase}は、図\ref{fig:tcv_diagram_with_area}における要求仕様REQ-1-1-3とテストケースTC-3を示している。
-この例では、対応付け要素のうち、システム応答を表す文章『「正の整数を入力してください」と出力する』と 、期待出力を表す文章『「入力値に誤りがあります」と出力される』でエラーメッセージの内容が異なっており、テストケースの内容が不十分であることを表している。
-ユーザは、黄色で表示した要求仕様とテストケースを確認することで、テストケースの不備箇所を把握し、テストケースの内容を見直すことができる。
+この例では、対応付け要素のうち、システム応答を表す文章『「正の整数を入力してください」と出力する』と、期待出力を表す文章『「入力値に誤りがあります」と出力される』でエラーメッセージの内容が異なっており、テストケースの内容が不十分であることを表している。
+ユーザーは、黄色で表示した要求仕様とテストケースを確認することで、テストケースの不備箇所を把握し、テストケースの内容を見直すことができる。
 
 \begin{figure}[tp]
     \begin{center}
@@ -245,9 +246,9 @@ TCVダイアグラムは、対応関係は存在するが、一部の対応付�
 \end{figure}
 
 \subsubsection{テストケースの過剰}\label{subsubsec:excess_testcase}
-TCVダイアグラムは、対応する要求仕様が存在しないテストケースの矩形要素を、品質種別に対応する赤色で表示することで、テストケースの過剰箇所を強調する。
+TCVダイアグラムは、対応する要求仕様が存在しないテストケースの矩形要素を、品質種別に対応する赤色(NONE)で表示することで、テストケースの過剰箇所を強調する。
 図\ref{fig:excess_testcase}は、図\ref{fig:tcv_diagram_with_area}におけるテストケースTC-2を示しており、このテストケースに対応する要求仕様が存在しないことを表している。
-ユーザは、赤色で表示したテストケースを確認することで、テストケースの過剰箇所を把握し、不要なテストケースの削除または対応する要求仕様の追加を検討できる。
+ユーザーは、赤色で表示したテストケースを確認することで、テストケースの過剰箇所を把握し、不要なテストケースの削除または対応する要求仕様の追加を検討できる。
 
 \begin{figure}[tp]
     \begin{center}
