@@ -2,7 +2,7 @@
 
 本章では、本研究で試作するツール\tool{} (VIsualization of Testcase Tool) の機能について説明する。
 
-\tool は、\ref{sec:reqspec}節および\ref{sec:testcase}節で述べた要求仕様書とテストスイートを入力とし、
+\tool は、\ref{sec:reqspec}節で述べた要求仕様書、および、\ref{sec:testcase}節で述べたテストスイートを入力とし、
 以下の3つを可視化したTCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)を出力する。
 
 \begin{itemize}
@@ -52,65 +52,9 @@
     \end{center}
 \end{figure}
 
-\tool を使用する際に必要な初期設定を\ref{sec:config}節で、TCVダイアグラムの詳細を\ref{sec:testcase_visualization_diagram}節で、それぞれ説明する。
-
-% 初期設定
-\section{初期設定}\label{sec:config}
-
-\tool の機能を使用するために、プロジェクトの情報や、要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを、\tool{}の設定ファイルvitt.yamlに事前に記述する必要がある。
-設定ファイルvitt.yamlは、プロジェクト設定(project)と処理設定(processing)の2つの項目から構成する。
-
-設定ファイルvitt.yamlの記述例を、図\ref{fig:setting_sample}に示す。
-
-\begin{figure}[t]
-    \setbox0\vbox{
-        \vbox{project:}
-        \vbox{\ \ \ \ system\_name: ``サンプルシステム''}             
-        \vbox{\ \ \ \ requirement\_path: data/sample/req}
-        \vbox{\ \ \ \ testsuite\_path: data/sample/testsuite}
-        \vbox{processing:}
-        \vbox{\ \ \ \ similarity\_threshold: 0.7}
-        \vbox{\ \ \ \ weights:}
-        \vbox{\ \ \ \ \ \ \ \ precondition: 0.2}
-        \vbox{\ \ \ \ \ \ \ \ trigger\_operation: 0.4}
-        \vbox{\ \ \ \ \ \ \ \ response\_output: 0.4}
-	}
-	\centerline{\fbox{\box0}}
-    \caption{vitt.yamlの記述例}
-    \label{fig:setting_sample}
-\end{figure}
-
-設定ファイルvitt.yamlに記述する必要がある2つの項目を、以下に示す。
-
-\subsubsection{プロジェクト設定(project)}\label{subsubsec:project_setting}
-プロジェクト設定(project)は、プロジェクトに関する情報を記述する項目である。この項目で設定する3つの項目を、以下に示す。
-
-\begin{itemize}
-    \item システム名(system\_name) \\
-    システム名は、要求仕様記述項目(表\ref{tb:reqspec_item}参照)の1つであり、対象システムの名称を記述する。
-    \item 要求仕様書のディレクトリパス(requirement\_path) \\
-    要求仕様書のディレクトリパスは、入力対象の要求仕様書を格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルを要求仕様書として読み込む。
-    \item テストスイートのディレクトリパス(testsuite\_path) \\
-    テストスイートのディレクトリパスは、入力対象のテストスイートを格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルをテストスイートとして読み込む。
-\end{itemize}
-
-\subsubsection{処理設定(processing)}\label{subsubsec:processing_setting}
-処理設定(processing)は、要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを記述する項目である。この項目で設定する2つの項目を、以下に示す。
-
-\begin{itemize}
-    \item 類似度の閾値(similarity\_threshold) \\
-    類似度の閾値は、要求仕様とテストケースの対応関係を判定するための実数値で、$0$以上$1$以下の範囲で指定する。
-    \item 対応付け要素の重み(weights) \\
-    要求仕様とテストケースの対応関係を判定する際、各対応付け要素間の重要度を重みとして、以下の3つを指定する。以下、3つの重みの合計が1.0になるように指定する。
-    \begin{itemize}
-        \item 前提条件と事前条件の重み(precondition) \\
-        前提条件と事前条件の重みは、要求仕様の前提条件とテストケースの事前条件の類似度に対する重みである。
-        \item トリガーと操作の重み(trigger\_operation) \\
-        トリガーと操作の重みは、要求仕様のトリガーとテストケースの操作の類似度に対する重みである。
-        \item システム応答と期待出力の重み(response\_output) \\
-        システム応答と期待出力の重みは、要求仕様のシステム応答とテストケースの期待出力の類似度に対する重みである。
-    \end{itemize}
-\end{itemize}
+TCVダイアグラムの詳細を\ref{sec:testcase_visualization_diagram}節で、
+\tool を使用する際に必要な初期設定を\ref{sec:config}節で、
+\tool 使用時の流れを\ref{sec:flow_using_tool}節で、それぞれ説明する。
 
 % TCVダイアグラム
 \section{TCVダイアグラム}\label{sec:testcase_visualization_diagram}
@@ -158,7 +102,7 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 
 図\ref{fig:tracability_link}に、対応関係がある要求仕様の矩形要素とテストケースの矩形要素の例を示す。
 対応関係がある要求仕様の矩形要素とテストケースの矩形要素は、点線で接続する。
-この点線には、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)で算出した合計スコアをラベルとして付与する。
+この点線には、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)で算出した合計スコアをラベルとして点線の下に付与する。
 
 \begin{figure}[tp]
     \begin{center}
@@ -168,14 +112,15 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
     \end{center}
 \end{figure}
 
-図\ref{fig:tcv_diagram}のTCVダイアグラムを、説明のために、「要求仕様エリア」、「テストケースエリア」、「テストスイートエリア」の3つの領域に分割したものを、図\ref{fig:tcv_diagram_with_area}に示す。
+TCVダイアグラムは、「要求仕様エリア」、「テストケースエリア」、「テストスイートエリア」の3つのエリアから成る。
+図\ref{fig:tcv_diagram}のTCVダイアグラムに、説明のために、「要求仕様エリア」、「テストケースエリア」、「テストスイートエリア」の3つのエリアを図示したものを、図\ref{fig:tcv_diagram_with_area}に示す。
 
-以降、図\ref{fig:tcv_diagram_with_area}を用いて、TCVダイアグラムの各領域について説明する。
+以降、図\ref{fig:tcv_diagram_with_area}を用いて、TCVダイアグラムの各エリアについて説明する。
 
 \begin{figure}[tp]
     \begin{center}
         \includegraphics[width=17cm]{images/tcv_diagram_with_area.png}
-        \caption{図\ref{fig:tcv_diagram}を3つの領域に分割したTCVダイアグラム}
+        \caption{図\ref{fig:tcv_diagram}に3つのエリアを図示したTCVダイアグラム}
         \label{fig:tcv_diagram_with_area}
     \end{center}
 \end{figure}
@@ -184,17 +129,21 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 要求仕様エリアは、入力の要求仕様書が含む各要求仕様の矩形要素を表示する領域である。
 図\ref{fig:tcv_diagram_with_area}において、①の領域に該当する。
 要求仕様エリアでは、要求仕様IDの命名規則(\ref{sec:reqspec}節参照)に基づき、子要求仕様の矩形要素から親要求仕様の矩形要素へ向かう矢印を描画することで、要求仕様の親子関係を視覚的に表現する。
+例えば、図\ref{fig:tcv_diagram_with_area}では、REQ-1-1からREQ-1へ向かう矢印により、REQ-1-1がREQ-1の子要求仕様であることを表現している。
 
 \subsubsection{テストケースエリア}\label{subsec:testcases_area}
 テストケースエリアは、入力のテストスイートが含む各テストケースの矩形要素を表示する領域である。
 図\ref{fig:tcv_diagram_with_area}において、②の領域が該当する。
 テストケースエリアでは、要求仕様エリアとは異なり、テストケース間の階層関係は持たない。
+例えば、図\ref{fig:tcv_diagram_with_area}では、入力のテストスイートが含む6個のテストケースの矩形要素を、階層関係を持たずに並列に配置している。
 
 \subsubsection{テストスイートエリア}\label{subsec:testsuite_area}
 テストスイートエリアは、テストケースエリア内において、同一のテストスイートに属するテストケースをグループ化して表示する領域である。
 図\ref{fig:tcv_diagram_with_area}において、③の領域が該当する。
 テストスイートエリアでは、テストスイートのCSVファイル名から抽出したテストスイート名を、各テストスイートエリアの上部に中央揃えで表示し、
 同一のテストスイートに属するテストケースの矩形要素は、同じテストスイートエリア内にまとめて配置する。
+例えば、図\ref{fig:tcv_diagram_with_area}では、「入力形式検証テスト」と「三角形種類判定テスト」の2つのテストスイートエリアがあり、
+それぞれのテストスイートに属するテストケースをグループ化して表示している。
 
 \subsection{テストケースの抜けや不備または過剰箇所の可視化}\label{subsec:tcv_visualization}
 TCVダイアグラムは、要求仕様とテストケース間の対応関係の状態を「品質種別」として定義し、品質種別に応じた背景色を各矩形要素に設定する。
@@ -221,7 +170,7 @@ TCVダイアグラムは、要求仕様とテストケース間の対応関係�
 \subsubsection{テストケースの抜け}\label{subsubsec:missing_testcase}
 TCVダイアグラムは、対応するテストケースが存在しない要求仕様の矩形要素を、品質種別に対応する赤色(NONE)で表示することで、テストケースの抜け箇所を強調する。
 図\ref{fig:missing_testcase}は、図\ref{fig:tcv_diagram_with_area}における要求仕様REQ-1-1-2を示しており、この要求仕様を検証するテストケースが存在しないことを表している。
-ユーザーは、赤色で表示した要求仕様を確認することで、テストケースの抜け箇所を把握し、新たなテストケースの作成を検討できる。
+ユーザーは、赤色で表示した要求仕様を確認することで、テストケースの抜け箇所を把握し、この要求仕様に対応した新たなテストケースの作成を検討できる。
 
 \begin{figure}[tp]
     \begin{center}
@@ -248,7 +197,7 @@ TCVダイアグラムは、対応関係は存在するが、一部の対応付�
 \subsubsection{テストケースの過剰}\label{subsubsec:excess_testcase}
 TCVダイアグラムは、対応する要求仕様が存在しないテストケースの矩形要素を、品質種別に対応する赤色(NONE)で表示することで、テストケースの過剰箇所を強調する。
 図\ref{fig:excess_testcase}は、図\ref{fig:tcv_diagram_with_area}におけるテストケースTC-2を示しており、このテストケースに対応する要求仕様が存在しないことを表している。
-ユーザーは、赤色で表示したテストケースを確認することで、テストケースの過剰箇所を把握し、不要なテストケースの削除または対応する要求仕様の追加を検討できる。
+ユーザーは、赤色で表示したテストケースを確認することで、テストケースの過剰箇所を把握し、不要であれば、このテストケースの削除、または、このテストケースに対応する要求仕様の追加を検討できる。
 
 \begin{figure}[tp]
     \begin{center}
@@ -257,3 +206,92 @@ TCVダイアグラムは、対応する要求仕様が存在しないテスト�
         \label{fig:excess_testcase}
     \end{center}
 \end{figure}
+
+% 初期設定
+\section{初期設定}\label{sec:config}
+
+\tool の機能を使用するために、プロジェクトの情報や、要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを、\tool{}の設定ファイルvitt.yamlに事前に記述する必要がある。
+設定ファイルvitt.yamlは、プロジェクト設定(project)と処理設定(processing)の2つの項目から構成する。
+
+設定ファイルvitt.yamlの記述例を、図\ref{fig:setting_sample}に示す。
+
+\begin{figure}[t]
+    \setbox0\vbox{
+        \vbox{project:}
+        \vbox{\ \ \ \ system\_name: ``サンプルシステム''}             
+        \vbox{\ \ \ \ requirement\_path: data/sample/req}
+        \vbox{\ \ \ \ testsuite\_path: data/sample/testsuite}
+        \vbox{processing:}
+        \vbox{\ \ \ \ similarity\_threshold: 0.7}
+        \vbox{\ \ \ \ weights:}
+        \vbox{\ \ \ \ \ \ \ \ precondition: 0.2}
+        \vbox{\ \ \ \ \ \ \ \ trigger\_operation: 0.4}
+        \vbox{\ \ \ \ \ \ \ \ response\_output: 0.4}
+	}
+	\centerline{\fbox{\box0}}
+    \caption{vitt.yamlの記述例}
+    \label{fig:setting_sample}
+\end{figure}
+
+設定ファイルvitt.yamlに記述する必要がある2つの項目を、以下に示す。
+
+\subsubsection{プロジェクト設定(project)}\label{subsubsec:project_setting}
+プロジェクト設定(project)は、プロジェクトに関する情報を記述する項目である。この項目で設定する3つの項目を、以下に示す。
+
+\begin{itemize}
+    \item システム名(system\_name) \\
+    システム名は、要求仕様記述項目(表\ref{tb:reqspec_item}参照)の1つであり、対象システムの名称を記述する。
+    図\ref{fig:setting_sample}の例では、システム名は、「サンプルシステム」と設定している。
+    \item 要求仕様書のディレクトリパス(requirement\_path) \\
+    要求仕様書のディレクトリパスは、入力対象の要求仕様書を格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルを要求仕様書として読み込む。
+    図\ref{fig:setting_sample}の例では、要求仕様書のディレクトリパスは、data/sample/reqと設定している。
+    \item テストスイートのディレクトリパス(testsuite\_path) \\
+    テストスイートのディレクトリパスは、入力対象のテストスイートを格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルをテストスイートとして読み込む。
+    図\ref{fig:setting_sample}の例では、テストスイートのディレクトリパスは、data/sample/testsuiteと設定している。
+\end{itemize}
+
+\subsubsection{処理設定(processing)}\label{subsubsec:processing_setting}
+処理設定(processing)は、要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを記述する項目である。この項目で設定する2つの項目を、以下に示す。
+
+\begin{itemize}
+    \item 類似度の閾値(similarity\_threshold) \\
+    類似度の閾値は、要求仕様とテストケースの対応関係を判定する際に使う実数値で、$0$以上$1$以下の範囲で指定する。
+    図\ref{fig:setting_sample}の例では、類似度の閾値は、0.7と設定している。
+    \item 対応付け要素の重み(weights) \\
+    要求仕様とテストケースの対応関係を判定する際、各対応付け要素間の重要度を重みとして、以下の3つを指定する。以下、3つの重みの合計が1.0になるように指定する。
+    \begin{itemize}
+        \item 前提条件と事前条件の重み(precondition) \\
+        前提条件と事前条件の重みは、要求仕様の前提条件とテストケースの事前条件の類似度に対する重みである。
+        図\ref{fig:setting_sample}の例では、前提条件と事前条件の重みは、0.2と設定している。
+        \item トリガーと操作の重み(trigger\_operation) \\
+        トリガーと操作の重みは、要求仕様のトリガーとテストケースの操作の類似度に対する重みである。
+        図\ref{fig:setting_sample}の例では、トリガーと操作の重みは、0.4と設定している。
+        \item システム応答と期待出力の重み(response\_output) \\
+        システム応答と期待出力の重みは、要求仕様のシステム応答とテストケースの期待出力の類似度に対する重みである。
+        図\ref{fig:setting_sample}の例では、システム応答と期待出力の重みは、0.4と設定している。
+    \end{itemize}
+\end{itemize}
+
+なお、類似度の閾値が$0$以上$1$以下の範囲外である場合、または対応付け要素の重みの合計が1.0でない場合、\tool はエラーメッセージを表示し、実行を停止する。
+
+
+% \tool{}使用時の流れ
+\section{\tool{}使用時の流れ}\label{sec:flow_using_tool}
+
+ツール使用者が\tool{}を使用する際の流れを、以下に示す。
+
+\begin{enumerate}
+    \item \ref{sec:reqspec}節および\ref{sec:testcase}節で述べた、\tool{}の入力対象に基づく要求仕様書とテストスイートを作成する。
+    \item 設定ファイルvitt.yamlを記述し、初期設定(\ref{sec:config}節参照)を行う。
+    \item コマンドライン上で「\$ make run」を入力し、\tool{} を実行する。
+    \item ブラウザ上で「http://localhost:8000」にアクセスし、TCVダイアグラムを確認する。
+    \begin{itemize}
+        \item テストケースの抜けや不備、過剰箇所が存在しない場合\\
+        \tool{}の実行を終了する。
+        \item テストケースの抜けや不備、過剰箇所が存在する場合\\
+        TCVダイアグラムから、テストケースの抜けや不備、過剰箇所を特定し、
+        要求仕様書とテストスイートを確認する。
+    \end{itemize}
+    \item 要求仕様書またはテストスイートを修正し、3.に戻る。
+\end{enumerate}
+

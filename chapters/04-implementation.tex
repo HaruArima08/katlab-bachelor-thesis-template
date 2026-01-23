@@ -213,7 +213,7 @@
 \end{enumerate}
 
 \subsubsection{要求仕様テンプレート生成処理}\label{subsubsec:req_text_gen}
-要求仕様テンプレート生成処理は、要求仕様記述項目抽出処理で生成した、要求仕様情報オブジェクトのprecondition、trigger、system、responseの各プロパティの文字列を組み合わせ、要求仕様テンプレートを生成する処理である。
+要求仕様テンプレート生成処理は、要求仕様記述項目抽出処理で生成した、要求仕様情報オブジェクトのprecondition、trigger、system、responseの各プロパティの文字列を組み合わせ、要求仕様テンプレート(\ref{sec:EARS}節参照)を生成する処理である。
 具体的には、要求仕様記述項目抽出処理で生成した要求仕様情報オブジェクトのリストを入力とし、要求仕様テンプレートを表すdescriptionプロパティに値を代入した状態の要求仕様情報オブジェクトのリストを出力する。
 
 本処理の流れを、以下に示す。
@@ -244,8 +244,8 @@
 本研究では、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)において、\cref{tb:traceability}に示す、
 要求仕様の対応付け要素 (「前提条件」、「トリガー」、「システム応答」)とテストケースの対応付け要素 (「事前条件」、「操作」、「期待出力」)のそれぞれのテキスト間の類似度を算出し、
 その結果に基づいて対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)において、要求仕様とテストケースの対応関係を抽出する。
-そのため、\ref{sec:words}節で述べた、対応付け可能な要求仕様ではない要求仕様は、テストケースとの対応付けの対象外と判定する。
-例えば、図\ref{fig:reqspec_sample2}に示す要求仕様ID「REQ-1」は、要求仕様の対応付け要素のうち、「前提条件」、「トリガー」の値が空文字列となっているため、対応付けの対象外と判定する。
+そのため、\ref{sec:words}節で述べた、対応付け不可能な要求仕様は、テストケースとの対応付けの対象外と判定する。
+例えば、図\ref{fig:reqspec_sample2}に示す要求仕様ID「REQ-1」は、要求仕様の対応付け要素のうち、「前提条件」、「トリガー」の値が空文字列となっているため、対応付け不可能な要求仕様であり、対応付けの対象外と判定する。
 
 本処理の流れを、以下に示す。
 \begin{enumerate}
@@ -260,7 +260,7 @@
         \end{itemize}
         \begin{itemize}
             \item 3つのプロパティのうち、いずれか1つのプロパティの値が空文字列であった場合\\
-            テストケースとの対応付け可能ではない要求仕様と判定し、is\_traceableプロパティにfalseを代入する。
+            テストケースとの対応付け不可能な要求仕様と判定し、is\_traceableプロパティにfalseを代入する。
         \end{itemize}
     \end{enumerate}
     \item 要求仕様情報オブジェクトのリストを出力する。
@@ -295,7 +295,7 @@
                 \item 生成した親要求仕様のidプロパティの値をキーとして、$1$.で生成した辞書から親要求仕様情報オブジェクトへの参照を取得する。
                 \item 取得した参照を用いて、親要求仕様情報オブジェクトと$2$.(a)で取得した子要求仕様情報オブジェクトの間に、親子関係を双方向に記録する。
                 具体的には、子要求仕様情報オブジェクトのparent\_idプロパティに親要求仕様情報オブジェクトのidプロパティの値を代入し、親要求仕様情報オブジェクトのchildren\_idsプロパティのリストに子要求仕様情報オブジェクトのidプロパティの値を追加する。
-                表\ref{tb:hierarchy_example}では、``REQ-1-1-1''のparent\_idは``REQ-1-1''であり、``REQ-1-1''のchildren\_idsは``REQ-1-1-1''を含む。
+                表\ref{tb:hierarchy_example}の例では、``REQ-1-1-1''のparent\_idは``REQ-1-1''であり、``REQ-1-1''のchildren\_idsは``REQ-1-1-1''を含む。
             \end{enumerate}
         \end{itemize}
     \end{enumerate}
@@ -447,7 +447,7 @@
         \item 取り出した要求仕様情報オブジェクトが対応付け可能な要求仕様でない場合(is\_traceableプロパティの値がfalseの場合)\\
             以降の処理は行わず、$2$.(a)の処理に戻る。
         \item 取り出した要求仕様情報オブジェクトから、要求仕様IDおよび$3$つの対応付け要素(「前提条件」、「トリガー」、「システム応答」)の文字列を抽出する。
-        図\ref{fig:str_mapping_element}に、抽出する対応付け要素の文字列の例を示す。
+        図\ref{fig:str_mapping_element}に、図\ref{fig:reqspec_sample2}に示す要求仕様ID「REQ-1-3」の抽出する対応付け要素の文字列の例を示す。
 
         \begin{figure}[tp]
             \begin{center}
@@ -475,14 +475,14 @@
             \end{figure}
 
         \end{enumerate}
-        \item 要求仕様IDと$3$つの対応付け要素の形態素情報リストから、要求仕様形態素データを生成する。
+        \item 要求仕様IDと$3$つの対応付け要素の形態素情報リストから成る、要求仕様形態素データを生成する。
     \end{enumerate}
     \item テストケース情報リストが持つテストケース情報オブジェクトの数だけ、以下の処理を繰り返し、テストケース形態素データを生成する。
     \begin{enumerate}
         \item テストケース情報リストから、未処理のテストケース情報オブジェクトを$1$つ取り出す。
         \item 取り出したテストケース情報オブジェクトから、テストケースIDおよび$3$つの対応付け要素(「事前条件」、「操作」、「期待出力」)の文字列を抽出する。
         \item 抽出した$3$つの対応付け要素のそれぞれの文字列について、$2$.(d)と同様の処理を実行する。
-        \item テストケースIDと$3$つの対応付け要素の形態素情報リストから、テストケース形態素データを生成する。
+        \item テストケースIDと$3$つの対応付け要素の形態素情報リストから成る、テストケース形態素データを生成する。
     \end{enumerate}
     \item $2$.で生成した全ての要求仕様形態素データをリスト化し、要求仕様形態素データリストを生成する。                                                                                                       
     \item $3$.で生成した全てのテストケース形態素データをリスト化し、テストケース形態素データリストを生成する。
@@ -554,7 +554,7 @@
                         \item 形態素情報リスト内の次の形態素が名詞以外の場合\\
                         形態素情報リスト内の次の形態素を走査する。
                         \item 形態素情報リスト内の次の形態素が名詞の場合\\
-                        名詞以外の形態素が現れるまで形態素情報リスト走査し、接頭辞と連続する名詞を結合して$2$.(c)i.で用意した複合名詞候補リストに追加する。
+                        名詞以外の形態素が現れるまで形態素情報リストを走査し、接頭辞と連続する名詞を結合して$2$.(c)i.で用意した複合名詞候補リストに追加する。
                     \end{itemize}
                 \item 形態素の品詞が動詞の場合\\
                 $2$.(c)i.で用意した動詞リストに追加する。
@@ -565,14 +565,14 @@
             \begin{itemize}
                 \item 文字数が$20$文字以下である\\
                 $20$文字を超える複合名詞は、異常に長い文字列として除外する。
-                \item 同じ文字の繰り返しでない\\
-                例えば、「あああ」のように同一文字の繰り返しは、意味のある複合名詞ではないと判定し、除外する。
+                \item 同一文字のみから成る3文字以上の単語ではない\\
+                例えば、「年年年」のように、同一文字のみから成る3文字以上の単語は、意味のある複合名詞ではないと判定し、除外する。
             \end{itemize}
 
             \item 重要単語リストの結合\\
             名詞リスト、動詞リスト、複合名詞リストを結合し、対応付け要素の重要単語リストとして保持する。
         \end{enumerate}
-        \item 要求仕様IDと$3$つの対応付け要素の重要単語リストから、要求仕様重要単語データを生成する。
+        \item 要求仕様IDと$3$つの対応付け要素の重要単語リストから成る、要求仕様重要単語データを生成する。
     \end{enumerate}
 
     \item テストケース形態素データリストが持つテストケース形態素データの数だけ、以下の処理を繰り返し、テストケース重要単語データを生成する。
@@ -580,14 +580,14 @@
         \item テストケース形態素データリストから、未処理のテストケース形態素データを$1$つ取り出す。
         \item 取り出したテストケース形態素データから、テストケースIDおよび$3$つの対応付け要素の形態素情報リストを抽出する。
         \item $2$.(c)と同様の処理を実行する。
-        \item テストケースIDと$3$つの対応付け要素の重要単語リストから、テストケース重要単語データを生成する。
+        \item テストケースIDと$3$つの対応付け要素の重要単語リストから成る、テストケース重要単語データを生成する。
     \end{enumerate}
     \item $2$.で生成した全ての要求仕様重要単語データをリスト化し、要求仕様重要単語データリストを生成する。                                                                                                       
     \item $3$.で生成した全てのテストケース重要単語データをリスト化し、テストケース重要単語データリストを生成する。
 \end{enumerate}
 
 \subsection{類似度算出処理}\label{subsec:similarity_calculation}
-類似度算出処理は、重要単語抽出処理 (\cref{sec:imp_word}節参照) で生成した要求仕様重要単語データリストおよびテストケース重要単語データリストを用いて、全ての要求仕様とテストケース間の組み合わせにおける類似度を算出する処理である。
+類似度算出処理は、重要単語抽出処理 (\cref{sec:imp_word}節参照) で生成した要求仕様重要単語データリストおよびテストケース重要単語データリストを用いて、要求仕様とテストケース間の全ての組み合わせにおける類似度を算出する処理である。
 具体的には、重要単語抽出処理から受け取った、要求仕様重要単語データリストおよびテストケース重要単語データリストを入力とし、対応付け情報リストを出力する。
 出力は、対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)に渡す。
 
@@ -690,15 +690,15 @@ TCVダイアグラム生成部は、テストケースの抜け、不備、過�
 具体的には、入力解析部から受け取った要求仕様情報リストおよびテストケース情報リストと、対応関係分析部から受け取った対応関係情報リストの3つを入力とし、
 PlantUML(\ref{sec:PlantUML}節参照)を用いてTCV ダイアグラムを生成する。さらに、生成した TCV ダイアグラムをブラウザ上に表示する。
 
-本処理部が生成するPlantUMLコードの例を図\ref{fig:puml_code1}に、TCVダイアグラムの例を図\ref{fig:tcv_diagram_4.3}に、それぞれ示す。
+本処理部が生成するPlantUMLコードの例を図\ref{fig:puml_code}に、TCVダイアグラムの例を図\ref{fig:tcv_diagram_4.3}に、それぞれ示す。
 
 \begin{figure}[tp]
     \begin{center}
         \fbox{
-            \includegraphics[width=0.96\textwidth]{images/puml_code1.png}
+            \includegraphics[width=0.96\textwidth]{images/puml_code.png}
             }
         \caption{TCVダイアグラム生成部が生成するPlantUML コードの例}
-        \label{fig:puml_code1}
+        \label{fig:puml_code}
     \end{center}
 \end{figure}
 
@@ -723,7 +723,7 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
 対応関係分析部から受け取った対応関係情報リストの3つを入力とし、PlantUML コードを出力する。
 出力は、TCVダイアグラム出力処理(\ref{subsec:diagram-generation-process}節で後述)に渡す。
 
-本処理では、空の文字列の変数であるpuml\_codeを用意し、TCVダイアグラムを生成するためのPlantUMLコードを変数puml\_codeに格納する。
+本処理では、空の文字列の変数であるpuml\_codeを用意し、TCVダイアグラムを生成するためのPlantUMLコードを、変数puml\_codeに格納していく。
 本研究で定めた、PlantUMLコードから生成する図のレイアウト設定項目を表\ref{tab:puml-layout-settings}に、
 スタイル設定項目を表\ref{tab:puml-style-settings}に、
 エリア別スタイル設定項目を表\ref{tab:puml-area-settings}に、それぞれ示す。
@@ -791,7 +791,7 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
 本処理の流れを、以下に示す。
 \begin{enumerate}
     \item 入力解析部の (\cref{sec:input-data-analysis}参照) の出力である要求仕様情報リストとテストケース情報リスト、および、対応関係分析部 (\cref{sec:correspondence-analysis}参照) の出力である対応関係情報リストを、入力として読み込む。
-    \item PlantUML開始タグ「@startuml\textbackslash n」および表\ref{tab:puml-layout-settings}、表\ref{tab:puml-style-settings}、表\ref{tab:puml-area-settings}で示した、3種類の図の設定項目を、変数puml\_codeに格納する。図\ref{fig:puml_code1}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
+    \item PlantUML開始タグ「@startuml\textbackslash n」および表\ref{tab:puml-layout-settings}、表\ref{tab:puml-style-settings}、表\ref{tab:puml-area-settings}で示した、3種類の設定項目を、変数puml\_codeに格納する。図\ref{fig:puml_code}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
     \item 要求仕様エリアの生成
     \begin{enumerate}
         \item 要求仕様エリアの開始タグ「\{」を、変数puml\_codeに格納する。
@@ -801,21 +801,21 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
             \item 取得したis\_traceableプロパティの値によって、要求仕様の矩形要素に対応する背景色を設定する。
             \begin{itemize}
                 \item テストケースと対応付け可能ではない要求仕様の場合(is\_traceableプロパティの値がfalseの場合)\\
-                表\ref{tab:quality_type}に示した「UNTRACEABLE」の背景色を設定する。
+                背景色に、表\ref{tab:quality_type}に示した「UNTRACEABLE」に対応する白色を設定する。
                 \item テストケースと対応付け可能な要求仕様の場合(is\_traceableプロパティの値がtrueの場合)\\
                 対応関係情報リストから、要求仕様情報オブジェクトのidプロパティの値と一致する要求仕様IDを持つ対応関係情報オブジェクトを探索する。
                 \begin{itemize}
                     \item 該当する対応関係情報オブジェクトが存在しない場合\\
-                    表\ref{tab:quality_type}に示した「NONE」の背景色を設定する。
+                    背景色に、表\ref{tab:quality_type}に示した「NONE」に対応する赤色を設定する。
                     \item 該当する対応関係情報オブジェクトが存在する場合\\
-                    対応関係情報オブジェクトの品質種別に基づき、表\ref{tab:quality_type}に示した「FULL」または「PARTIAL」の背景色を設定する。
+                    対応関係情報オブジェクトの品質種別に基づき、背景色に、表\ref{tab:quality_type}に示した「FULL」に対応する緑色、または、「PARTIAL」に対応する黄色を設定する。
                 \end{itemize}
             \end{itemize}
             \item 要求仕様情報オブジェクトのid、name、descriptionプロパティの値と、$3$.(b)ii.で設定した背景色を用いて、要求仕様の矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-            図\ref{fig:puml_code1}の28行目から31行目までが、ここで格納するPlantUMLコードに該当する。
+            図\ref{fig:puml_code}の28行目から31行目までが、ここで格納するPlantUMLコードに該当する。
         \end{enumerate}
         \item 要求仕様情報リスト内のすべての要求仕様情報オブジェクトについて、各要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値を用いて、要求仕様の親子関係の矢印を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-        図\ref{fig:puml_code1}の32行目から34行目までが、ここで格納するPlantUMLコードに該当する。
+        図\ref{fig:puml_code}の32行目から34行目までが、ここで格納するPlantUMLコードに該当する。
         \item 要求仕様エリアの終了タグ「\}」を変数puml\_codeに格納する。
     \end{enumerate}
 
@@ -831,20 +831,20 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
                 \item 探索結果に応じて、テストケースの矩形要素に対応する背景色を設定する。
                 \begin{itemize}
                     \item 該当する対応関係情報オブジェクトが存在しない場合\\
-                    表\ref{tab:quality_type}に示した「NONE」の背景色を設定する。
+                    背景色に、表\ref{tab:quality_type}に示した「NONE」に対応する赤色を設定する。
                     \item 該当する対応関係情報オブジェクトが存在する場合\\
-                    対応関係情報オブジェクトの品質種別に基づき、表\ref{tab:quality_type}に示した「FULL」または「PARTIAL」の背景色を設定する。
+                    対応関係情報オブジェクトの品質種別に基づき、背景色に、表\ref{tab:quality_type}に示した「FULL」に対応する緑色、または、「PARTIAL」に対応する黄色を設定する。
                 \end{itemize}
                 \item テストケース情報オブジェクトのid、name、precondition、operation、expected\_outputプロパティの値と、
                 $4$.(b)ii.B.で設定した背景色を用いて、テストケースの矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-                図\ref{fig:puml_code1}の38行目から40行目までが、ここで格納するPlantUMLコードに該当する。
+                図\ref{fig:puml_code}の38行目から40行目までが、ここで格納するPlantUMLコードに該当する。
             \end{enumerate}
             \item テストスイートエリアの終了タグ「\}」を変数puml\_codeに格納する。
         \end{enumerate}
         \item テストケースエリアの終了タグ「\}」を変数puml\_codeに格納する。
     \end{enumerate}
     \item 要求仕様エリアとテストケースエリアを生成後、対応関係情報リストに基づき、対応関係がある要求仕様の矩形要素とテストケースの矩形要素を、合計スコアのラベルを付与した点線で結ぶPlantUMLコードを生成し、変数puml\_codeに格納する。
-    図\ref{fig:puml_code1}の43行目から44行目までが、ここで格納するPlantUMLコードに該当する。
+    図\ref{fig:puml_code}の43行目から44行目までが、ここで格納するPlantUMLコードに該当する。
     \item PlantUML終了タグ「@enduml\textbackslash n」を、変数puml\_codeに格納する。
     \item 変数puml\_codeをPlantUMLコードとして、TCVダイアグラム出力処理に渡す。
 \end{enumerate}
