@@ -3,7 +3,7 @@
 本章では、本研究で試作した \tool{} が、入力に対して正しく
 TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出力することを、適用例を用いて確認する。
 
-適用対象として、「閏年判定プログラム」を題材に、\ref{sec:reqspec}節および\ref{sec:testcase}節で述べた、\tool{}の入力対象に基づく要求仕様書とテストスイートを作成した。
+適用対象として、「閏年判定システム」を題材に、\ref{sec:reqspec}節および\ref{sec:testcase}節で述べた、\tool{}の入力対象に基づく要求仕様書とテストスイートを作成した。
 
 作成した要求仕様書を図\ref{fig:reqspec}に、テストスイートを図\ref{fig:testsuite_1}および図\ref{fig:testsuite_2}に、それぞれ示す。
 
@@ -42,7 +42,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
 \begin{figure}[t]
     \setbox0\vbox{
         \vbox{project:}
-        \vbox{\ \ \ \ system\_name: ``閏年判定プログラム''}             
+        \vbox{\ \ \ \ system\_name: ``閏年判定システム''}             
         \vbox{\ \ \ \ requirement\_path: data/example/req}
         \vbox{\ \ \ \ testsuite\_path: data/example/testsuite}
         \vbox{processing:}
@@ -68,8 +68,11 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     テストケースTC-3の期待出力を表す文章『「閏年ではありません」と出力される』と、                                                            
     要求仕様REQ-1-1-3のシステム応答を表す文章『「閏年です」と出力する』とで出力内容が異なっており、
     要求仕様に対して、テストケースの内容が不十分である。                                                                                                        
-    \item テストケースの過剰 \\                                                                                                     
-    テストケースTC-8と対応関係がある要求仕様が存在しない。                         
+    \item テストケースの過剰 
+    \begin{itemize}
+        \item テストケースTC-5と対応関係がある要求仕様が存在しない。
+        \item テストケースTC-9と対応関係がある要求仕様が存在しない。
+    \end{itemize}
 \end{itemize}
 
 図\ref{fig:reqspec}の要求仕様書と、図\ref{fig:testsuite_1}および図\ref{fig:testsuite_2}の
@@ -78,7 +81,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
 
 \begin{figure}[tp]                                                                            
     \begin{center}                                                                            
-        \includegraphics[width=17cm]{images/05/tcv_inconsistency1.png}                 
+        \includegraphics[width=18cm]{images/05/tcv_inconsistency1.png}                 
         \caption{出力したTCVダイアグラム}       
         \label{fig:tcv_inconsistency1}                                              
     \end{center}                                                                              
@@ -92,7 +95,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     \item 要求仕様の矩形要素を正しく表示していること。\\
     図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1の矩形要素に着目する。
     要求仕様REQ-1の矩形要素は、要求仕様ID「REQ-1」、要求仕様名「閏年判定機能」、
-    および要求仕様テンプレートの内容を正しく表示しており、
+    および要求仕様テンプレート(\ref{sec:EARS}節参照)の内容を正しく表示しており、
     図\ref{fig:reqspec}の要求仕様書に記述した内容と一致していることが確認できる。
     また、図\ref{fig:tcv_inconsistency1}における、他の要求仕様の矩形要素についても同様に、正しく表示していることが確認できる。
 
@@ -112,37 +115,57 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     したがって、テストケースを正しくテストスイートごとにまとめて配置していることが確認できる。
 
     \item 要求仕様間の親子関係を表現していること。 \\                                                                                             
-    図\ref{fig:tcv_inconsistency1}において、子要求仕様の矩形要素から親要求仕様の矩形要素へ向かう矢印は、                                                       
+    図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1の矩形要素と要求仕様REQ-1-1の矩形要素の2つに着目する。
+    子要求仕様REQ-1-1の矩形要素から親要求仕様REQ-1の矩形要素へ向かう矢印は、                                                       
     要求仕様間の親子関係を正しく表現していることが確認できる。
+    また、図\ref{fig:tcv_inconsistency1}における、他の要求仕様間の親子関係についても同様に、正しく表現していることが確認できる。
 
     \item 対応関係がある要求仕様の矩形要素とテストケースの矩形要素を表示していること。 \\                                                                             
     図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1-1-1の矩形要素とテストケースTC-1の矩形要素の2つに着目する。
     これらの矩形要素は、品質種別に対応する緑色(FULL)の背景色で表示しており、
     合計スコア0.90をラベルとして付与した点線で接続している。
-    この合計スコアは、図\ref{fig:setting_example}で設定した類似度の閾値(similarity\_threshold) 0.7以上である。
+    この合計スコアは、図\ref{fig:setting_example}で設定した類似度の閾値 (similarity\_threshold) 0.7以上である。
     したがって、対応関係がある要求仕様の矩形要素とテストケースの矩形要素を正しく表示していることが確認できる。
     また、図\ref{fig:tcv_inconsistency1}における、他の対応関係がある要求仕様の矩形要素とテストケースの矩形要素についても同様に、正しく表示していることが確認できる。
 
-    \item 対応付け可能ではない要求仕様の矩形要素を表示していること。 \\                                                                                     
+    \item 対応付け不可能な要求仕様の矩形要素を表示していること。 \\                                                                                     
     図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1、REQ-1-1、REQ-1-2の矩形要素に着目する。                                                
-    これらの要求仕様は、\ref{sec:words}節で述べた対応付け可能ではない要求仕様である。                                                  
+    これらの要求仕様は、\ref{sec:words}節で述べた対応付け不可能な要求仕様である。                                                  
     そのため、これらの要求仕様の矩形要素は、品質種別に対応する白色(UNTRACEABLE)の背景色で表示しており、                                                                   
-    対応付け可能ではない要求仕様の矩形要素を正しく表示していることが確認できる。
+    対応付け不可能な要求仕様の矩形要素を正しく表示していることが確認できる。
 
     \item テストケースの抜け箇所を強調していること。\\
-    図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1-2-3の矩形要素は、
-    品質種別に対応する赤色(NONE)の背景色で表示しており、
+    図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1-2-3の矩形要素に着目する。               
+    図\ref{fig:testsuite_1}および図\ref{fig:testsuite_2}のテストスイートには、                    
+    要求仕様REQ-1-2-3と対応関係があるテストケースが存在しない。                                   
+    そのため、要求仕様REQ-1-2-3の矩形要素は、                                                     
+    品質種別に対応する赤色(NONE)の背景色で表示しており、                                          
     テストケースの抜け箇所を正しく強調していることが確認できる。
 
     \item テストケースの不備箇所を強調していること。\\
-    図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1-1-3の矩形要素とテストケースTC-3の矩形要素の2つは、
-    品質種別に対応する黄色(PARTIAL)の背景色で表示しており、
+    図\ref{fig:tcv_inconsistency1}において、
+    要求仕様REQ-1-1-3の矩形要素とテストケースTC-3の矩形要素の2つに着目する。                                                                           
+    要求仕様REQ-1-1-3のシステム応答を表す文章『「閏年です」と出力する』と、                       
+    テストケースTC-3の期待出力を表す文章『「閏年ではありません」と出力される』とで出力内容が異なっており、
+    システム応答と期待出力の類似度が、図\ref{fig:setting_example}で設定した類似度の閾値 (similarity\_threshold) 0.7未満である。                                                                                          
+    そのため、これらの矩形要素は、品質種別に対応する黄色(PARTIAL)の背景色で表示しており、         
     テストケースの不備箇所を正しく強調していることが確認できる。
 
     \item テストケースの過剰箇所を強調していること。\\
-    図\ref{fig:tcv_inconsistency1}において、テストケースTC-8の矩形要素は、
-    品質種別に対応する赤色(NONE)の背景色で表示しており、
+    図\ref{fig:tcv_inconsistency1}において、テストケースTC-5およびTC-9の矩形要素に着目する。                                          
+    図\ref{fig:reqspec}の要求仕様書には、これらのテストケースと対応関係がある要求仕様が存在しない。                                   
+    そのため、これらの矩形要素は、品質種別に対応する赤色(NONE)の背景色で表示しており、                                                
     テストケースの過剰箇所を正しく強調していることが確認できる。
+    なお、\ref{subsubsec:excess_testcase}節で述べたように、                                                                           
+    ユーザーは、テストケースの過剰箇所に対して、不要であれば、テストケースの削除、                                                                    
+    または、対応する要求仕様の追加を検討できる。                                                                                      
+    テストケースTC-5「閏年の2月日数表テスト」は、                                                                                                 
+    図\ref{fig:reqspec}の要求仕様書に記述していない、2月の日数表示機能を対象としたテストケースであり、                                              
+    閏年判定システムの機能範囲外であるため、不要なテストケースとして削除を検討できる。                                                
+    一方、テストケースTC-9「負数値入力テスト」は、                                                                                                
+    西暦年に負の値を入力した際のエラー出力を、検証するテストケースであり、                                                                          
+    閏年判定システムが持つべき入力値検証機能に該当するため、                                                                            
+    対応する要求仕様の追加を検討できる。
 \end{itemize}
 
 以上の9つの項目から、\tool{}は、入力に対して正しくTCVダイアグラムを出力することを確認できた。
