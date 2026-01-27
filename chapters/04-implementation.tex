@@ -185,14 +185,14 @@
 以降、それぞれの処理について説明する。
 
 \subsection{要求仕様情報リスト生成処理}\label{subsec:req_extraction}
-要求仕様情報リスト生成処理は、CSVファイルで記述した要求仕様書と初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlを入力とし、
+要求仕様情報リスト生成処理は、CSVファイルで記述した要求仕様書と初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの2つを入力とし、
 対応関係分析部(\ref{sec:correspondence-analysis}節で後述)およびTCVダイアグラム生成部(\ref{sec:diagram-generation}節で後述)で用いる、
 要求仕様情報リストを生成する処理である。
 図\ref{fig:req_extraction_composition}に、本処理の流れを示す。
 
 \begin{figure}[tp]
     \begin{center}
-        \includegraphics[width=17cm]{images/req_extraction_composition.png}
+        \includegraphics[width=13cm]{images/req_extraction_composition.png}
         \caption{要求仕様情報リスト生成処理の流れ}
         \label{fig:req_extraction_composition}
     \end{center}
@@ -238,7 +238,7 @@
 要求仕様情報オブジェクトのprecondition、trigger、responseの各プロパティの文字列と、
 初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlのsystem\_nameの値を組み合わせ、
 要求仕様テンプレート(\ref{sec:EARS}節参照)を生成する処理である。
-具体的には、要求仕様記述項目抽出処理で生成した要求仕様情報オブジェクトのリスト、および、設定ファイルvitt.yamlを入力とし、
+具体的には、要求仕様記述項目抽出処理で生成した要求仕様情報オブジェクトのリスト、および、設定ファイルvitt.yamlの2つを入力とし、
 要求仕様テンプレートを表すdescriptionプロパティに値を代入した状態の要求仕様情報オブジェクトのリストを出力する。
 
 本処理の流れを、以下に示す。
@@ -312,7 +312,7 @@
             \item 要素数が2個の場合\\
             親要求仕様を持たない要求仕様情報オブジェクトのため、以降の処理は行わず、
             リスト中の次の要求仕様情報オブジェクトに対して$2$.(a)からの処理を行う。
-            表\ref{tb:hierarchy_example}では、``REQ-1''および``REQ-2''がこの場合に該当する。
+            表\ref{tb:hierarchy_example}の例では、``REQ-1''および``REQ-2''がこの場合に該当する。
             例えば、``REQ-1''の分割結果は[``REQ'' , ``1'']であり、parent\_idの値はNoneとなる。
             \item 要素数が3個以上の場合\\
             親要求仕様を持つ子要求仕様情報オブジェクトのため、以下の処理を行う。
@@ -442,7 +442,7 @@
 
 \subsection{形態素解析処理}\label{sec:morphological_analysis}
 形態素解析処理は、要求仕様情報リストとテストケース情報リストが含む対応付け要素の文字列を、MeCab (\cref{sec:Mecab}参照)を用いて形態素に分割し、各形態素の基本形と品詞を取得する処理である。
-具体的には、入力解析部から受け取った、要求仕様情報リストとテストケース情報リストを入力とし、要求仕様形態素データリストおよびテストケース形態素データリストを、それぞれ出力する。
+具体的には、入力解析部から受け取った、要求仕様情報リストとテストケース情報リストの2つを入力とし、要求仕様形態素データリストおよびテストケース形態素データリストを、それぞれ出力する。
 出力は、重要単語抽出処理(\ref{sec:imp_word}節で後述)に渡す。
 
 要求仕様形態素データリストは、各要求仕様の対応付け要素のテキストを形態素に分割し、各形態素の基本形と品詞を格納したリストである。
@@ -472,7 +472,7 @@
     \item 要求仕様情報リストが持つ要求仕様情報オブジェクトの数だけ、以下の処理を繰り返し、要求仕様形態素データを生成する。
     \begin{enumerate}
         \item 要求仕様情報リストから、未処理の要求仕様情報オブジェクトを$1$つ取り出す。
-        \item 取り出した要求仕様情報オブジェクトが対応付け可能な要求仕様でない場合(is\_traceableプロパティの値がfalseの場合)\\
+        \item 取り出した要求仕様情報オブジェクトが対応付け不可能な要求仕様の場合(is\_traceableプロパティの値がfalseの場合)\\
             以降の処理は行わず、$2$.(a)の処理に戻る。
         \item 取り出した要求仕様情報オブジェクトから、要求仕様IDおよび$3$つの対応付け要素(「前提条件」、「トリガー」、「システム応答」)の文字列を抽出する。
         図\ref{fig:str_mapping_element}に、図\ref{fig:reqspec_sample2}で示した要求仕様ID「REQ-1-3」から抽出する対応付け要素の文字列の例を示す。
@@ -492,7 +492,7 @@
             これは、「３」と「3」、「Ａ」と「A」のような表記揺れを統一し、類似度算出処理(\cref{subsec:similarity_calculation}節で後述) での精度を向上させる目的がある。
             \item MeCabを用いて、$2$.(d)ii. の前処理後の文字列を形態素に分割し、基本形と品詞を抽出する。
             \item 抽出した基本形と品詞の対を形態素情報として、$2$.(d)i.で用意した形態素情報リストに追加する。
-            図\ref{fig:str_mapping_element}で示した対応付け要素の文字列から生成した形態素情報リストの例を、図\ref{fig:morpheme_info_list}に示す。
+            図\ref{fig:morpheme_info_list}に、図\ref{fig:str_mapping_element}で示した対応付け要素の文字列から生成した形態素情報リストの例を示す。
 
             \begin{figure}[tp]
                 \begin{center}
@@ -518,7 +518,7 @@
 
 \subsection{重要単語抽出処理}\label{sec:imp_word}
 重要単語抽出処理は、形態素解析処理(\cref{sec:morphological_analysis}節参照)で生成した要求仕様形態素データリストおよびテストケース形態素データリストから、重要単語を抽出する処理である。
-具体的には、形態素解析処理から受け取った、要求仕様形態素データリストとテストケース形態素データリストを入力とし、要求仕様重要単語データリストおよびテストケース重要単語データリストを、それぞれ出力する。
+具体的には、形態素解析処理から受け取った、要求仕様形態素データリストとテストケース形態素データリストの2つを入力とし、要求仕様重要単語データリストおよびテストケース重要単語データリストを、それぞれ出力する。
 出力は、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)に渡す。
 
 本研究では、重要単語として名詞、動詞、複合名詞を抽出する。
@@ -553,12 +553,12 @@
     \begin{enumerate}
         \item 要求仕様形態素データリストから、未処理の要求仕様形態素データを1つ取り出す。
         \item 取り出した要求仕様形態素データから、要求仕様IDおよび3つの対応付け要素の形態素情報リストを抽出する。
-        図\ref{fig:important_words}に、図\ref{fig:morpheme_info_list}におけるトリガーの形態素情報リストを抽出した例を示す。
+        図\ref{fig:important_words}の①に、図\ref{fig:morpheme_info_list}におけるトリガーの形態素情報リストを抽出した例を示す。
 
         \begin{figure}[tp]
             \begin{center}
                 \includegraphics[width=17cm]{images/important_words.png}
-                \caption{図\ref{fig:morpheme_info_list}におけるトリガーの形態素情報リストを抽出した例}
+                \caption{図\ref{fig:morpheme_info_list}におけるトリガーの形態素情報リストから生成した重要単語リストの例}
                 \label{fig:important_words}
             \end{center}
         \end{figure}
@@ -572,10 +572,10 @@
                     \begin{itemize}
                         \item 形態素情報リスト内の次の形態素が名詞以外の場合\\
                         対象の名詞を$2$.(c)i.で用意した名詞リストに追加する。
-                        図\ref{fig:important_words}の例では、「辺」、「さ」、「入力」を名詞リストに追加する。
+                        図\ref{fig:important_words}の②に示す例では、「辺」、「さ」、「入力」を名詞リストに追加する。
                         \item 形態素情報リスト内の次の形態素が名詞の場合\\
                         名詞以外の形態素が現れるまで形態素情報リストを走査し、連続する名詞を結合して$2$.(c)i.で用意した複合名詞候補リストに追加する。
-                        図\ref{fig:important_words}の例では、「文字」と「列」が連続する名詞であるため、結合して「文字列」を複合名詞候補リストに追加する。
+                        図\ref{fig:important_words}の②に示す例では、「文字」と「列」が連続する名詞であるため、結合して「文字列」を複合名詞候補リストに追加する。
                     \end{itemize}
                 \item 形態素の品詞が接頭辞の場合
                     \begin{itemize}
@@ -586,10 +586,11 @@
                     \end{itemize}
                 \item 形態素の品詞が動詞の場合\\
                 $2$.(c)i.で用意した動詞リストに追加する。
-                図\ref{fig:important_words}の例では、「する」を動詞リストに追加する。
+                図\ref{fig:important_words}の②に示す例では、「する」を動詞リストに追加する。
             \end{itemize} 
             \item 複合名詞の妥当性判定\label{enum:妥当性判定}\\
             複合名詞候補リスト内の各単語に対して、以下の2つの条件を全て満たす場合、複合名詞と判定し、$2$.(c)i.で用意した複合名詞リストに追加する。
+            図\ref{fig:important_words}の②に示す例では、「文字列」を複合名詞リストに追加する。
             \begin{itemize}
                 \item 文字数が$20$文字以下である\\
                 $20$文字を超える複合名詞は、異常に長い文字列として除外する。
@@ -599,6 +600,7 @@
 
             \item 重要単語リストの結合\\
             名詞リスト、動詞リスト、複合名詞リストを結合し、対応付け要素の重要単語リストとして保持する。
+            図\ref{fig:important_words}の③に、生成した重要単語リストの例を示す。
         \end{enumerate}
         \item 要求仕様IDと$3$つの対応付け要素の重要単語リストから成る、要求仕様重要単語データを生成する。
     \end{enumerate}
@@ -618,7 +620,7 @@
 類似度算出処理は、重要単語抽出処理 (\cref{sec:imp_word}節参照) で生成した要求仕様重要単語データリストおよびテストケース重要単語データリストを用いて、
 要求仕様とテストケース間の全ての組み合わせにおける類似度を算出する処理である。
 具体的には、重要単語抽出処理から受け取った、要求仕様重要単語データリストとテストケース重要単語データリスト、
-および、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlを入力とし、対応付け情報リストを出力する。
+および、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの3つを入力とし、対応付け情報リストを出力する。
 出力は、対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)に渡す。
 
 対応付け情報リストは、要求仕様とテストケース間の類似度の情報である対応付け情報オブジェクトを格納するリストである。
@@ -640,9 +642,12 @@
     \item 重要単語抽出処理の出力である、要求仕様重要単語データリストとテストケース重要単語データリストを入力として読み込む。
     \item 設定ファイルvitt.yamlのweightsの項目から、以下の3つの対応付け要素の重みの値を取得する。       
     \begin{itemize}                                                                           
-        \item precondition: 前提条件と事前条件の重み                                          
-        \item trigger\_operation: トリガーと操作の重み                                        
-        \item response\_output: システム応答と期待出力の重み                                  
+        \item $w_{\text{precondition}}$\\
+        preconditionに設定した前提条件と事前条件の重み                                          
+        \item $w_{\text{trigger\_operation}}$\\
+        trigger\_operationに設定したトリガーと操作の重み                                        
+        \item $w_{\text{response\_output}}$\\
+        response\_outputに設定したシステム応答と期待出力の重み                                  
     \end{itemize}
     \item 空の対応付け情報リストを用意する。
     \item 要求仕様重要単語データリスト内の要求仕様重要単語データとテストケース重要単語データリスト内のテストケース重要単語データの全ての組み合わせにおいて、以下の処理を繰り返す。
@@ -663,7 +668,6 @@
         \end{equation}
 
         ここで、$S_{\text{pre}}$は前提条件と事前条件の類似度、$S_{\text{trig}}$はトリガーと操作の類似度、$S_{\text{resp}}$はシステム応答と期待出力の類似度である。
-        また、$w_{\text{precondition}}$、 $w_{\text{trigger\_operation}}$、$w_{\text{response\_output}}$ は、それぞれの対応付け要素の重みを表す。
 
         \item $4$.(a)で抽出した要求仕様IDとテストケースID、$4$.(b)で算出した各対応付け要素間の類似度、
         および、$4$.(c)で算出した合計スコア$S_{\text{total}}$を対応付け情報オブジェクトとして、
@@ -673,7 +677,7 @@
 
 \subsection{対応関係抽出処理}\label{sec:traceability_extraction_processing}
 対応関係抽出処理は、類似度算出処理(\cref{subsec:similarity_calculation}節参照)で生成した対応付け情報リストから、要求仕様とテストケースの対応関係を抽出する処理である。
-具体的には、類似度算出処理から受け取った、対応付け情報リストおよび、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlを入力とし、対応関係情報リストを出力する。
+具体的には、類似度算出処理から受け取った、対応付け情報リストおよび、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの2つを入力とし、対応関係情報リストを出力する。
 出力は、TCVダイアグラム生成部(\cref{sec:diagram-generation}で後述)に渡す。
 
 本処理の流れを、以下に示す。
@@ -832,7 +836,8 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
 本処理の流れを、以下に示す。
 \begin{enumerate}
     \item 入力解析部の (\cref{sec:input-data-analysis}参照) の出力である要求仕様情報リストとテストケース情報リスト、および、対応関係分析部 (\cref{sec:correspondence-analysis}参照) の出力である対応関係情報リストを、入力として読み込む。
-    \item PlantUML開始タグ「@startuml\textbackslash n」および表\ref{tab:puml-layout-settings}、表\ref{tab:puml-style-settings}、表\ref{tab:puml-area-settings}で示した、3種類の設定項目を、変数puml\_codeに格納する。図\ref{fig:puml_code}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
+    \item PlantUML開始タグ「@startuml\textbackslash n」、および、表\ref{tab:puml-layout-settings}、表\ref{tab:puml-style-settings}、表\ref{tab:puml-area-settings}で示した3種類の設定項目を、変数puml\_codeに格納する。
+    図\ref{fig:puml_code}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
     \item 要求仕様エリアの生成
     \begin{enumerate}
         \item 要求仕様エリアの開始タグ「\{」を、変数puml\_codeに格納する。
@@ -841,7 +846,7 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
             \item 要求仕様情報オブジェクトのis\_traceableプロパティの値を取得する。
             \item 取得したis\_traceableプロパティの値によって、要求仕様の矩形要素に対応する背景色を設定する。
             \begin{itemize}
-                \item テストケースと対応付け可能ではない要求仕様の場合(is\_traceableプロパティの値がfalseの場合)\\
+                \item テストケースと対応付け不可能な要求仕様の場合(is\_traceableプロパティの値がfalseの場合)\\
                 背景色に、表\ref{tab:quality_type}に示した「UNTRACEABLE」に対応する白色を設定する。
                 \item テストケースと対応付け可能な要求仕様の場合(is\_traceableプロパティの値がtrueの場合)\\
                 対応関係情報リストから、要求仕様情報オブジェクトのidプロパティの値と一致する要求仕様IDを持つ対応関係情報オブジェクトを探索する。
@@ -853,14 +858,18 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
                 \end{itemize}
             \end{itemize}
             \item 要求仕様情報オブジェクトのid、name、descriptionプロパティの値と、$3$.(b)ii.で設定した背景色を用いて、要求仕様の矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-            表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトから、要求仕様の矩形要素を表すPlantUMLコードは、
+            図\ref{fig:reqspec_sample2}で示した4件の要求仕様に対して生成する、要求仕様の矩形要素を表すPlantUMLコードは、
+            図\ref{fig:puml_code}の28行目から31行目に該当する。
+            特に、表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトに対して生成する、要求仕様の矩形要素を表すPlantUMLコードは、
             図\ref{fig:puml_code}の29行目に該当する。
         \end{enumerate}
         \item 要求仕様情報リスト内のすべての要求仕様情報オブジェクトについて、
         各要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値を用いて、
-        要求仕様の親子関係の矢印を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-        表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値から、
-        要求仕様の親子関係の矢印を表すPlantUMLコードは、図\ref{fig:puml_code}の32行目に該当する。
+        要求仕様の親子関係の実線矢印を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
+        図\ref{fig:reqspec_sample2}で示した要求仕様間の親子関係に対して生成する、
+        実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code}の32行目から34行目に該当する。
+        特に、表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値を用いて
+        生成する、要求仕様の親子関係の実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code}の32行目に該当する。
         \item 要求仕様エリアの終了タグ「\}」を変数puml\_codeに格納する。
     \end{enumerate}
 
@@ -882,7 +891,9 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
                 \end{itemize}
                 \item テストケース情報オブジェクトのid、name、precondition、operation、expected\_outputプロパティの値と、
                 $4$.(b)ii.B.で設定した背景色を用いて、テストケースの矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-                表\ref{tb:testcase_obj_example}で示したテストケース情報オブジェクトから、生成するテストケースの矩形要素を表すPlantUMLコードは、
+                図\ref{fig:tc_4}で示した3件のテストケースに対して生成する、テストケースの矩形要素を表すPlantUMLコードは、
+                図\ref{fig:puml_code}の38行目から40行目に該当する。
+                特に、表\ref{tb:testcase_obj_example}で示したテストケース情報オブジェクトに対して生成する、テストケースの矩形要素を表すPlantUMLコードは、
                 図\ref{fig:puml_code}の38行目に該当する。
             \end{enumerate}
             \item テストスイートエリアの終了タグ「\}」を変数puml\_codeに格納する。
@@ -891,11 +902,13 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
     \end{enumerate}
     \item 要求仕様エリアとテストケースエリアを生成後、対応関係情報リストに基づき、
     対応関係がある要求仕様の矩形要素とテストケースの矩形要素を、
-    合計スコアのラベルを付与した点線で結ぶPlantUMLコードを生成し、変数puml\_codeに格納する。
-    図\ref{fig:tcv_diagram_4.3}で示した、対応関係がある要求仕様ID「REQ-1-1」の矩形要素とテストケースID「TC-1」の矩形要素を
-    合計スコアのラベルを付与した点線で結ぶPlantUMLコードは、
-    図\ref{fig:puml_code}の43行目に該当する。
+    合計スコアのラベルを付与した破線で結ぶPlantUMLコードを生成し、変数puml\_codeに格納する。
+    図\ref{fig:tcv_diagram_4.3}で示した、対応関係がある要求仕様ID「REQ-1-1」の矩形要素とテストケースID「TC-1」の矩形要素、および、
+    要求仕様ID「REQ-1-3」の矩形要素とテストケースID「TC-3」の矩形要素に対して
+    生成する、合計スコアのラベルを付与した破線で結ぶPlantUMLコードは、
+    図\ref{fig:puml_code}の43行目、および、44行目に該当する。
     \item PlantUML終了タグ「@enduml\textbackslash n」を、変数puml\_codeに格納する。
+    図\ref{fig:puml_code}の45行目が、ここで格納するPlantUMLコードに該当する。
     \item 変数puml\_codeをPlantUMLコードとして、TCVダイアグラム出力処理に渡す。
 \end{enumerate}
 
