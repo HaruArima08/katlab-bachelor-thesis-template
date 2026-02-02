@@ -107,6 +107,11 @@
 \def\sectionautorefname{}
 \def\subsectionautorefname{}
 
+% enumerateの設定
+\setlist[enumerate,1]{label=\arabic*., ref=\arabic*.}
+\setlist[enumerate,2]{label=(\alph*), ref=\theenumi(\alph*)}
+\setlist[enumerate,3]{label=\roman*., ref=\theenumii\roman*.}
+
 %
 % マクロの定義
 %

@@ -1,4 +1,5 @@
 \renewcommand{\lstlistingname}{コード}
+\newcommand{\bsn}{\textbackslash n}
 \lstset{
   language={Java},
   frame=tlBR,%フレーム線の指定，上右下左の順，大文字は二重線
@@ -27,6 +28,8 @@
   showstringspaces=false,%空行の表示
 %  breakatwhitespace=true,
 %  tabsize=5,
+  literate={<<}{{\textless\textless}}2 {>>}{{\textgreater\textgreater}}2 {<}{{\textless}}1 {>}{{\textgreater}}1 {\\}{{\char`\\}}1,
+  escapechar=|,
 }
 \usepackage[dvipsnames]{xcolor}
 
@@ -80,4 +83,6 @@
   keywordstyle=\color{keyword},
   stringstyle=\color{string},
   commentstyle=\color{comment},
+  literate={<<}{{\textless\textless}}2 {>>}{{\textgreater\textgreater}}2 {<}{{\textless}}1 {>}{{\textgreater}}1 {\\}{{\char`\\}}1,
+  escapechar=|,
 }

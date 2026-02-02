@@ -441,7 +441,7 @@
 以降、それぞれの処理について説明する。
 
 \subsection{形態素解析処理}\label{sec:morphological_analysis}
-形態素解析処理は、要求仕様情報リストとテストケース情報リストが含む対応付け要素の文字列を、MeCab (\cref{sec:Mecab}参照)を用いて形態素に分割し、各形態素の基本形と品詞を取得する処理である。
+形態素解析処理は、要求仕様情報リストとテストケース情報リストがそれぞれ含む対応付け要素の文字列を、MeCab (\cref{sec:Mecab}参照)を用いて形態素に分割し、各形態素の基本形と品詞を取得する処理である。
 具体的には、入力解析部から受け取った、要求仕様情報リストとテストケース情報リストの2つを入力とし、要求仕様形態素データリストおよびテストケース形態素データリストを、それぞれ出力する。
 出力は、重要単語抽出処理(\ref{sec:imp_word}節で後述)に渡す。
 
@@ -517,7 +517,7 @@
 \end{enumerate}
 
 \subsection{重要単語抽出処理}\label{sec:imp_word}
-重要単語抽出処理は、形態素解析処理(\cref{sec:morphological_analysis}節参照)で生成した要求仕様形態素データリストおよびテストケース形態素データリストから、重要単語を抽出する処理である。
+重要単語抽出処理は、形態素解析処理(\cref{sec:morphological_analysis}節参照)で生成した要求仕様形態素データリストおよびテストケース形態素データリストから、重要単語をそれぞれ抽出する処理である。
 具体的には、形態素解析処理から受け取った、要求仕様形態素データリストとテストケース形態素データリストの2つを入力とし、要求仕様重要単語データリストおよびテストケース重要単語データリストを、それぞれ出力する。
 出力は、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)に渡す。
 
@@ -735,15 +735,15 @@ TCVダイアグラム生成部は、テストケースの抜け、不備、過�
 具体的には、入力解析部から受け取った要求仕様情報リストおよびテストケース情報リストと、対応関係分析部から受け取った対応関係情報リストの3つを入力とし、
 PlantUML(\ref{sec:PlantUML}節参照)を用いてTCV ダイアグラムを生成する。さらに、生成した TCV ダイアグラムをブラウザ上に表示する。
 
-本処理部が生成するPlantUMLコードの例を図\ref{fig:puml_code}に、TCVダイアグラムの例を図\ref{fig:tcv_diagram_4.3}に、それぞれ示す。
+本処理部が生成するPlantUMLコードの例を図\ref{fig:puml_code1}に、TCVダイアグラムの例を図\ref{fig:tcv_diagram_4.3}に、それぞれ示す。
 
 \begin{figure}[tp]
     \begin{center}
         \fbox{
-            \includegraphics[width=0.96\textwidth]{images/puml_code.png}
+            \includegraphics[width=0.96\textwidth]{images/puml_code1.png}
             }
         \caption{TCVダイアグラム生成部が生成するPlantUML コードの例}
-        \label{fig:puml_code}
+        \label{fig:puml_code1}
     \end{center}
 \end{figure}
 
@@ -835,9 +835,9 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
 
 本処理の流れを、以下に示す。
 \begin{enumerate}
-    \item 入力解析部の (\cref{sec:input-data-analysis}参照) の出力である要求仕様情報リストとテストケース情報リスト、および、対応関係分析部 (\cref{sec:correspondence-analysis}参照) の出力である対応関係情報リストを、入力として読み込む。
+    \item 入力解析部 (\cref{sec:input-data-analysis}参照) の出力である要求仕様情報リストとテストケース情報リスト、および、対応関係分析部 (\cref{sec:correspondence-analysis}参照) の出力である対応関係情報リストを、入力として読み込む。
     \item PlantUML開始タグ「@startuml\textbackslash n」、および、表\ref{tab:puml-layout-settings}、表\ref{tab:puml-style-settings}、表\ref{tab:puml-area-settings}で示した3種類の設定項目を、変数puml\_codeに格納する。
-    図\ref{fig:puml_code}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
+    図\ref{fig:puml_code1}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
     \item 要求仕様エリアの生成
     \begin{enumerate}
         \item 要求仕様エリアの開始タグ「\{」を、変数puml\_codeに格納する。
@@ -859,18 +859,18 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
             \end{itemize}
             \item 要求仕様情報オブジェクトのid、name、descriptionプロパティの値と、$3$.(b)ii.で設定した背景色を用いて、要求仕様の矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
             図\ref{fig:reqspec_sample2}で示した4件の要求仕様に対して生成する、要求仕様の矩形要素を表すPlantUMLコードは、
-            図\ref{fig:puml_code}の28行目から31行目に該当する。
+            図\ref{fig:puml_code1}の28行目から31行目に該当する。
             特に、表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトに対して生成する、要求仕様の矩形要素を表すPlantUMLコードは、
-            図\ref{fig:puml_code}の29行目に該当する。
+            図\ref{fig:puml_code1}の29行目に該当する。
         \end{enumerate}
         \item 要求仕様情報リスト内のすべての要求仕様情報オブジェクトについて、
         各要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値を用いて、
         要求仕様の親子関係の実線矢印を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
         図\ref{fig:reqspec_sample2}で示した要求仕様間の親子関係に対して生成する、
-        実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code}の32行目から34行目に該当する。
+        実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code1}の32行目から34行目に該当する。
         特に、表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値を用いて
-        生成する、要求仕様の親子関係の実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code}の32行目に該当する。
-        \item 要求仕様エリアの終了タグ「\}」を変数puml\_codeに格納する。
+        生成する、要求仕様の親子関係の実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code1}の32行目に該当する。
+        \item 要求仕様エリアの終了タグ「\}」を、変数puml\_codeに格納する。
     \end{enumerate}
 
     \item テストケースエリアの生成
@@ -878,7 +878,7 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
         \item テストケースエリアの開始タグ「\{」を、変数puml\_codeに格納する。
         \item テストケース情報リストをtest\_suiteプロパティの値でグループ化し、各グループについて、以下の処理を繰り返す。
         \begin{enumerate}
-            \item test\_suiteプロパティの値をテストスイート名として、テストスイートエリアの開始タグ「\{」を変数puml\_codeに格納する。
+            \item test\_suiteプロパティの値をテストスイート名として、テストスイートエリアの開始タグ「\{」を、変数puml\_codeに格納する。
             \item グループ内のすべてのテストケース情報オブジェクトについて、以下の処理を繰り返す。
             \begin{enumerate}
                 \item 対応関係情報リストから、各テストケース情報オブジェクトのidプロパティの値と一致するテストケースIDを持つ対応関係情報オブジェクトを探索する。
@@ -892,13 +892,13 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
                 \item テストケース情報オブジェクトのid、name、precondition、operation、expected\_outputプロパティの値と、
                 $4$.(b)ii.B.で設定した背景色を用いて、テストケースの矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
                 図\ref{fig:tc_4}で示した3件のテストケースに対して生成する、テストケースの矩形要素を表すPlantUMLコードは、
-                図\ref{fig:puml_code}の38行目から40行目に該当する。
+                図\ref{fig:puml_code1}の38行目から40行目に該当する。
                 特に、表\ref{tb:testcase_obj_example}で示したテストケース情報オブジェクトに対して生成する、テストケースの矩形要素を表すPlantUMLコードは、
-                図\ref{fig:puml_code}の38行目に該当する。
+                図\ref{fig:puml_code1}の38行目に該当する。
             \end{enumerate}
-            \item テストスイートエリアの終了タグ「\}」を変数puml\_codeに格納する。
+            \item テストスイートエリアの終了タグ「\}」を、変数puml\_codeに格納する。
         \end{enumerate}
-        \item テストケースエリアの終了タグ「\}」を変数puml\_codeに格納する。
+        \item テストケースエリアの終了タグ「\}」を、変数puml\_codeに格納する。
     \end{enumerate}
     \item 要求仕様エリアとテストケースエリアを生成後、対応関係情報リストに基づき、
     対応関係がある要求仕様の矩形要素とテストケースの矩形要素を、
@@ -906,9 +906,9 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
     図\ref{fig:tcv_diagram_4.3}で示した、対応関係がある要求仕様ID「REQ-1-1」の矩形要素とテストケースID「TC-1」の矩形要素、および、
     要求仕様ID「REQ-1-3」の矩形要素とテストケースID「TC-3」の矩形要素に対して
     生成する、合計スコアのラベルを付与した破線で結ぶPlantUMLコードは、
-    図\ref{fig:puml_code}の43行目、および、44行目に該当する。
+    図\ref{fig:puml_code1}の43行目、および、44行目に該当する。
     \item PlantUML終了タグ「@enduml\textbackslash n」を、変数puml\_codeに格納する。
-    図\ref{fig:puml_code}の45行目が、ここで格納するPlantUMLコードに該当する。
+    図\ref{fig:puml_code1}の45行目が、ここで格納するPlantUMLコードに該当する。
     \item 変数puml\_codeをPlantUMLコードとして、TCVダイアグラム出力処理に渡す。
 \end{enumerate}
 

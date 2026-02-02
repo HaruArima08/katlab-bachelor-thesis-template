@@ -16,7 +16,8 @@ Python \cite{python} は、Guido van Rossum が 1989 年から 1991 年にかけ
     csv モジュールは、CSV (Comma Separated Values) 形式のファイルの読み込みや書き込みを行うための機能を提供するモジュールである。
     本研究では、要求仕様情報リスト生成処理およびテストケース情報リスト生成処理において、CSV形式の要求仕様書とテストケースを辞書型オブジェクトとして読み込むために、csv モジュールのDictReader関数を使用する。
     \item http.server \\
-    http.server モジュールは、簡易的なHTTPサーバーを構築するための機能を提供するモジュールである。主に、開発や検証を目的として、静的ファイルの配信やHTTP通信の動作確認を容易に行うことができる。
+    http.server モジュールは、簡易的なHTTPサーバーを構築するための機能を提供するモジュールである。
+    主に、ローカル環境上での開発や検証を目的として、静的ファイルの配信やHTTP通信の動作確認を容易に行うことができる。
     本研究では、TCVダイアグラム出力処理 (\cref{subsec:diagram-generation-process}節で後述)でSVG画像として保存したTCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)をブラウザ上で表示するための、ローカルサーバーを起動する際に使用する。
 \end{itemize}
 
@@ -31,7 +32,7 @@ MeCab は C++ で記述されており、Python3 で利用するためのオー�
 なお、本研究ではMeCabの形態素解析に用いる辞書として、IPA辞書\cite{mecab}を利用する。
 
 \section{PlantUML}\label{sec:PlantUML}
-PlantUML \cite{plantuml} は、テキストデータから UML のダイアグラムや UML 以外の様々なタイプのダイアグラムを生成できるツールである。
+PlantUML \cite{plantuml} は、テキストデータから UML \cite{uml} のダイアグラムや UML 以外の様々なタイプのダイアグラムを生成できるツールである。
 テキストデータは、PlantUML 独自の構文で記述する。以降、PlantUML の構文で書いたテキストデータを、PlantUML コードと呼ぶ。
 
 本研究では、PlantUML コードからTCVダイアグラムを生成するために、PlantUMLのオープンソースのJavaライブラリ\cite{plantuml_lib}を使用する。
@@ -66,7 +67,7 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
 \begin{itemize}
     \item 日本語で記述する。
     \item CSVファイル(.csv)として記述する。
-    \item 機能要件を対象とする。
+    \item 機能要求を対象とする。
     \item 各要求仕様は、要求仕様記述項目(表\ref{tb:reqspec_item}参照)の定義に従って記述する。
     \item 「前提条件」および「システム応答」の項目は、2個以上の記述がある場合、読点(、)で区切って記述する。
     \item 各要求仕様に固有の要求仕様IDを割り当てる。
@@ -99,7 +100,7 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
 \begin{figure}[tp]
         \centering
         \fbox{
-            \includegraphics[width=0.96\textwidth]{images/reqspec_sample1.png}
+            \includegraphics[width=0.96\textwidth]{images/02/reqspec_sample1.png}
             }
             \caption{\tool の入力対象である要求仕様書の例}
             \label{fig:reqspec_sample1}
@@ -127,15 +128,15 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
     \item[要求仕様書フォーマット]\mbox{}\\
     要求仕様書のCSVファイルは、以下の形式で記述する。
     \begin{itemize}
-        \item 1行目はヘッダー行とする。
-        \item 2行目以降に各要求仕様を1行ずつ記述する。
-        \item 列は、要求仕様記述項目(表\ref{tb:reqspec_item}参照)の順序で記述する。
+        \item 1行目は、要求仕様記述項目(表\ref{tb:reqspec_item}参照)の各項目をカンマ(,)区切りで並べた、
+        ヘッダー行(要求仕様ID,要求仕様名,前提条件,トリガー,システム応答)とする。
+        \item 2行目以降に各要求仕様をヘッダー行の形式に従って、1行ずつ記述する。
     \end{itemize}
 \end{description}
 
 \section{入力対象のテストスイート}\label{sec:testcase}
 \tool は、以下の8つの条件をすべて満たすテストスイートを入力対象とする。
-なお、本研究では、テストスイートとは複数のテストケースの集合とする。
+なお、本研究では、複数のテストケースの集合をテストスイートとする。
 
 \begin{itemize}
     \item 日本語で記述する。
@@ -173,7 +174,7 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
 \begin{figure}[tp]
         \centering
         \fbox{
-        \includegraphics[width=0.96\textwidth]{images/tc_2.png}
+        \includegraphics[width=0.96\textwidth]{images/02/tc_2.png}
         }
         \caption{\tool の入力対象であるテストスイートの例}
         \label{fig:tc_2}
@@ -197,9 +198,9 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
     \item[テストスイートフォーマット]\mbox{}\\
     テストスイートのCSVファイルは、以下の形式で記述する。
     \begin{itemize}
-        \item 1行目はヘッダー行とする。
-        \item 2行目以降に各テストケースを1行ずつ記述する。
-        \item 列は、テストケース記述項目(表\ref{tb:testcase_item}参照)の順序で記述する。
+        \item 1行目は、テストケース記述項目(表\ref{tb:reqspec_item}参照)の各項目をカンマ(,)区切りで並べた、
+        ヘッダー行(テストケースID,テストケース名,事前条件,操作,期待出力)とする。
+        \item 2行目以降に各テストケースをヘッダー行の形式に従って、1行ずつ記述する。
     \end{itemize}
 \end{description}
 

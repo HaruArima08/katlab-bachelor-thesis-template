@@ -13,14 +13,15 @@ TCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)を出�
 \section{TCVダイアグラム}\label{sec:testcase_visualization_diagram}
 TCVダイアグラム (Test-Case Visualization Diagram) とは、本研究で提案する、テストケースの可視化を目的としたダイアグラムである。
 
-具体的には、TCVダイアグラムは、以下の3つを可視化する。
+具体的には、TCVダイアグラムは、以下の4つを可視化する。
 \begin{itemize}
-    \item テストケースの抜け：ある要求仕様を検証するテストケースが存在しない状態
-    \item テストケースの不備：ある要求仕様を検証するテストケースは存在するが、内容が要求仕様に対して不十分な状態
-    \item テストケースの過剰：テストケースは存在するが、対応する要求仕様が存在しない状態
+    \item テストケースの充足:ある要求仕様を検証するテストケースが存在する状態
+    \item テストケースの抜け:ある要求仕様を検証するテストケースが存在しない状態
+    \item テストケースの不備:ある要求仕様を検証するテストケースは存在するが、内容が要求仕様に対して不十分な状態
+    \item テストケースの過剰:テストケースは存在するが、対応する要求仕様が存在しない状態
 \end{itemize}
 
-以降、TCVダイアグラムの構成を \cref{subsec:tcv_structure} 節で、TCVダイアグラムによるテストケースの抜けや不備または過剰箇所の可視化について\cref{subsec:tcv_visualization}節で、それぞれ説明する。
+以降、TCVダイアグラムの構成を \cref{subsec:tcv_structure} 節で、TCVダイアグラムによるテストケースの可視化について\cref{subsec:tcv_visualization}節で、それぞれ説明する。
 
 \subsection{TCVダイアグラムの構成}\label{subsec:tcv_structure}
 
@@ -82,18 +83,6 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
     \end{center}
 \end{figure}
 
-また、図\ref{fig:tracability_link}に、対応関係がある要求仕様の矩形要素とテストケースの矩形要素の例を示す。
-対応関係がある要求仕様の矩形要素とテストケースの矩形要素は、破線で接続する。
-この破線には、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)で算出した合計スコアをラベルとして破線の下に付与する。
-
-\begin{figure}[tp]
-    \begin{center}
-        \includegraphics[width=17cm]{images/tracability_link.png}
-        \caption{対応関係がある要求仕様の矩形要素とテストケースの矩形要素の例}
-        \label{fig:tracability_link}
-    \end{center}
-\end{figure}
-
 以降、図\ref{fig:tcv_diagram_with_area}で示した、TCVダイアグラムを構成する各エリアの詳細について説明する。
 
 \subsubsection{要求仕様エリア}\label{subsec:requirements_area}
@@ -116,7 +105,7 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 例えば、図\ref{fig:tcv_diagram_with_area}では、「入力形式検証テスト」と「三角形種類判定テスト」の2つのテストスイートエリアがあり、
 それぞれのテストスイートに属するテストケースをグループ化して表示している。
 
-\subsection{テストケースの抜けや不備または過剰箇所の可視化}\label{subsec:tcv_visualization}
+\subsection{TCVダイアグラムによるテストケースの可視化}\label{subsec:tcv_visualization}
 TCVダイアグラムは、要求仕様とテストケース間の対応関係の状態を「品質種別」として定義し、品質種別に応じた背景色を各矩形要素に設定する。
 品質種別の定義と対応する背景色を、表\ref{tab:quality_type}に示す。
 
@@ -137,6 +126,31 @@ TCVダイアグラムは、要求仕様とテストケース間の対応関係�
         \hline
     \end{tabular}
 \end{table}
+
+以降、TCVダイアグラムによって可視化する以下の4つについて、それぞれ説明する。
+
+\begin{itemize}
+    \item テストケースの充足
+    \item テストケースの抜け
+    \item テストケースの不備
+    \item テストケースの過剰
+\end{itemize}
+
+\subsubsection{テストケースの充足}\label{subsubsec:tracability_link}
+TCVダイアグラムは、対応関係がある要求仕様の矩形要素およびテストケースの矩形要素の2つを、
+品質種別に対応する緑色(FULL)で表示することで、テストケースの充足箇所を強調する。
+図\ref{fig:tracability_link}は、図\ref{fig:tcv_diagram_with_area}における要求仕様REQ-1-1-1とテストケースTC-1を示している。
+対応関係がある要求仕様の矩形要素とテストケースの矩形要素の2つは、破線で接続する。
+この破線には、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)で算出した合計スコアをラベルとして破線の下に付与する。
+ユーザーは、緑色で表示した要求仕様とテストケースを確認することで、テストケースの充足箇所を把握できる。
+
+\begin{figure}[tp]
+    \begin{center}
+        \includegraphics[width=17cm]{images/tracability_link.png}
+        \caption{テストケースの充足箇所の例}
+        \label{fig:tracability_link}
+    \end{center}
+\end{figure}
 
 \subsubsection{テストケースの抜け}\label{subsubsec:missing_testcase}
 TCVダイアグラムは、対応するテストケースが存在しない要求仕様の矩形要素を、品質種別に対応する赤色(NONE)で表示することで、テストケースの抜け箇所を強調する。
@@ -159,7 +173,7 @@ TCVダイアグラムは、対応関係は存在するが、一部の対応付�
 
 \begin{figure}[tp]
     \begin{center}
-        \includegraphics[width=14cm]{images/insufficient_testcase.png}
+        \includegraphics[width=17cm]{images/insufficient_testcase.png}
         \caption{テストケースの不備箇所の例}
         \label{fig:insufficient_testcase}
     \end{center}
