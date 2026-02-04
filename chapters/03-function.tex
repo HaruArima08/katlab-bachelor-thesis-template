@@ -15,12 +15,17 @@ TCVダイアグラム (Test-Case Visualization Diagram) とは、本研究で提
 
 具体的には、TCVダイアグラムは、以下を可視化する。
 \begin{itemize}
-    \item テストケースの充足:ある要求仕様を適正にテストするテストケースが存在する状態
-    \item テストケースの過不足:以下のテストケースの抜け、テストケースの不備、テストケースの過剰の3つのテストケースの状態の総称
+    \item テストケースの充足\\
+    ある要求仕様を適正にテストするテストケースが存在する状態
+    \item テストケースの過不足\\
+    以下のテストケースの抜け、テストケースの不備、テストケースの過剰の3つのテストケースの状態の総称
     \begin{itemize}
-        \item テストケースの抜け:ある要求仕様をテストするテストケースが存在しない状態
-        \item テストケースの不備:ある要求仕様をテストするテストケースは存在するが、内容が要求仕様に対して不十分な状態
-        \item テストケースの過剰:テストケースは存在するが、テストする要求仕様が存在しない状態
+        \item テストケースの抜け\\
+        ある要求仕様をテストするテストケースが存在しない状態
+        \item テストケースの不備\\
+        ある要求仕様をテストするテストケースは存在するが、内容が要求仕様に対して不十分な状態
+        \item テストケースの過剰\\
+        テストケースは存在するが、テストする要求仕様が存在しない状態
     \end{itemize}
 \end{itemize}
 
@@ -80,7 +85,7 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 
 \begin{figure}[tp]
     \begin{center}
-        \includegraphics[width=10cm]{images/tc_element.png}
+        \includegraphics[width=12cm]{images/tc_element.png}
         \caption{テストケースの矩形要素の例}
         \label{fig:tc_element}
     \end{center}
@@ -90,8 +95,8 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 
 \subsubsection{要求仕様エリア}\label{subsec:requirements_area}
 要求仕様エリアは、入力の要求仕様書が含む各要求仕様の矩形要素を表示する領域である。
-図\ref{fig:tcv_diagram_with_area}において、①の領域に該当する。
-要求仕様エリアでは、要求仕様IDの命名規則(\ref{sec:reqspec}節参照)に基づき、子要求仕様の矩形要素から親要求仕様の矩形要素へ向かう実線矢印を描画することで、要求仕様の親子関係を視覚的に表現する。
+図\ref{fig:tcv_diagram_with_area}において、①の領域が該当する。
+要求仕様エリアでは、要求仕様IDの命名規則(\ref{subsec:reqspec}節参照)に基づき、子要求仕様の矩形要素から親要求仕様の矩形要素へ向かう実線矢印を描画することで、要求仕様の親子関係を視覚的に表現する。
 例えば、図\ref{fig:tcv_diagram_with_area}では、REQ-1-1からREQ-1へ向かう矢印により、REQ-1-1がREQ-1の子要求仕様であることを表現している。
 
 \subsubsection{テストケースエリア}\label{subsec:testcases_area}
@@ -272,7 +277,7 @@ TCVダイアグラムは、対応する要求仕様が存在しないテスト�
 ツール使用者が\tool{}を使用する際の流れを、以下に示す。
 
 \begin{enumerate}
-    \item \ref{subsec:reqspec}節で述べた要求仕様書、および、\ref{subsec:testcase}節で述べたテストスイートを作成する。
+    \item \ref{subsec:reqspec}節で述べた要求仕様書、および、\ref{subsec:testsuite}節で述べたテストスイートを作成する。
     \item 設定ファイルvitt.yamlを記述し、初期設定(\ref{sec:config}節参照)を行う。
     \item コマンドライン上で「\$ make run」を入力し、\tool{} を実行する。
     \item 任意のWebブラウザ上で「http://localhost:8000」にアクセスし、TCVダイアグラムを確認する。

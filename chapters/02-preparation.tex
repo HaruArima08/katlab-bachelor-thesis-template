@@ -39,7 +39,7 @@ PlantUML \cite{plantuml} は、テキストデータから UML \cite{uml} のダ
 本研究では、PlantUML コードからTCVダイアグラムを生成するために、PlantUMLのオープンソースのJavaライブラリ\cite{plantuml_lib}を使用する。
 
 \section{Jaccard係数}\label{sec:Jaccard}
-Jaccard係数\cite{jaccard}は、2つの集合の類似度を測る指標の1つである。テキストに含まれる単語を集合の要素と見なすことで、テキスト間の類似度を算出できる。
+Jaccard係数は、2つの集合の類似度を測る指標の1つである\cite{jaccard}。テキストに含まれる単語を集合の要素と見なすことで、テキスト間の類似度を算出できる。
 集合$A$と$B$のJaccard係数$J(A,B)$を算出する式(\ref{eq:jaccard})を、以下に示す。
 Jaccard係数は、$1$に近いほど2つのテキストは類似していることを示し、$0$に近いほど2つのテキストは類似していないことを示す。
 
@@ -202,6 +202,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節で後述)を�
     \end{center}
 
     テストケースIDは、TC\texttt{-}から始まり、その後に一意の番号が続く形式であり、要求仕様IDで定義した階層関係は導入しない。
+    なお、テストケースIDは、入力対象のすべてのテストスイート間で一意となるように割り当てる。
 
     \item[テストスイートフォーマット]\mbox{}\\
     テストスイートのCSVファイルは、以下の形式で記述する。

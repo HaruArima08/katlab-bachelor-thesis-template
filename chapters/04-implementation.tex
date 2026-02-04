@@ -76,7 +76,7 @@
         \hline
         name & 要求仕様名を表す文字列 \\
         \hline
-        description & 要求仕様文 (\cref{sec:EARS}参照) の内容を表す文字列 \\
+        description & 要求仕様文 (\cref{sec:EARS}参照) を表す文字列 \\
         \hline
         precondition & 前提条件の内容を表す文字列 \\
         \hline
@@ -294,7 +294,7 @@
 \end{enumerate}
 
 \subsubsection{階層関係抽出処理}\label{subsubsec:req_hierarchy}
-階層関係抽出処理は、要求仕様IDの命名規則 (\ref{sec:reqspec}節参照) に基づき、要求仕様間の親子関係の情報を抽出する処理である。
+階層関係抽出処理は、要求仕様IDの命名規則 (\ref{subsec:reqspec}節参照) に基づき、要求仕様間の親子関係の情報を抽出する処理である。
 具体的には、対応付け可否判定処理が出力した要求仕様情報オブジェクトのリストを入力とし、要求仕様間の親子関係を示すparent\_idおよびchildren\_idsプロパティに値を代入した状態の要求仕様情報オブジェクトのリストを、要求仕様情報リストとして出力する。
 出力は、対応関係分析部(\ref{sec:correspondence-analysis}節で後述)およびTCVダイアグラム生成部(\ref{sec:diagram-generation}節で後述)に渡す。
 階層関係抽出の例を、表\ref{tb:hierarchy_example}に示す。
