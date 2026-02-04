@@ -1,7 +1,13 @@
+% lstlisting のキャプションとコードの間隔設定
+\usepackage{caption}
+\captionsetup[lstlisting]{skip=10pt}
+
 \renewcommand{\lstlistingname}{コード}
 \newcommand{\bsn}{\textbackslash n}
 \lstset{
   language={Java},
+  abovecaptionskip=10pt,  % キャプションの上のスペース
+  belowcaptionskip=10pt,  % キャプションの下（コードとの間）のスペース
   frame=tlBR,%フレーム線の指定，上右下左の順，大文字は二重線
 %  frameround=tttt,%角の指定，右上|右下|左下|左上の順，tは丸角，fは四角
   framesep=5pt,%本文からframeまでの間隔
@@ -18,9 +24,10 @@
   numbers=left,%行番号の位置
   numbersep=1em,%本文との間隔
   breaklines=true,%改行の設定
-  xleftmargin=0zw,
-  xrightmargin=0zw,
-  columns=[l]{fullflexible},
+  breakautoindent=true,%折り返し時の自動インデント
+  linewidth=0.98\textwidth,%ページ幅の98%に収める
+  xleftmargin=0.05\textwidth,%中央揃えのための左マージン
+  columns=flexible,
   lineskip=-0.5zw,
   morecomment={[s][{\color[cmyk]{1,0,0,0}}]{/**}{*/}},
   floatplacement=t,
@@ -78,11 +85,12 @@
   language=swift,
   basicstyle=\ttfamily,
   showstringspaces=false, % lets spaces in strings appear as real spaces
-  columns=fixed,
+  columns=flexible,
   keepspaces=true,
   keywordstyle=\color{keyword},
   stringstyle=\color{string},
   commentstyle=\color{comment},
-  literate={<<}{{\textless\textless}}2 {>>}{{\textgreater\textgreater}}2 {<}{{\textless}}1 {>}{{\textgreater}}1 {\\}{{\char`\\}}1,
-  escapechar=|,
+  breaklines=true, % 自動で折り返す
+  linewidth=0.98\textwidth, % ページ幅の98%に収める
+  xleftmargin=0.05\textwidth, % 中央揃えのための左マージン
 }
