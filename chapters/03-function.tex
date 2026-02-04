@@ -2,7 +2,7 @@
 
 本章では、本研究で試作するツール\tool{} (VIsualization of Testcase Tool) の機能について説明する。
 
-\tool は、\ref{sec:reqspec}節で述べた要求仕様書、および、\ref{sec:testcase}節で述べたテストスイートを入力とし、
+\tool は、\ref{subsec:reqspec}節で述べた要求仕様書、および、\ref{subsec:testsuite}節で述べたテストスイートを入力とし、
 TCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)を出力する。
 
 以降、TCVダイアグラムの詳細を\ref{sec:testcase_visualization_diagram}節で、
@@ -13,12 +13,15 @@ TCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)を出�
 \section{TCVダイアグラム}\label{sec:testcase_visualization_diagram}
 TCVダイアグラム (Test-Case Visualization Diagram) とは、本研究で提案する、テストケースの可視化を目的としたダイアグラムである。
 
-具体的には、TCVダイアグラムは、以下の4つを可視化する。
+具体的には、TCVダイアグラムは、以下を可視化する。
 \begin{itemize}
-    \item テストケースの充足:ある要求仕様を検証するテストケースが存在する状態
-    \item テストケースの抜け:ある要求仕様を検証するテストケースが存在しない状態
-    \item テストケースの不備:ある要求仕様を検証するテストケースは存在するが、内容が要求仕様に対して不十分な状態
-    \item テストケースの過剰:テストケースは存在するが、対応する要求仕様が存在しない状態
+    \item テストケースの充足:ある要求仕様を適正にテストするテストケースが存在する状態
+    \item テストケースの過不足:以下のテストケースの抜け、テストケースの不備、テストケースの過剰の3つのテストケースの状態の総称
+    \begin{itemize}
+        \item テストケースの抜け:ある要求仕様をテストするテストケースが存在しない状態
+        \item テストケースの不備:ある要求仕様をテストするテストケースは存在するが、内容が要求仕様に対して不十分な状態
+        \item テストケースの過剰:テストケースは存在するが、テストする要求仕様が存在しない状態
+    \end{itemize}
 \end{itemize}
 
 以降、TCVダイアグラムの構成を \cref{subsec:tcv_structure} 節で、TCVダイアグラムによるテストケースの可視化について\cref{subsec:tcv_visualization}節で、それぞれ説明する。
@@ -54,7 +57,7 @@ TCVダイアグラムは、各要求仕様と各テストケースを矩形要�
 \begin{itemize}
     \item 要求仕様ID
     \item 要求仕様名
-    \item 要求仕様テンプレート(\ref{sec:EARS}節参照)の内容
+    \item 要求仕様文(\ref{sec:EARS}節参照)
 \end{itemize}
 
 \begin{figure}[tp]
@@ -127,13 +130,16 @@ TCVダイアグラムは、要求仕様とテストケース間の対応関係�
     \end{tabular}
 \end{table}
 
-以降、TCVダイアグラムによって可視化する以下の4つについて、それぞれ説明する。
+以降、TCVダイアグラムによって可視化する以下について、説明する。
 
 \begin{itemize}
     \item テストケースの充足
-    \item テストケースの抜け
-    \item テストケースの不備
-    \item テストケースの過剰
+    \item テストケースの過不足
+    \begin{itemize}
+        \item テストケースの抜け
+        \item テストケースの不備
+        \item テストケースの過剰
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{テストケースの充足}\label{subsubsec:tracability_link}
@@ -195,7 +201,7 @@ TCVダイアグラムは、対応する要求仕様が存在しないテスト�
 % 初期設定
 \section{初期設定}\label{sec:config}
 
-\tool の機能を使用するために、プロジェクトの情報や、要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを、\tool{}の設定ファイルvitt.yamlに事前に記述する必要がある。
+\tool を使用するために、プロジェクトの情報や、要求仕様とテストケースの対応関係を抽出する際に用いるパラメータを、\tool{}の設定ファイルvitt.yamlに事前に記述する必要がある。
 設定ファイルvitt.yamlは、プロジェクト設定(project)と処理設定(processing)の2つの項目から構成する。
 
 設定ファイルvitt.yamlの記述例を、図\ref{fig:setting_sample}に示す。
@@ -229,10 +235,10 @@ TCVダイアグラムは、対応する要求仕様が存在しないテスト�
     図\ref{fig:setting_sample}の例では、システム名は、「サンプルシステム」と設定している。
     \item 要求仕様書のディレクトリパス(requirement\_path) \\
     要求仕様書のディレクトリパスは、入力対象の要求仕様書を格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルを要求仕様書として読み込む。
-    図\ref{fig:setting_sample}の例では、要求仕様書のディレクトリパスは、data/sample/reqと設定している。
+    図\ref{fig:setting_sample}の例では、要求仕様書のディレクトリパスは、「data/sample/req」と設定している。
     \item テストスイートのディレクトリパス(testsuite\_path) \\
     テストスイートのディレクトリパスは、入力対象のテストスイートを格納しているディレクトリのパスである。\tool は、このディレクトリ下にあるCSVファイルをテストスイートとして読み込む。
-    図\ref{fig:setting_sample}の例では、テストスイートのディレクトリパスは、data/sample/testsuiteと設定している。
+    図\ref{fig:setting_sample}の例では、テストスイートのディレクトリパスは、「data/sample/testsuite」と設定している。
 \end{itemize}
 
 \subsubsection{処理設定(processing)}\label{subsubsec:processing_setting}
@@ -241,19 +247,19 @@ TCVダイアグラムは、対応する要求仕様が存在しないテスト�
 \begin{itemize}
     \item 類似度の閾値(similarity\_threshold) \\
     類似度の閾値は、要求仕様とテストケースの対応関係の有無を判定する際に使う実数値で、$0$以上$1$以下の範囲で指定する。
-    図\ref{fig:setting_sample}の例では、類似度の閾値は、0.7と設定している。
+    図\ref{fig:setting_sample}の例では、類似度の閾値は、「0.7」と設定している。
     \item 対応付け要素の重み(weights) \\
     要求仕様とテストケースの対応関係の有無を判定する際、各対応付け要素間の重要度を重みとして、以下の3つを指定する。以下、3つの重みの合計が1.0になるように指定する。
     \begin{itemize}
         \item 前提条件と事前条件の重み(precondition) \\
         前提条件と事前条件の重みは、要求仕様の前提条件とテストケースの事前条件の類似度に対する重みである。
-        図\ref{fig:setting_sample}の例では、前提条件と事前条件の重みは、0.2と設定している。
+        図\ref{fig:setting_sample}の例では、前提条件と事前条件の重みは、「0.2」と設定している。
         \item トリガーと操作の重み(trigger\_operation) \\
         トリガーと操作の重みは、要求仕様のトリガーとテストケースの操作の類似度に対する重みである。
-        図\ref{fig:setting_sample}の例では、トリガーと操作の重みは、0.4と設定している。
+        図\ref{fig:setting_sample}の例では、トリガーと操作の重みは、「0.4」と設定している。
         \item システム応答と期待出力の重み(response\_output) \\
         システム応答と期待出力の重みは、要求仕様のシステム応答とテストケースの期待出力の類似度に対する重みである。
-        図\ref{fig:setting_sample}の例では、システム応答と期待出力の重みは、0.4と設定している。
+        図\ref{fig:setting_sample}の例では、システム応答と期待出力の重みは、「0.4」と設定している。
     \end{itemize}
 \end{itemize}
 
@@ -266,15 +272,15 @@ TCVダイアグラムは、対応する要求仕様が存在しないテスト�
 ツール使用者が\tool{}を使用する際の流れを、以下に示す。
 
 \begin{enumerate}
-    \item \ref{sec:reqspec}節で述べた要求仕様書、および、\ref{sec:testcase}節で述べたテストスイートを作成する。
+    \item \ref{subsec:reqspec}節で述べた要求仕様書、および、\ref{subsec:testcase}節で述べたテストスイートを作成する。
     \item 設定ファイルvitt.yamlを記述し、初期設定(\ref{sec:config}節参照)を行う。
     \item コマンドライン上で「\$ make run」を入力し、\tool{} を実行する。
-    \item Webブラウザ上で「http://localhost:8000」にアクセスし、TCVダイアグラムを確認する。
+    \item 任意のWebブラウザ上で「http://localhost:8000」にアクセスし、TCVダイアグラムを確認する。
     \begin{itemize}
-        \item テストケースの抜けや不備、過剰箇所が存在しない場合\\
+        \item テストケースの過不足箇所が存在しない場合\\
         \tool{}の実行を終了する。
-        \item テストケースの抜けや不備、過剰箇所が存在する場合\\
-        テストケースの抜けや不備、過剰箇所を特定し、
+        \item テストケースの過不足箇所が存在する場合\\
+        テストケースの過不足箇所を特定し、
         要求仕様書とテストスイートの内容を確認する。
     \end{itemize}
     \item 要求仕様書またはテストスイートを修正し、3.に戻る。

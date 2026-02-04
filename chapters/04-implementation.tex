@@ -22,7 +22,7 @@
 % 入力解析部
 \section{入力解析部}\label{sec:input-data-analysis}
 入力解析部は、要求仕様書およびテストスイートを解析し、対応関係分析部(\ref{sec:correspondence-analysis}節で後述)とTCVダイアグラム生成部(\ref{sec:diagram-generation}節で後述)で用いる中間データを生成する処理部である。
-本処理部は、入力として要求仕様書、テストスイート、および初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの3つを受け取り、要求仕様情報リストとテストケース情報リストを出力する。
+本処理部は、要求仕様書、テストスイート、および、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの3つを入力として受け取り、要求仕様情報リストとテストケース情報リストを出力する。
 本処理部が入力として受け取る、要求仕様書の例を図\ref{fig:reqspec_sample2}に、テストスイートの例を図\ref{fig:tc_4}に、設定ファイルvitt.yamlの例を図\ref{fig:setting_1}に、それぞれ示す。
 
 \begin{figure}[tp]
@@ -39,7 +39,7 @@
     \fbox{
         \includegraphics[width=0.96\textwidth]{images/tc_4.png}
         }
-        \caption{入力解析部が入力として受け取るテストスイートの例}
+        \caption{入力解析部が入力として受け取るテストスイート(入力形式検証テスト.csv)の例}
         \label{fig:tc_4}
     \end{figure}
 
@@ -52,9 +52,9 @@
         \vbox{processing:}
         \vbox{\ \ \ \ similarity\_threshold: 0.7}
         \vbox{\ \ \ \ weights:}
-        \vbox{\ \ \ \ \ \ \ \ precondition: 0.2}
-        \vbox{\ \ \ \ \ \ \ \ trigger\_operation: 0.4}
-        \vbox{\ \ \ \ \ \ \ \ response\_output: 0.4}
+        \vbox{\ \ \ \ \ \ \ \ precondition: 0.1}
+        \vbox{\ \ \ \ \ \ \ \ trigger\_operation: 0.6}
+        \vbox{\ \ \ \ \ \ \ \ response\_output: 0.3}
 	}
 	\centerline{\fbox{\box0}}
     \caption{入力解析部が入力として受け取る設定ファイルvitt.yamlの例}
@@ -76,7 +76,7 @@
         \hline
         name & 要求仕様名を表す文字列 \\
         \hline
-        description & 要求仕様テンプレート (\cref{sec:EARS}参照) の内容を表す文字列 \\
+        description & 要求仕様文 (\cref{sec:EARS}参照) の内容を表す文字列 \\
         \hline
         precondition & 前提条件の内容を表す文字列 \\
         \hline
@@ -201,7 +201,7 @@
 本処理は、以下の4つの処理を順に実行し、要求仕様情報リストを生成する。
 \begin{enumerate}
     \item 要求仕様記述項目抽出処理
-    \item 要求仕様テンプレート生成処理
+    \item 要求仕様文生成処理
     \item 対応付け可否判定処理
     \item 階層関係抽出処理
 \end{enumerate}
@@ -233,13 +233,13 @@
     \item 要求仕様情報オブジェクトのリストを出力する。
 \end{enumerate}
 
-\subsubsection{要求仕様テンプレート生成処理}\label{subsubsec:req_text_gen}
-要求仕様テンプレート生成処理は、要求仕様記述項目抽出処理で生成した、
+\subsubsection{要求仕様文生成処理}\label{subsubsec:req_text_gen}
+要求仕様文生成処理は、要求仕様記述項目抽出処理で生成した、
 要求仕様情報オブジェクトのprecondition、trigger、responseの各プロパティの文字列と、
 初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlのsystem\_nameの値を組み合わせ、
-要求仕様テンプレート(\ref{sec:EARS}節参照)を生成する処理である。
+要求仕様文(\ref{sec:EARS}節参照)を生成する処理である。
 具体的には、要求仕様記述項目抽出処理で生成した要求仕様情報オブジェクトのリスト、および、設定ファイルvitt.yamlの2つを入力とし、
-要求仕様テンプレートを表すdescriptionプロパティに値を代入した状態の要求仕様情報オブジェクトのリストを出力する。
+要求仕様文を表すdescriptionプロパティに値を代入した状態の要求仕様情報オブジェクトのリストを出力する。
 
 本処理の流れを、以下に示す。
 \begin{enumerate}
@@ -247,8 +247,8 @@
     \item 入力として受け取った要求仕様情報オブジェクトのリストにある要求仕様情報オブジェクトの数だけ、以下の処理を繰り返す。
     \begin{enumerate}
         \item 要求仕様情報オブジェクトのリストから、未処理の要求仕様情報オブジェクトを1つ取り出す。
-        \item 要求仕様テンプレートの部分文字列を格納する空のリストを用意する。
-        \item 取り出した要求仕様情報オブジェクトからprecondition、trigger、responseの各プロパティの値を取得する。
+        \item 要求仕様文の部分文字列を格納する空のリストを用意する。
+        \item $2$.(a)で取り出した要求仕様情報オブジェクトからprecondition、trigger、responseの各プロパティの値を取得する。
         \item 取得した各プロパティの値に応じて、以下の処理を行う。
         \begin{enumerate}
             \item preconditionプロパティの値が空文字列でない場合\\
@@ -259,15 +259,15 @@
             $1$.で取得したsystem\_nameの値とresponseプロパティの値を用いて、
             ``\{system\_name\}は\{response\}べきである''という形式の部分文字列を$2$.(b)で用意したリストに追加する。
         \end{enumerate}
-        \item リスト内の部分文字列を読点(、)で結合し、要求仕様テンプレートを生成する。
-        \item 生成した要求仕様テンプレートを、要求仕様情報オブジェクトのdescriptionプロパティに代入する。
+        \item リスト内の部分文字列を読点(、)で結合し、要求仕様文を生成する。
+        \item 生成した要求仕様文を、$2$.(a)で取得した要求仕様情報オブジェクトのdescriptionプロパティに代入する。
     \end{enumerate}   
     \item 要求仕様情報オブジェクトのリストを出力する。
 \end{enumerate}
 
 \subsubsection{対応付け可否判定処理}\label{subsubsec:req_traceability}
 対応付け可否判定処理は、各要求仕様がテストケースと対応付け可能かどうかを判定する処理である。
-具体的には、要求仕様テンプレート生成処理が出力した要求仕様情報オブジェクトのリストを入力とし、テストケースと対応付け可能かどうかを示すis\_traceableプロパティに値を代入した状態の要求仕様情報オブジェクトのリストを出力する。
+具体的には、要求仕様文生成処理が出力した要求仕様情報オブジェクトのリストを入力とし、テストケースと対応付け可能かどうかを示すis\_traceableプロパティに値を代入した状態の要求仕様情報オブジェクトのリストを出力する。
 本研究では、類似度算出処理(\ref{subsec:similarity_calculation}節で後述)において、\cref{tb:traceability}に示す、
 要求仕様の対応付け要素 (「前提条件」、「トリガー」、「システム応答」)とテストケースの対応付け要素 (「事前条件」、「操作」、「期待出力」)のそれぞれのテキスト間の類似度を算出し、
 その結果に基づいて対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)において、要求仕様とテストケースの対応関係を抽出する。
@@ -299,6 +299,28 @@
 出力は、対応関係分析部(\ref{sec:correspondence-analysis}節で後述)およびTCVダイアグラム生成部(\ref{sec:diagram-generation}節で後述)に渡す。
 階層関係抽出の例を、表\ref{tb:hierarchy_example}に示す。
 
+\begin{table}[tp]
+    \caption{階層関係抽出の例}
+    \label{tb:hierarchy_example}
+    \centering
+    \small
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{id} & \textbf{parent\_id} & \textbf{children\_ids} \\
+    \hline
+    REQ-1 & None & [REQ-1-1, REQ-1-2] \\
+    \hline
+    REQ-1-1 & REQ-1 & [REQ-1-1-1] \\
+    \hline
+    REQ-1-1-1 & REQ-1-1 & [] \\
+    \hline
+    REQ-1-2 & REQ-1 & [] \\
+    \hline
+    REQ-2 & None & [] \\
+    \hline
+    \end{tabular}
+\end{table}
+
 本処理の流れを、以下に示す。
 \begin{enumerate}
     \item 入力として受け取った要求仕様情報オブジェクトのリストから、idプロパティの値をキー、リスト内の要求仕様情報オブジェクトへの参照を値とする辞書を生成する。
@@ -328,28 +350,6 @@
     \end{enumerate}
     \item 要求仕様情報オブジェクトのリストを、要求仕様情報リストとして出力する。
 \end{enumerate}
-
-\begin{table}[tp]
-    \caption{階層関係抽出の例}
-    \label{tb:hierarchy_example}
-    \centering
-    \small
-    \begin{tabular}{|l|l|l|}
-    \hline
-    \textbf{id} & \textbf{parent\_id} & \textbf{children\_ids} \\
-    \hline
-    REQ-1 & None & [REQ-1-1, REQ-1-2] \\
-    \hline
-    REQ-1-1 & REQ-1 & [REQ-1-1-1] \\
-    \hline
-    REQ-1-1-1 & REQ-1-1 & [] \\
-    \hline
-    REQ-1-2 & REQ-1 & [] \\
-    \hline
-    REQ-2 & None & [] \\
-    \hline
-    \end{tabular}
-\end{table}
 
 \subsection{テストケース情報リスト生成処理}\label{sec:testcase-data-extraction}
 テストケース情報リスト生成処理は、CSVファイルで記述したテストスイートを読み込み、
@@ -387,9 +387,9 @@
 % 対応関係分析部
 \section{対応関係分析部}\label{sec:correspondence-analysis}
 対応関係分析部は、入力解析部(\ref{sec:input-data-analysis}節参照)で生成した要求仕様情報リストとテストケース情報リストを分析し、要求仕様とテストケース間の対応関係を抽出する処理部である。
-本処理部は、入力として要求仕様情報リスト、テストケース情報リスト、および初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの3つを受け取り、対応関係情報リストを出力する。
+本処理部は、要求仕様情報リスト、テストケース情報リスト、および、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの3つを入力として受け取り、対応関係情報リストを出力する。
 
-対応関係情報リストは、要求仕様とテストケース間の対応関係の情報である対応関係情報オブジェクトを格納するためのリストである。
+対応関係情報リストは、要求仕様とテストケース間の対応関係の情報である対応関係情報オブジェクトのリストである。
 
 対応関係情報オブジェクトは、以下に示す7つの情報を持つ。
 \begin{itemize}
@@ -402,7 +402,7 @@
     \item 品質種別: 対応関係の状態を示す\texttt{FULL} または \texttt{PARTIAL}
 \end{itemize}
 
-本処理部が、表\ref{tb:reqspec_obj_example}に示した要求仕様情報オブジェクトおよび表\ref{tb:testcase_obj_example}に示したテストケース情報オブジェクトから生成する、
+本処理部が、表\ref{tb:reqspec_obj_example}に示した要求仕様情報オブジェクト、および、表\ref{tb:testcase_obj_example}に示したテストケース情報オブジェクトから生成する、
 対応関係情報オブジェクトの例を、表\ref{tb:mapping_obj_example}に示す。
 
 \begin{table}[tp]
@@ -475,7 +475,7 @@
         \item 取り出した要求仕様情報オブジェクトが対応付け不可能な要求仕様の場合(is\_traceableプロパティの値がfalseの場合)\\
             以降の処理は行わず、$2$.(a)の処理に戻る。
         \item 取り出した要求仕様情報オブジェクトから、要求仕様IDおよび$3$つの対応付け要素(「前提条件」、「トリガー」、「システム応答」)の文字列を抽出する。
-        図\ref{fig:str_mapping_element}に、図\ref{fig:reqspec_sample2}で示した要求仕様ID「REQ-1-3」から抽出する対応付け要素の文字列の例を示す。
+        図\ref{fig:str_mapping_element}に、図\ref{fig:reqspec_sample2}で示した要求仕様ID「REQ-1-3」の要求仕様情報オブジェクトから抽出する対応付け要素の文字列の例を示す。
 
         \begin{figure}[tp]
             \begin{center}
@@ -524,7 +524,7 @@
 本研究では、重要単語として名詞、動詞、複合名詞を抽出する。
 名詞は要求仕様やテストケースにおいて、対象物や概念を表し、動詞はシステムの動作や振る舞いを表すため、要求仕様とテストケースの内容を特徴付ける単語として、重要な意味を持つ。
 また、複合名詞は、2個以上の名詞が連続した単語と定義し、先頭に接頭辞を伴う場合も含める。
-本研究では、複合名詞は単独の名詞よりも要求仕様やテストケースの内容を具体的に表すことができるため、抽出する。
+本研究では、複合名詞は単独の名詞よりも要求仕様やテストケースの内容を具体的に表すことができるため、抽出対象とする。
 
 要求仕様重要単語データリストは、各要求仕様の対応付け要素から抽出した重要単語を格納するリストである。
 
@@ -623,7 +623,7 @@
 および、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの3つを入力とし、対応付け情報リストを出力する。
 出力は、対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)に渡す。
 
-対応付け情報リストは、要求仕様とテストケース間の類似度の情報である対応付け情報オブジェクトを格納するリストである。
+対応付け情報リストは、要求仕様とテストケース間の類似度の情報である対応付け情報オブジェクトのリストである。
 
 対応付け情報オブジェクトは、以下に示す6つの情報を持つ。
 \begin{itemize}
@@ -687,7 +687,7 @@
     \item 空のリストAを用意する。
     \item 対応付け情報リスト内の対応付け情報オブジェクトの数だけ、以下の処理を繰り返す。
     \begin{enumerate}
-        \item 対応付け情報リストから、対応付け情報オブジェクトを1つ取り出す。
+        \item 対応付け情報リストから、未処理の対応付け情報オブジェクトを1つ取り出す。
         \item 取り出した対応付け情報オブジェクトから、合計スコアを取得する。
         \item 取得した合計スコアが、$2$.で取得した類似度の閾値以上であるかを検証する。
         \begin{itemize}
@@ -701,7 +701,7 @@
     \item 空のリストBを用意する。
     \item $5$.でソートしたリストA内の、対応付け情報オブジェクトの数だけ、以下の処理を繰り返す。
     \begin{enumerate}
-        \item リストAから、対応付け情報オブジェクトを1つ取り出す。
+        \item リストAから、未処理の対応付け情報オブジェクトを1つ取り出す。
         \item 取り出した対応付け情報オブジェクトから、要求仕様IDおよびテストケースIDを取得する。
         \item $6$.で用意したリストB内に、$7$.(b)で取得した要求仕様IDまたはテストケースIDを持つ対応付け情報オブジェクトがすでに存在するかを検証する。
         \begin{itemize}
@@ -714,7 +714,7 @@
     \item 空のリストCを用意する。
     \item $6$.で用意したリストB内の対応付け情報オブジェクトの数だけ、以下の処理を繰り返す。
     \begin{enumerate}
-        \item リストBから、対応付け情報オブジェクトを1つ取り出す。
+        \item リストBから、未処理の対応付け情報オブジェクトを1つ取り出す。
         \item 取り出した対応付け情報オブジェクトから、$3$つの対応付け要素間の類似度(「前提条件」と「事前条件」、「トリガー」と「操作」、「システム応答」と「期待出力」)を取得する。
         \item 取得した3つの類似度が、$2$.で取得した類似度の閾値以上であるかをそれぞれ確認し、閾値以上である類似度の数を数える。
         \item 閾値以上である類似度の数に応じて、品質種別を決定する。
@@ -731,9 +731,10 @@
 
 % TCVダイアグラム生成部
 \section{TCVダイアグラム生成部}\label{sec:diagram-generation}
-TCVダイアグラム生成部は、テストケースの抜け、不備、過剰箇所を可視化するTCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を生成する処理部である。
+TCVダイアグラム生成部は、本研究で提案する、テストケースの可視化を目的としたTCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を生成する処理部である。
 具体的には、入力解析部から受け取った要求仕様情報リストおよびテストケース情報リストと、対応関係分析部から受け取った対応関係情報リストの3つを入力とし、
-PlantUML(\ref{sec:PlantUML}節参照)を用いてTCV ダイアグラムを生成する。さらに、生成した TCV ダイアグラムをブラウザ上に表示する。
+PlantUML(\ref{sec:PlantUML}節参照)を用いてTCV ダイアグラムを生成する。
+さらに、生成した TCV ダイアグラムをローカルサーバーを介して配信し、ユーザーがWebブラウザから確認できるようにする。
 
 本処理部が生成するPlantUMLコードの例を図\ref{fig:puml_code1}に、TCVダイアグラムの例を図\ref{fig:tcv_diagram_4.3}に、それぞれ示す。
 
@@ -914,12 +915,13 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
 
 \subsection{TCVダイアグラム出力処理}\label{subsec:diagram-generation-process}
 TCVダイアグラム出力処理は、PlantUMLコード生成処理(\ref{subsec:puml-generation}節参照)で生成したPlantUMLコードから、TCVダイアグラムを出力する処理である。
-具体的には、PlantUMLコード生成処理で生成したPlantUML コードを入力とし、TCV ダイアグラムをブラウザ上に表示する。
+具体的には、PlantUMLコード生成処理で生成したPlantUML コードを入力とし、TCV ダイアグラムをローカルサーバーを介して配信する。
+なお、ユーザーは、任意のWebブラウザ上で「http://localhost:8000」にアクセスすることで、TCVダイアグラムを確認できる。
 
 本処理の流れを、以下に示す。
 \begin{enumerate}
     \item PlantUMLコード生成処理の出力であるPlantUMLコードを、入力として読み込む。
     \item PlantUMLコードを.pumlファイルとして保存する。
     \item PlantUMLライブラリ(\ref{sec:PlantUML}節参照)を用いて、.pumlファイルからSVG (Scalable Vector Graphics) 形式にしたTCVダイアグラムを生成する。
-    \item 生成したTCVダイアグラムを、http.serverモジュール(\cref{sec:Python}参照)を用いたローカルサーバーを経由して、ブラウザ上に表示する。
+    \item http.serverモジュール(\cref{sec:Python}参照)を用いてローカルサーバーを起動し、SVG形式にしたTCVダイアグラムを配信する。
 \end{enumerate}

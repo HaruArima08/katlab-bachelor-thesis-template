@@ -18,7 +18,8 @@ Python \cite{python} は、Guido van Rossum が 1989 年から 1991 年にかけ
     \item http.server \\
     http.server モジュールは、簡易的なHTTPサーバーを構築するための機能を提供するモジュールである。
     主に、ローカル環境上での開発や検証を目的として、静的ファイルの配信やHTTP通信の動作確認を容易に行うことができる。
-    本研究では、TCVダイアグラム出力処理 (\cref{subsec:diagram-generation-process}節で後述)でSVG画像として保存したTCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)をブラウザ上で表示するための、ローカルサーバーを起動する際に使用する。
+    本研究では、TCVダイアグラム出力処理 (\cref{subsec:diagram-generation-process}節で後述)において、
+    SVG形式として生成したTCVダイアグラム(\cref{sec:testcase_visualization_diagram}で後述)を配信するローカルサーバーの起動に使用する。
 \end{itemize}
 
 
@@ -38,7 +39,7 @@ PlantUML \cite{plantuml} は、テキストデータから UML \cite{uml} のダ
 本研究では、PlantUML コードからTCVダイアグラムを生成するために、PlantUMLのオープンソースのJavaライブラリ\cite{plantuml_lib}を使用する。
 
 \section{Jaccard係数}\label{sec:Jaccard}
-Jaccard係数は、2つの集合の類似度を測る指標の1つである。テキストに含まれる単語を集合の要素と見なすことで、テキスト間の類似度を算出できる。
+Jaccard係数\cite{jaccard}は、2つの集合の類似度を測る指標の1つである。テキストに含まれる単語を集合の要素と見なすことで、テキスト間の類似度を算出できる。
 集合$A$と$B$のJaccard係数$J(A,B)$を算出する式(\ref{eq:jaccard})を、以下に示す。
 Jaccard係数は、$1$に近いほど2つのテキストは類似していることを示し、$0$に近いほど2つのテキストは類似していないことを示す。
 
@@ -61,19 +62,37 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
 「\{前提条件\}場合、\{トリガー\}時、\{システム名\} は \{システム応答\}べきである」
 \end{center}
 
-\section{入力対象の要求仕様書}\label{sec:reqspec}
+以降、要求仕様テンプレートに基づいて記述した要求仕様の内容を、要求仕様文とする。
+
+\section{\tool{}の入力対象}\label{sec:input}
+
+本研究で試作する\tool{}は、要求仕様書(\ref{subsec:reqspec}節で後述)とテストスイート(\ref{subsec:testsuite}節で後述)を入力とし、
+TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節で後述)を出力する。
+
+\subsection{要求仕様書}\label{subsec:reqspec}
 \tool は、以下の8つの条件をすべて満たす要求仕様書を入力対象とする。
 
 \begin{itemize}
     \item 日本語で記述する。
     \item CSVファイル(.csv)として記述する。
     \item 機能要求を対象とする。
-    \item 各要求仕様は、要求仕様記述項目(表\ref{tb:reqspec_item}参照)の定義に従って記述する。
+    \item 各要求仕様は、要求仕様記述項目(後述)の定義に従って記述する。
     \item 「前提条件」および「システム応答」の項目は、2個以上の記述がある場合、読点(、)で区切って記述する。
     \item 各要求仕様に固有の要求仕様IDを割り当てる。
-    \item 要求仕様IDは、要求仕様IDの命名規則に従う。
-    \item 要求仕様書フォーマットに従って記述する。
+    \item 要求仕様IDは、要求仕様IDの命名規則(後述)に従う。
+    \item 要求仕様書フォーマット(後述)に従って記述する。
 \end{itemize}
+
+\tool の入力対象である要求仕様書の例を、図\ref{fig:reqspec_sample1}に示す。
+
+\begin{figure}[tp]
+        \centering
+        \fbox{
+            \includegraphics[width=0.96\textwidth]{images/02/reqspec_sample1.png}
+            }
+            \caption{\tool の入力対象である要求仕様書の例}
+            \label{fig:reqspec_sample1}
+        \end{figure}
 
 \begin{table}[tp]
         \caption{要求仕様記述項目}\label{tb:reqspec_item}
@@ -94,17 +113,6 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
             \hline
         \end{tabular}
     \end{table}
-
-\tool の入力対象である要求仕様書の例を、図\ref{fig:reqspec_sample1}に示す。
-
-\begin{figure}[tp]
-        \centering
-        \fbox{
-            \includegraphics[width=0.96\textwidth]{images/02/reqspec_sample1.png}
-            }
-            \caption{\tool の入力対象である要求仕様書の例}
-            \label{fig:reqspec_sample1}
-        \end{figure}
 
 \begin{description}
     \item[要求仕様記述項目]\mbox{}\\
@@ -134,22 +142,31 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
     \end{itemize}
 \end{description}
 
-\section{入力対象のテストスイート}\label{sec:testcase}
+\subsection{テストスイート}\label{subsec:testsuite}
 \tool は、以下の8つの条件をすべて満たすテストスイートを入力対象とする。
-なお、本研究では、複数のテストケースの集合をテストスイートとする。
+なお、テストスイートとは、特定のテストサイクルで実行されるテストケースやテスト手順のセットである\cite{istqb_glossary}。
 
 \begin{itemize}
     \item 日本語で記述する。
     \item CSVファイル(.csv)として記述する。
     \item ファイル名が、「テストスイート名.csv」である。
-    \item 各テストケースは、テストケース記述項目(表\ref{tb:testcase_item}参照)の定義に従って記述する。
+    \item 各テストケースは、テストケース記述項目(後述)の定義に従って記述する。
     \item 各テストケースは1つの要求仕様のみを検証対象とし、同一の要求仕様を検証するテストケースは複数存在しない。
     \item 各テストケースには、入力対象のすべてのテストスイート間で、固有のテストケースIDを割り当てる。
-    \item テストケースIDは、テストケースIDの命名規則に従う。
-    \item テストスイートフォーマットに従って記述する。
+    \item テストケースIDは、テストケースIDの命名規則(後述)に従う。
+    \item テストスイートフォーマット(後述)に従って記述する。
 \end{itemize}
 
 \tool の入力対象であるテストスイートの例を、図\ref{fig:tc_2}に示す。
+
+\begin{figure}[tp]
+        \centering
+        \fbox{
+        \includegraphics[width=0.96\textwidth]{images/02/tc_2.png}
+        }
+        \caption{\tool の入力対象であるテストスイートの例}
+        \label{fig:tc_2}
+    \end{figure}
 
 \begin{table}[tp]
     \caption{テストケース記述項目}\label{tb:testcase_item}
@@ -171,15 +188,6 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
     \end{tabular}
 \end{table}
 
-\begin{figure}[tp]
-        \centering
-        \fbox{
-        \includegraphics[width=0.96\textwidth]{images/02/tc_2.png}
-        }
-        \caption{\tool の入力対象であるテストスイートの例}
-        \label{fig:tc_2}
-    \end{figure}
-
 \begin{description}
     \item[テストケース記述項目]\mbox{}\\
     本研究では、各テストケースに記述する項目を、テストケース記述項目として定義する。
@@ -198,14 +206,14 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
     \item[テストスイートフォーマット]\mbox{}\\
     テストスイートのCSVファイルは、以下の形式で記述する。
     \begin{itemize}
-        \item 1行目は、テストケース記述項目(表\ref{tb:reqspec_item}参照)の各項目をカンマ(,)区切りで並べた、
+        \item 1行目は、テストケース記述項目(表\ref{tb:testcase_item}参照)の各項目をカンマ(,)区切りで並べた、
         ヘッダー行(テストケースID,テストケース名,事前条件,操作,期待出力)とする。
         \item 2行目以降に各テストケースをヘッダー行の形式に従って、1行ずつ記述する。
     \end{itemize}
 \end{description}
 
 \section{要求仕様とテストケースの対応関係に関する用語}\label{sec:words}
-本研究で用いる、3つの要求仕様とテストケースの対応関係に関する用語を、以下に示す。
+本研究で用いる、要求仕様とテストケースの対応関係に関する5つの用語を、以下に示す。
 
 \begin{itemize}
     \item 対応関係\\
@@ -242,4 +250,16 @@ EARSは、特定のテンプレートに沿って要求仕様を記述するこ�
     要求仕様の対応付け要素 (「前提条件」、「トリガー」、「システム応答」)の値が全て空文字列でない要求仕様を、対応付け可能な要求仕様と呼ぶ。\\
     要求仕様の対応付け要素のうち、いずれか$1$つでも対応付け要素の値が空文字列である要求仕様は、対応付け不可能な要求仕様と呼び、テストケースとの対応付けの対象外とする。
 
+    \item テストケースの充足\\
+    ある要求仕様を適正にテストするテストケースが存在する状態を、テストケースの充足と呼ぶ。
+    \item テストケースの過不足\\
+    以下のテストケースの抜け、テストケースの不備、テストケースの過剰の3つのテストケースの状態を総称して、テストケースの過不足と呼ぶ。
+    \begin{itemize}
+        \item テストケースの抜け\\
+        ある要求仕様をテストするテストケースが存在しない状態を、テストケースの抜けと呼ぶ。
+        \item テストケースの不備\\
+        ある要求仕様をテストするテストケースは存在するが、内容が要求仕様に対して不十分な状態を、テストケースの不備と呼ぶ。
+        \item テストケースの過剰\\
+        テストケースは存在するが、テストする要求仕様が存在しない状態を、テストケースの過剰と呼ぶ。
+    \end{itemize}
 \end{itemize}
