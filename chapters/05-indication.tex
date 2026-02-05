@@ -3,9 +3,10 @@
 本章では、本研究で試作した \tool{} が、入力に対して正しく
 TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出力することを、適用例を用いて確認する。
 
-適用対象として、「閏年判定システム」を題材に、\ref{subsec:reqspec}節および\ref{subsec:testsuite}節で述べた、\tool{}の入力対象に基づく要求仕様書とテストスイートを作成した。
+適用対象として、「閏年判定システム」を題材に、\ref{subsec:reqspec}節で述べた要求仕様書、および、\ref{subsec:testsuite}節で述べたテストスイートを作成した。
 
 作成した要求仕様書を図\ref{fig:reqspec}に、テストスイートを図\ref{fig:testsuite_1}および図\ref{fig:testsuite_2}に、それぞれ示す。
+また、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlを、図\ref{fig:setting_example}に示す。
 
 \begin{figure}[tp]                                                                            
     \begin{center}                                                                            
@@ -36,8 +37,6 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
         \label{fig:testsuite_2}                                                    
     \end{center}                                                                              
 \end{figure}
-
-\tool{} 実行時に、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlを、図\ref{fig:setting_example}に示す。
 
 \begin{figure}[t]
     \setbox0\vbox{
@@ -94,7 +93,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     \item 要求仕様の矩形要素を正しく表示していること\\
     図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1の矩形要素に着目する。
     要求仕様REQ-1の矩形要素は、要求仕様ID「REQ-1」、要求仕様名「閏年判定機能」、
-    および要求仕様文(\ref{sec:EARS}節参照)の内容を正しく表示しており、
+    および要求仕様文(\ref{sec:EARS}節参照)を正しく表示しており、
     図\ref{fig:reqspec}の要求仕様書に記述した内容と一致していることが確認できる。
     また、図\ref{fig:tcv_inconsistency1}における、他の要求仕様の矩形要素についても同様に、正しく表示していることが確認できる。
 
@@ -115,7 +114,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
 
     \item 要求仕様間の親子関係を表現していること\\                                                                                             
     図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1の矩形要素と要求仕様REQ-1-1の矩形要素の2つに着目する。
-    子要求仕様REQ-1-1の矩形要素から親要求仕様REQ-1の矩形要素へ向かう矢印は、                                                       
+    子要求仕様REQ-1-1の矩形要素から親要求仕様REQ-1の矩形要素へ向かう実線矢印は、                                                       
     要求仕様間の親子関係を正しく表現していることが確認できる。
     また、図\ref{fig:tcv_inconsistency1}における、他の要求仕様間の親子関係についても同様に、正しく表現していることが確認できる。
 
@@ -164,7 +163,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     図\ref{fig:reqspec}の要求仕様書に記述していない、2月の日数表示機能を対象としたテストケースであり、
     閏年判定システムの機能範囲外であるため、不要なテストケースとして削除を検討できる。
     一方、テストケースTC-9「全角数字入力テスト」は、
-    西暦年に全角数字を入力した際の、エラー出力を検証するテストケースであり、
+    西暦年に全角数字を入力した際の、エラー出力をテストするテストケースであり、
     閏年判定システムが持つべき入力値検証機能に該当すると考えられるため、
     対応する要求仕様の追加を検討できる。
 \end{itemize}
