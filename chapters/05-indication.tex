@@ -6,7 +6,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
 適用対象として、「閏年判定システム」を題材に、\ref{subsec:reqspec}節で述べた要求仕様書、および、\ref{subsec:testsuite}節で述べたテストスイートを作成した。
 
 作成した要求仕様書を図\ref{fig:reqspec}に、テストスイートを図\ref{fig:testsuite_1}および図\ref{fig:testsuite_2}に、それぞれ示す。
-また、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlを、図\ref{fig:setting_example}に示す。
+また、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlを、図\ref{fig:setting_application_example}に示す。
 
 \begin{figure}[tp]                                                                            
     \begin{center}                                                                            
@@ -53,7 +53,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
 	}
 	\centerline{\fbox{\box0}}
     \caption{\tool{}実行時の設定ファイルvitt.yaml}
-    \label{fig:setting_example}
+    \label{fig:setting_application_example}
 \end{figure}
 
 試作した\tool{}がTCVダイアグラムを正しく出力できることを確認するため、
@@ -74,7 +74,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
 \end{itemize}
 
 図\ref{fig:reqspec}の要求仕様書と、図\ref{fig:testsuite_1}および図\ref{fig:testsuite_2}の
-テストスイートを入力とし、図\ref{fig:setting_example}の設定ファイルvitt.yamlを用いて\tool{}を実行した。
+テストスイートを入力とし、図\ref{fig:setting_application_example}の設定ファイルvitt.yamlを用いて\tool{}を実行した。
 \tool{} が出力したTCVダイアグラムを、図\ref{fig:tcv_inconsistency1}に示す。
 
 \begin{figure}[tp]                                                                            
@@ -128,7 +128,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     図\ref{fig:tcv_inconsistency1}において、要求仕様REQ-1-1-1の矩形要素とテストケースTC-1の矩形要素の2つに着目する。
     これらの矩形要素は、品質種別に対応する緑色(FULL)の背景色で表示しており、
     合計スコア0.90をラベルとして付与した破線で接続している。
-    この合計スコアは、図\ref{fig:setting_example}で設定した類似度の閾値 (similarity\_threshold) 0.7以上である。
+    この合計スコアは、図\ref{fig:setting_application_example}で設定した類似度の閾値 (similarity\_threshold) 0.7以上である。
     したがって、テストケースの充足箇所を正しく強調していることが確認できる。
     また、図\ref{fig:tcv_inconsistency1}における、他のテストケースの充足箇所についても同様に、正しく表示していることが確認できる。
 
@@ -147,7 +147,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     要求仕様REQ-1-1-3とテストケースTC-3には、対応関係がある。                                                         
     しかし、要求仕様REQ-1-1-3のシステム応答を表す文章『「閏年です」と出力する』と、                       
     テストケースTC-3の期待出力を表す文章『「閏年ではありません」と出力される』とで出力内容が異なっており、
-    一部の対応付け要素間(システム応答と期待出力)の類似度が、図\ref{fig:setting_example}で設定した類似度の閾値 (similarity\_threshold) 0.7未満である。                                                                                          
+    一部の対応付け要素間(システム応答と期待出力)の類似度が、図\ref{fig:setting_application_example}で設定した類似度の閾値 (similarity\_threshold) 0.7未満である。                                                                                          
     そのため、これらの矩形要素は、品質種別に対応する黄色(PARTIAL)の背景色で表示しており、         
     テストケースの不備箇所を正しく強調していることが確認できる。
 
@@ -156,7 +156,7 @@ TCVダイアグラム(\ref{sec:testcase_visualization_diagram}節参照)を出�
     図\ref{fig:reqspec}の要求仕様書には、これらのテストケースと対応関係がある要求仕様が存在しない。                                   
     そのため、これらの矩形要素は、品質種別に対応する赤色(NONE)の背景色で表示しており、                                                
     テストケースの過剰箇所を正しく強調していることが確認できる。
-    なお、\ref{subsubsec:excess_testcase}節で述べたように、                                                                           
+    なお、\ref{subsubsec:tc_excess}節で述べたように、                                                                           
     ユーザーは、テストケースの過剰箇所に対して、不要であれば、テストケースの削除、                                                                    
     または、対応する要求仕様の追加を検討できる。                                                                                      
     テストケースTC-5「閏年の2月日数表示テスト」は、
