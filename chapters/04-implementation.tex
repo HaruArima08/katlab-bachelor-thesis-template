@@ -5,7 +5,7 @@
 
 \begin{figure}[tp]
     \begin{center}
-            \includegraphics[width=0.96\textwidth]{images/system.png}
+            \includegraphics[width=0.96\textwidth]{images/04/system.png}
             \caption{\tool のシステム構成}
             \label{fig:system}
     \end{center}
@@ -23,24 +23,24 @@
 \section{入力解析部}\label{sec:input-data-analysis}
 入力解析部は、要求仕様書およびテストスイートを解析し、対応関係分析部(\ref{sec:correspondence-analysis}節で後述)とTCVダイアグラム生成部(\ref{sec:diagram-generation}節で後述)で用いる中間データを生成する処理部である。
 本処理部は、要求仕様書、テストスイート、および、初期設定(\ref{sec:config}節参照)で記述した設定ファイルvitt.yamlの3つを入力として受け取り、要求仕様情報リストとテストケース情報リストを出力する。
-本処理部が入力として受け取る、要求仕様書の例を図\ref{fig:reqspec_sample2}に、テストスイートの例を図\ref{fig:tc_4}に、設定ファイルvitt.yamlの例を図\ref{fig:setting_1}に、それぞれ示す。
+本処理部が入力として受け取る、要求仕様書の例を図\ref{fig:reqspec_example_input_analysis_section}に、テストスイートの例を図\ref{fig:testsuite_example_input_analysis_section}に、設定ファイルvitt.yamlの例を図\ref{fig:setting_example_input_analysis_section}に、それぞれ示す。
 
 \begin{figure}[tp]
     \centering
     \fbox{
-        \includegraphics[width=0.96\textwidth]{images/reqspec_sample2.png}
+        \includegraphics[width=0.96\textwidth]{images/04/reqspec_example_input_analysis_section.png}
         }
         \caption{入力解析部が入力として受け取る要求仕様書の例}
-        \label{fig:reqspec_sample2}
+        \label{fig:reqspec_example_input_analysis_section}
     \end{figure}
 
 \begin{figure}[tp]
     \centering
     \fbox{
-        \includegraphics[width=0.96\textwidth]{images/tc_4.png}
+        \includegraphics[width=0.96\textwidth]{images/04/testsuite_example_input_analysis_section.png}
         }
         \caption{入力解析部が入力として受け取るテストスイート(入力形式検証テスト.csv)の例}
-        \label{fig:tc_4}
+        \label{fig:testsuite_example_input_analysis_section}
     \end{figure}
 
 \begin{figure}[t]
@@ -58,7 +58,7 @@
 	}
 	\centerline{\fbox{\box0}}
     \caption{入力解析部が入力として受け取る設定ファイルvitt.yamlの例}
-    \label{fig:setting_1}
+    \label{fig:setting_example_input_analysis_section}
 \end{figure}
 
 要求仕様情報リストは、要求仕様情報オブジェクトのリストである。
@@ -120,8 +120,8 @@
 \end{table}
 
 本処理部が生成する要求仕様情報オブジェクトの例を表\ref{tb:reqspec_obj_example}に、テストケース情報オブジェクトの例を表\ref{tb:testcase_obj_example}に、それぞれ示す。
-表\ref{tb:reqspec_obj_example}に示す要求仕様情報オブジェクトは、図\ref{fig:reqspec_sample2}に示す要求仕様ID「REQ-1-1」の要求仕様情報オブジェクトを表し、
-表\ref{tb:testcase_obj_example}に示すテストケース情報オブジェクトは、図\ref{fig:tc_4}に示すテストケースID「TC-1」のテストケース情報オブジェクトを表している。
+表\ref{tb:reqspec_obj_example}に示す要求仕様情報オブジェクトは、図\ref{fig:reqspec_example_input_analysis_section}に示す要求仕様ID「REQ-1-1」の要求仕様情報オブジェクトを表し、
+表\ref{tb:testcase_obj_example}に示すテストケース情報オブジェクトは、図\ref{fig:testsuite_example_input_analysis_section}に示すテストケースID「TC-1」のテストケース情報オブジェクトを表している。
 
 \begin{table}[tp]
     \caption{入力解析部が生成する要求仕様情報オブジェクトの例}\label{tb:reqspec_obj_example}
@@ -192,7 +192,7 @@
 
 \begin{figure}[tp]
     \begin{center}
-        \includegraphics[width=13cm]{images/req_extraction_composition.png}
+        \includegraphics[width=13cm]{images/04/req_extraction_composition.png}
         \caption{要求仕様情報リスト生成処理の流れ}
         \label{fig:req_extraction_composition}
     \end{center}
@@ -272,7 +272,7 @@
 要求仕様の対応付け要素 (「前提条件」、「トリガー」、「システム応答」)とテストケースの対応付け要素 (「事前条件」、「操作」、「期待出力」)のそれぞれのテキスト間の類似度を算出し、
 その結果に基づいて対応関係抽出処理(\ref{sec:traceability_extraction_processing}節で後述)において、要求仕様とテストケースの対応関係を抽出する。
 そのため、\ref{sec:words}節で述べた、対応付け不可能な要求仕様は、テストケースとの対応付けの対象外と判定する。
-例えば、図\ref{fig:reqspec_sample2}に示す要求仕様ID「REQ-1」は、要求仕様の対応付け要素のうち、「前提条件」、「トリガー」の値が空文字列となっているため、対応付け不可能な要求仕様であり、対応付けの対象外と判定する。
+例えば、図\ref{fig:reqspec_example_input_analysis_section}に示す要求仕様ID「REQ-1」は、要求仕様の対応付け要素のうち、「前提条件」、「トリガー」の値が空文字列となっているため、対応付け不可能な要求仕様であり、対応付けの対象外と判定する。
 
 本処理の流れを、以下に示す。
 \begin{enumerate}
@@ -475,11 +475,11 @@
         \item 取り出した要求仕様情報オブジェクトが対応付け不可能な要求仕様の場合(is\_traceableプロパティの値がfalseの場合)\\
             以降の処理は行わず、$2$.(a)の処理に戻る。
         \item 取り出した要求仕様情報オブジェクトから、要求仕様IDおよび$3$つの対応付け要素(「前提条件」、「トリガー」、「システム応答」)の文字列を抽出する。
-        図\ref{fig:str_mapping_element}に、図\ref{fig:reqspec_sample2}で示した要求仕様ID「REQ-1-3」の要求仕様情報オブジェクトから抽出する対応付け要素の文字列の例を示す。
+        図\ref{fig:str_mapping_element}に、図\ref{fig:reqspec_example_input_analysis_section}で示した要求仕様ID「REQ-1-3」の要求仕様情報オブジェクトから抽出する対応付け要素の文字列の例を示す。
 
         \begin{figure}[tp]
             \begin{center}
-                \includegraphics[width=17cm]{images/str_mapping_element.png}
+                \includegraphics[width=17cm]{images/04/str_mapping_element.png}
                 \caption{対応付け要素の文字列の例}
                 \label{fig:str_mapping_element}
             \end{center}
@@ -496,7 +496,7 @@
 
             \begin{figure}[tp]
                 \begin{center}
-                    \includegraphics[width=17cm]{images/morpheme_info_list.png}
+                    \includegraphics[width=17cm]{images/04/morpheme_info_list.png}
                     \caption{図\ref{fig:str_mapping_element}で示した対応付け要素の文字列から生成した形態素情報リストの例}
                     \label{fig:morpheme_info_list}
                 \end{center}
@@ -557,7 +557,7 @@
 
         \begin{figure}[tp]
             \begin{center}
-                \includegraphics[width=17cm]{images/important_words.png}
+                \includegraphics[width=17cm]{images/04/important_words.png}
                 \caption{図\ref{fig:morpheme_info_list}におけるトリガーの形態素情報リストから生成した重要単語リストの例}
                 \label{fig:important_words}
             \end{center}
@@ -736,23 +736,23 @@ TCVダイアグラム生成部は、本研究で提案する、テストケー�
 PlantUML(\ref{sec:PlantUML}節参照)を用いてTCV ダイアグラムを生成する。
 さらに、生成した TCV ダイアグラムをローカルサーバーを介して配信し、ユーザーが任意のWebブラウザから確認できるようにする。
 
-本処理部が生成するPlantUMLコードの例を図\ref{fig:puml_code1}に、TCVダイアグラムの例を図\ref{fig:tcv_diagram_4.3}に、それぞれ示す。
+本処理部が生成するPlantUMLコードの例を図\ref{fig:puml_code}に、TCVダイアグラムの例を図\ref{fig:tcv_diagram_example}に、それぞれ示す。
 
 \begin{figure}[tp]
     \begin{center}
         \fbox{
-            \includegraphics[width=0.96\textwidth]{images/puml_code1.png}
+            \includegraphics[width=0.96\textwidth]{images/04/puml_code.png}
             }
         \caption{TCVダイアグラム生成部が生成するPlantUML コードの例}
-        \label{fig:puml_code1}
+        \label{fig:puml_code}
     \end{center}
 \end{figure}
 
 \begin{figure}[tp]
     \begin{center}
-        \includegraphics[width=17cm]{images/tcv_diagram_4.3.png}
+        \includegraphics[width=17cm]{images/04/tcv_diagram_example.png}
         \caption{TCVダイアグラム生成部が生成するTCVダイアグラムの例}
-        \label{fig:tcv_diagram_4.3}
+        \label{fig:tcv_diagram_example}
     \end{center}
 \end{figure}
 
@@ -838,7 +838,7 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
 \begin{enumerate}
     \item 入力解析部 (\cref{sec:input-data-analysis}参照) の出力である要求仕様情報リストとテストケース情報リスト、および、対応関係分析部 (\cref{sec:correspondence-analysis}参照) の出力である対応関係情報リストを、入力として読み込む。
     \item PlantUML開始タグ「@startuml\textbackslash n」、および、表\ref{tab:puml-layout-settings}、表\ref{tab:puml-style-settings}、表\ref{tab:puml-area-settings}で示した3種類の設定項目を、変数puml\_codeに格納する。
-    図\ref{fig:puml_code1}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
+    図\ref{fig:puml_code}の1行目から26行目までが、ここで格納するPlantUMLコードに該当する。
     \item 要求仕様エリアの生成
     \begin{enumerate}
         \item 要求仕様エリアの開始タグ「\{」を、変数puml\_codeに格納する。
@@ -859,18 +859,18 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
                 \end{itemize}
             \end{itemize}
             \item 要求仕様情報オブジェクトのid、name、descriptionプロパティの値と、$3$.(b)ii.で設定した背景色を用いて、要求仕様の矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-            図\ref{fig:reqspec_sample2}で示した4件の要求仕様に対して生成する、要求仕様の矩形要素を表すPlantUMLコードは、
-            図\ref{fig:puml_code1}の28行目から31行目に該当する。
+            図\ref{fig:reqspec_example_input_analysis_section}で示した4件の要求仕様に対して生成する、要求仕様の矩形要素を表すPlantUMLコードは、
+            図\ref{fig:puml_code}の28行目から31行目に該当する。
             特に、表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトに対して生成する、要求仕様の矩形要素を表すPlantUMLコードは、
-            図\ref{fig:puml_code1}の29行目に該当する。
+            図\ref{fig:puml_code}の29行目に該当する。
         \end{enumerate}
         \item 要求仕様情報リスト内の全ての要求仕様情報オブジェクトについて、
         各要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値を用いて、
         要求仕様の親子関係の実線矢印を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-        図\ref{fig:reqspec_sample2}で示した要求仕様間の親子関係に対して生成する、
-        実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code1}の32行目から34行目に該当する。
+        図\ref{fig:reqspec_example_input_analysis_section}で示した要求仕様間の親子関係に対して生成する、
+        実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code}の32行目から34行目に該当する。
         特に、表\ref{tb:reqspec_obj_example}で示した要求仕様情報オブジェクトのparent\_idおよびchildren\_idsプロパティの値を用いて
-        生成する、要求仕様の親子関係の実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code1}の32行目に該当する。
+        生成する、要求仕様の親子関係の実線矢印を表すPlantUMLコードは、図\ref{fig:puml_code}の32行目に該当する。
         \item 要求仕様エリアの終了タグ「\}」を、変数puml\_codeに格納する。
     \end{enumerate}
 
@@ -892,10 +892,10 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
                 \end{itemize}
                 \item テストケース情報オブジェクトのid、name、precondition、operation、expected\_outputプロパティの値と、
                 $4$.(b)ii.B.で設定した背景色を用いて、テストケースの矩形要素を表すPlantUMLコードを生成し、変数puml\_codeに格納する。
-                図\ref{fig:tc_4}で示した3件のテストケースに対して生成する、テストケースの矩形要素を表すPlantUMLコードは、
-                図\ref{fig:puml_code1}の38行目から40行目に該当する。
+                図\ref{fig:testsuite_example_input_analysis_section}で示した3件のテストケースに対して生成する、テストケースの矩形要素を表すPlantUMLコードは、
+                図\ref{fig:puml_code}の38行目から40行目に該当する。
                 特に、表\ref{tb:testcase_obj_example}で示したテストケース情報オブジェクトに対して生成する、テストケースの矩形要素を表すPlantUMLコードは、
-                図\ref{fig:puml_code1}の38行目に該当する。
+                図\ref{fig:puml_code}の38行目に該当する。
             \end{enumerate}
             \item テストスイートエリアの終了タグ「\}」を、変数puml\_codeに格納する。
         \end{enumerate}
@@ -904,12 +904,12 @@ PlantUMLコード生成処理は、TCVダイアグラムを生成するための
     \item 要求仕様エリアとテストケースエリアを生成後、対応関係情報リストに基づき、
     対応関係がある要求仕様の矩形要素とテストケースの矩形要素を、
     合計スコアのラベルを付与した破線で結ぶPlantUMLコードを生成し、変数puml\_codeに格納する。
-    図\ref{fig:tcv_diagram_4.3}で示した、対応関係がある要求仕様ID「REQ-1-1」の矩形要素とテストケースID「TC-1」の矩形要素、および、
+    図\ref{fig:tcv_diagram_example}で示した、対応関係がある要求仕様ID「REQ-1-1」の矩形要素とテストケースID「TC-1」の矩形要素、および、
     要求仕様ID「REQ-1-3」の矩形要素とテストケースID「TC-3」の矩形要素に対して
     生成する、合計スコアのラベルを付与した破線で結ぶPlantUMLコードは、
-    図\ref{fig:puml_code1}の43行目、および、44行目に該当する。
+    図\ref{fig:puml_code}の43行目、および、44行目に該当する。
     \item PlantUML終了タグ「@enduml\textbackslash n」を、変数puml\_codeに格納する。
-    図\ref{fig:puml_code1}の45行目が、ここで格納するPlantUMLコードに該当する。
+    図\ref{fig:puml_code}の45行目が、ここで格納するPlantUMLコードに該当する。
     \item 変数puml\_codeをPlantUMLコードとして、TCVダイアグラム出力処理に渡す。
 \end{enumerate}
 
