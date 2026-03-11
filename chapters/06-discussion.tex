@@ -13,60 +13,60 @@
 
 実験の事前準備として、要求仕様書とテストスイートの組を2つ用意した。
 1つ目は、「閏年判定システム」に関する要求仕様書とテストスイートの組である。
-具体的には、図\ref{fig:reqspec_application_example}に示した要求仕様書と、図\ref{fig:testsuite_1}および図\ref{fig:testsuite_2}に示したテストスイートの組である。
+具体的には、図\ref{fig:reqspec_application_example}に示した要求仕様書と、図\ref{fig:testsuite_judge_leap_year}および図\ref{fig:testsuite_input_format_validation}に示したテストスイートの組である。
 以降、この要求仕様書とテストスイートの組を、組$\alpha$と呼ぶ。
 2つ目は、「成績付けシステム」に関する要求仕様書とテストスイートの組である。
-用意した要求仕様書を図\ref{fig:exp_reqspec_b}に、テストスイートを図\ref{fig:exp_testsuite_b1}、図\ref{fig:exp_testsuite_b2}、および、図\ref{fig:exp_testsuite_b3}に、それぞれ示す。
+用意した要求仕様書を図\ref{fig:reqspec_example_beta}に、テストスイートを図\ref{fig:testsuite_beta_grade_judgment}、図\ref{fig:testsuite_beta_input_format_validation}、および、図\ref{fig:testsuite_beta_result_display}に、それぞれ示す。
 以降、この要求仕様書とテストスイートの組を、組$\beta$と呼ぶ。
-組$\beta$に対して、\tool{}が出力したTCVダイアグラムを、図\ref{fig:tcv_seiseki2}に示す。
+組$\beta$に対して、\tool{}が出力したTCVダイアグラムを、図\ref{fig:tcv_diagram_beta}に示す。
 
 なお、組$\alpha$および組$\beta$には、共に、テストケースの抜け箇所を1件、不備箇所を1件、および、過剰箇所を2件、合計4件を意図的に含めた。
 
 \begin{figure}[tp]                                                      
     \begin{center}                                                                            
         \fbox{                                                                                
-        \includegraphics[width=0.96\textwidth]{images/06/exp_reqspec_b.png}                 
+        \includegraphics[width=0.96\textwidth]{images/06/reqspec_example_beta.png}                 
         }                                                                                     
         \caption{組$\beta$の要求仕様書}                                              
-        \label{fig:exp_reqspec_b}                                                        
+        \label{fig:reqspec_example_beta}                                                        
     \end{center}                                                                              
 \end{figure}
 
 \begin{figure}[tp]                                                                            
     \begin{center}                                                                            
         \fbox{                                                                                
-        \includegraphics[width=0.96\textwidth]{images/06/exp_testsuite_b1.png}                 
+        \includegraphics[width=0.96\textwidth]{images/06/testsuite_beta_grade_judgment.png}                 
         }                                                                                     
         \caption{組$\beta$のテストスイート(成績判定テスト.csv)}                                              
-        \label{fig:exp_testsuite_b1}                                                        
+        \label{fig:testsuite_beta_grade_judgment}                                                        
     \end{center}                                                                              
 \end{figure}
 
 \begin{figure}[tp]                                                                            
     \begin{center}                                                                            
         \fbox{                                                                                
-        \includegraphics[width=0.96\textwidth]{images/06/exp_testsuite_b2.png}                 
+        \includegraphics[width=0.96\textwidth]{images/06/testsuite_beta_input_format_validation.png}                 
         }                                                                                     
         \caption{組$\beta$のテストスイート(入力形式検証テスト.csv)}                                              
-        \label{fig:exp_testsuite_b2} 
+        \label{fig:testsuite_beta_input_format_validation} 
     \end{center}                                                                              
 \end{figure}
 
 \begin{figure}[tp]                                                                            
     \begin{center}                                                                            
         \fbox{                                                                                
-        \includegraphics[width=0.96\textwidth]{images/06/exp_testsuite_b3.png}                 
+        \includegraphics[width=0.96\textwidth]{images/06/testsuite_beta_result_display.png}                 
         }                                                                                     
         \caption{組$\beta$のテストスイート(結果表示テスト.csv)}                                              
-        \label{fig:exp_testsuite_b3}                                                        
+        \label{fig:testsuite_beta_result_display}                                                        
     \end{center}                                                                              
 \end{figure}
 
 \begin{figure}[tp]                                                                            
     \begin{center}                                                                            
-        \includegraphics[width=17cm]{images/06/tcv_seiseki2.png}                 
+        \includegraphics[width=17cm]{images/06/tcv_diagram_beta.png}                 
         \caption{組$\beta$の要求仕様書とテストスイートに対して\tool{}が出力したTCVダイアグラム}       
-        \label{fig:tcv_seiseki2}                                              
+        \label{fig:tcv_diagram_beta}                                              
     \end{center}                                                   
 \end{figure}
 
@@ -127,8 +127,8 @@ CSVファイルに記述した要求仕様書とテストスイートを確認�
 本節では、テストケースの過不足箇所の発見漏れに関して、考察を行う。
 
 評価実験において、\tool{}を使用しなかった場合、
-被験者Aは、図\ref{fig:exp_testsuite_b2}に示した組$\beta$のテストケースの過剰箇所であるTC-8「単位付き数値入力テスト」を、
-被験者Dは、図\ref{fig:testsuite_1}に示した組$\alpha$のテストケースの過剰箇所であるTC-5「閏年の2月日数表示テスト」を、
+被験者Aは、図\ref{fig:testsuite_beta_input_format_validation}に示した組$\beta$のテストケースの過剰箇所であるTC-8「単位付き数値入力テスト」を、
+被験者Dは、図\ref{fig:testsuite_judge_leap_year}に示した組$\alpha$のテストケースの過剰箇所であるTC-5「閏年の2月日数表示テスト」を、
 それぞれテストケースの過不足箇所として発見できなかった。
 発見漏れが生じた原因は、CSVファイルに記述した各要求仕様のテキストと各テストケースのテキストの内容を1つずつ確認し、
 テストケースの過不足箇所を見つける作業が煩雑であったためであると考察する。
